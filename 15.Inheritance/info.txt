@@ -1,0 +1,46 @@
+nheritance is a fundamental feature in C++ programming that allows you to create new classes (derived classes) from existing classes (base classes). The derived class inherits the properties and behaviors of the base class, and it can also add new features or modify existing ones.
+
+
+
+In C++, there are three access specifiers that control the visibility of the inherited members and functions:
+
+public: Public members and functions of the base class become public members and functions of the derived class.
+protected: Public members and functions of the base class become protected members and functions of the derived class.
+private: Public members and functions of the base class become private members and functions of the derived class.
+The choice of access specifier determines how the inherited members can be accessed within the derived class and its derived classes.
+
+When a derived class is created, it automatically inherits all the non-private members (variables and functions) of the base class. This includes data members, member functions, constructors, and destructors. The derived class can access and use these inherited members as if they were its own.
+
+In addition to inheriting existing members, the derived class can also override base class functions by providing its own implementation. This is known as function overriding, and it allows the derived class to customize the behavior of inherited functions.
+
+Overall, inheritance in C++ enables code reuse, promotes modularity, and allows you to create class hierarchies with different levels of abstraction.
+
+
+
+
+
+include guards, also known as header guards or macro guards, are a mechanism used in C++ to prevent multiple inclusions of the same header file. They ensure that the content of the header file is included only once during the compilation process, even if the header file is included in multiple source files.
+
+Here's how include guards work:
+
+At the beginning of the header file, before any code or declarations, you define a unique preprocessor symbol using #define. This symbol is typically based on the name of the header file, but it can be any unique name you choose. For example:
+
+#ifndef HEADER_NAME_H
+#define HEADER_NAME_H
+
+// Header file content
+
+#endif
+
+
+The #ifndef directive checks if the specified symbol (in this case, HEADER_NAME_H) has not been defined before. If it hasn't been defined, it proceeds to the next line.
+
+The #define directive defines the symbol HEADER_NAME_H, effectively marking it as defined and preventing further inclusion of the header file.
+
+The header file's content, which includes declarations, definitions, class definitions, and function prototypes, is placed between the #ifndef and #endif directives.
+
+If the same header file is included in another source file during the compilation process, the #ifndef directive will evaluate to false because the symbol HEADER_NAME_H has already been defined. As a result, the content of the header file between the #ifndef and #endif directives will be skipped, preventing redundant definitions and compilation errors.
+
+By using include guards, you ensure that header files are included only once, regardless of how many times they are included in different source files. This helps avoid redefinition errors, duplicated symbols, and other issues that can arise from multiple inclusions of the same header file.
+
+Note: Alternatively, you can also use #pragma once instead of include guards. #pragma once is a non-standard but widely supported directive that achieves the same purpose of preventing multiple inclusions. It simplifies the code by automatically managing the inclusion guard without requiring manual definition and checking of symbols.
