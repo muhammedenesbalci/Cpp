@@ -1,0 +1,1 @@
+int my_variable = 99;
