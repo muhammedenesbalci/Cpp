@@ -1,11 +1,17 @@
-// C++ Program to illustrate the auto storage class
-// variables
 #include <iostream>
-#include "extern_example.cpp"
-#include "extern_usage.cpp"
+
+#include "extern_example/extern_example.cpp"
+#include "extern_example/extern_usage.cpp"
+
+#include "common_variable/common_variable.h"
+#include "common_variable/file1.cpp"
+#include "common_variable/file2.cpp"
+
+#include <thread>
 
 using namespace std;
- 
+
+// auto Storage class ----------------------------------------------------------------
 void autoStorageClass() {
     cout << "Demonstrating auto class\n";
  
@@ -22,12 +28,12 @@ void autoStorageClass() {
     cout << d << " \n";
 }
 
+// extern Storage class ----------------------------------------------------------------
 // declaring the variable which is to
 // be made extern an initial value can
 // also be initialized to x
 int x;
-void externStorageClass()
-{
+void externStorageClass() {
     cout << "Demonstrating extern class\n";
  
     // telling the compiler that the variable
@@ -48,10 +54,11 @@ void externStorageClass()
     cout << "Modified value of the variable 'x'"
          << " declared as extern: \n"
          << x << endl;
+
+    cout << "address of extern x: " << &x << endl;
 }
 
-void externStorageClass_2()
-{
+void externStorageClass_2() {
     cout << "Demonstrating extern class\n";
  
     // telling the compiler that the variable
@@ -72,10 +79,11 @@ void externStorageClass_2()
     cout << "Modified value of the variable 'x'"
          << " declared as extern: \n"
          << x << endl;
+
+    cout << "address of extern x: " << &x << endl;
 }
 
-void externStorageClass_file_1()
-{
+void externStorageClass_file_1() {
     cout << "Demonstrating extern class with file\n";
     extern int my_variable;
     cout << "addres of myVariable: " << &my_variable <<endl;
@@ -94,8 +102,7 @@ void externStorageClass_file_1()
          << my_variable << endl;
 }
 
-void externStorageClass_file_2()
-{
+void externStorageClass_file_2() {
     cout << "Demonstrating extern class with file\n";
     
     extern int my_variable;
@@ -104,20 +111,52 @@ void externStorageClass_file_2()
     // printing the extern variables 'x'
     cout << "Value of the variable 'my_variable'"
          << "declared, as extern: " << my_variable << "\n";
- 
-    // value of extern variable x modified
 }
 
-void externStorageClass_file_3()
-{
+void externStorageClass_file_3() {
     cout << "Demonstrating extern class with file\n";
     extern_usage_fun();
 }
 
-//----------------------------------------------------------------------------
-// C++ program to illustrate the use of mutalbe storage
-// class specifiers
+void externStorageClass_file_4_common_variable() {
+    cout << "Demonstrating extern class with file\n";
+    function_in_file1(); // common_variable'ın değerini 100 olarak değiştir ve yazdır (file1.cpp)
+    function_in_file2(); // common_variable'ın güncellenmiş değerini yazdır (file2.cpp)
+    cout << "common_variable in main" <<  common_variable << endl;
+    std::cout << "common_variable address in main: " << &common_variable << std::endl;
+}
 
+// static Storage class ----------------------------------------------------------------
+int staticFun() {
+    cout << "For static variables: ";
+    static int count = 0;
+    count++;
+    return count;
+}
+
+// Function containing non-static variables
+// memory is destroyed
+int nonStaticFun()
+{
+    cout << "For Non-Static variables: ";
+
+    int count = 0;
+    count++;
+    return count;
+}
+
+void static_and_non_static_example() {
+    // Calling the static parts
+    cout << staticFun() << "\n";
+    cout << staticFun() << "\n";
+    
+
+    // Calling the non-static parts
+    cout << nonStaticFun() << "\n";
+    cout << nonStaticFun() << "\n";
+}
+
+// mutable Storage class ----------------------------------------------------------------
 class Test {
 public:
     int x;
@@ -147,30 +186,64 @@ void use_of_mutable_2() {
         const Test t1;
     
         // will throw error
-        t1.x = 8;
+        //t1.x = 8;
         cout << t1.x;
+}
+
+// thread local Storage class ----------------------------------------------------------------
+thread_local int var = 10;
+
+void thread_local_ex() {
+    // thread 1
+    thread th1([]() {
+        cout << "Thread 1 var Value: " << (var += 18) << '\n';
+    });
+
+    // thread 2
+    thread th2([]() {
+        cout << "Thread 2 var Value: " << (var += 7) << '\n';
+    });
+
+    // thread 3
+    thread th3([]() {
+        cout << "Thread 3 var Value: " << (var += 13) << '\n';
+    });
+
+    th1.join();
+    th2.join();
+    th3.join();
 }
 int main()
 {
     // To demonstrate auto Storage Class
-    cout << "---------------------------------\n";
+    cout << "\nautoStorageClass ---------------------------------\n";
     autoStorageClass();
 
-    cout << "---------------------------------\n";
+    cout << "\nexternStorageClass ---------------------------------\n";
     externStorageClass();
 
-    cout << "---------------------------------\n";
+    cout << "\nexternStorageClass_2 ---------------------------------\n";
     externStorageClass_2();
 
-    cout << "---------------------------------\n";
+    cout << "\nexternStorageClass_file_1 ---------------------------------\n";
     externStorageClass_file_1();
-    cout << "+++++++++++++++++++++++++++++++++\n";
+    cout << "\nexternStorageClass_file_2 +++++++++++++++++++++++++++++++++\n";
     externStorageClass_file_2();
-    cout << "+++++++++++++++++++++++++++++++++\n";
+    cout << "\nexternStorageClass_file_3 +++++++++++++++++++++++++++++++++\n";
     externStorageClass_file_3();
 
-    cout << "---------------------------------\n";
+    cout << "\nexternStorageClass_file_4_common_variable ---------------------------------\n";
+    externStorageClass_file_4_common_variable();
+
+    cout << "\nstatic_and_non_static_example ---------------------------------\n";
+    static_and_non_static_example();
+
+    cout << "\nuse_of_mutable and use_of_mutable_2 ---------------------------------\n";
     use_of_mutable();
     //use_of_mutable_2();
+    
+    cout << "t\nhread_local_ex ---------------------------------\n";
+    thread_local_ex();
+    
     return 0;
 }

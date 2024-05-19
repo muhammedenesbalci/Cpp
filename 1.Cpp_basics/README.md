@@ -16,11 +16,21 @@
 - Conversion of variables 'static_cast'.
 - Increasing and decreasing values.
 - Right and left increment difference.
-- Compile a cpp file
+- [Informations](#informations)
+- [Difference Between Variable Declaration and Definition](#difference-between-variable-declaration-and-definition)
+- [Type Modifiers](#type-modifiers)
+- [Type Qualifiers](#type-qualifiers)
+- [Type Conversion](#type-conversion)
+- [Casting Operators](#casting-operators)
+- [Operators](#operators)
+- [Compile a cpp file](#compile-a-cpp-file)
 
 ## Informations
 
 - ***#include*** directive is used to include external files or libraries in your program. It is a preprocessor directive that tells the compiler to insert the contents of another file into the current file at the point where the *#include* directive is used. This allows you to access definitions, declarations, and functionalities from the included files.
+	- #include <iostream> cpp ın kendi kütüphanelerini dahil eder.
+	- #include "my_class.h" bizim oluşturduğumuz kütüphaneleri dahil eder.
+		- <> ve "" ikisi farklı çalışıyor <> bu cpp nin kendi kütüphanelerine bakar "" bu derlediğimiz dosyanın olduğu yerdeki dosyalara bakar.
 - ***iostream*** header is part of the C++ Standard Library and provides input and output functionality. It defines several stream objects, such as cin (for input from the standard input) and cout (for output to the standard output). The iostream header is commonly used for console input and output operations.
 	- This is a preprocessor directive. The #include directive tells the compiler to include the content of a file in the source code.
 	- For example, #include<iostream> tells the compiler to include the standard iostream file which contains declarations of all the standard input/output library functions. (https://www.geeksforgeeks.org/cc-preprocessors/)
@@ -33,9 +43,9 @@
 		}  
 	```
 
-  Within the namespace block, you can define classes, functions, variables, and other entities, just like you would outside of a namespace. However, these declarations will be scoped within the namespace, meaning they are only accessible using the namespace name as a prefix.
+	- Within the namespace block, you can define classes, functions, variables, and other entities, just like you would outside of a namespace. However, these declarations will be scoped within the namespace, meaning they are only accessible using the namespace name as a prefix.
 
-  To use the entities defined in a namespace, you can either qualify the names explicitly or introduce the entire namespace into your code with the ***using*** directive. Here are examples of both approaches:
+	- To use the entities defined in a namespace, you can either qualify the names explicitly or introduce the entire namespace into your code with the ***using*** directive. Here are examples of both approaches:
 	```cpp
 		// Qualifying the names explicitly  
 		myNamespace::MyClass obj;  
@@ -49,12 +59,13 @@
 		myFunction()  
 	```
 
-  It's important to note that using the ***using*** directive to introduce a namespace can lead to naming conflicts if there are multiple namespaces with the same name or if there are naming clashes with other entities in your code. Therefore, it's generally recommended to use namespace qualifications to maintain clarity and avoid potential issues.
+	- It's important to note that using the ***using*** directive to introduce a namespace can lead to naming conflicts if there are multiple namespaces with the same name or if there are naming clashes with other entities in your code. Therefore, it's generally recommended to use namespace qualifications to maintain clarity and avoid potential issues.
 
-  Remember, namespaces are a way to organize and modularize your code, making it easier to manage and collaborate on large projects.
+	- Remember, namespaces are a way to organize and modularize your code, making it easier to manage and collaborate on large projects.
 
 ## Difference Between Variable Declaration and Definition
-- The variable declaration refers to the part where a variable is first declared or introduced before its first use. A variable definition is a part where the variable is assigned a memory location and a value. Most of the time, variable declaration and definition are done together.
+- The variable declaration refers to the part where a variable is first declared or introduced before its first use. 
+- A variable definition is a part where the variable is assigned a memory location and a value. Most of the time, variable declaration and definition are done together.
 See the following C++ program for better clarification: 
 	```cpp
 	/ C++ program to show difference between
@@ -90,46 +101,6 @@ See the following C++ program for better clarification:
 		cout << a123 << endl;
 	
 		return 0;
-	}
-	```
-## Types of Variables
-- look.png open it !!!
-
-- There are three types of variables based on the scope of variables in C++
-	- Local Variables
-	- Instance Variables
-	- Static Variables
-
-1. Local Variables: A variable defined within a block or method or constructor is called a local variable. 
-	- These variables are created when entered into the block or the function is called and destroyed after exiting from the block or when the call returns from the function.
-	- The scope of these variables exists only within the block in which the variable is declared. i.e. we can access this variable only within that block.
-	- Initialization of Local Variable is Mandatory.
-
-2. Instance Variables: Instance variables are non-static variables and are declared in a class outside any method, constructor, or block. 
-	- As instance variables are declared in a class, these variables are created when an object of the class is created and destroyed when the object is destroyed.
-	- Unlike local variables, we may use access specifiers for instance variables. If we do not specify any access specifier then the default access specifier will be used.
-	- Initialization of Instance Variable is not Mandatory.
-	- Instance Variable can be accessed only by creating objects.
-
-3. Static Variables: Static variables are also known as Class variables. 
-	- These variables are declared similarly as instance variables, the difference is that static variables are declared using the static keyword within a class outside any method constructor or block.
-	- Unlike instance variables, we can only have one copy of a static variable per class irrespective of how many objects we create.
-	- Static variables are created at the start of program execution and destroyed automatically when execution ends.
-	- Initialization of Static Variable is not Mandatory. Its default value is 0
-	- If we access the static variable like the Instance variable (through an object), the compiler will show the warning message and it won’t halt the program. The compiler will replace the object name with the class name automatically.
-	- If we access the static variable without the class name, the Compiler will automatically append the class name.
-
-- **Instance Variable Vs Static Variable
-Each object will have its own copy of the instance variable**
-	- Each object will have its own copy of the instance variable whereas We can only have one copy of a static variable per class irrespective of how many objects we create.
-	- Changes made in an instance variable using one object will not be reflected in other objects as each object has its own copy of the instance variable. In the case of static, changes will be reflected in other objects as static variables are common to all objects of a class.
-	- We can access instance variables through object references and Static Variables can be accessed directly using the class name.
-- The syntax for static and instance variables:
-	```cpp
-	class Example
-	{
-		static int a; // static variable
-		int b;        // instance variable
 	}
 	```
 
@@ -223,64 +194,119 @@ Each object will have its own copy of the instance variable**
 		```
 ## Type Qualifiers
 - Type qualifiers are used to provide more information about a value while also guaranteeing that the data is used correctly.
-	1. **const**: Objects of type const cannot be altered during execution. Const objects cannot be modified by your program while it is running.
-	2. **volatile**: The modifier volatile tells the compiler that a variable’s value can be changed in ways that are not explicitly defined by the program. The compiler is informed by the modifier volatile that a variable’s value might change in ways that aren’t clearly stated in the program.
-		- volatile anahtar kelimesi, C ve C++ programlama dillerinde kullanılan bir nitelik (qualifier) veya belirleyicidir. Bu nitelik, bir değişkenin değerinin programın normal akışı dışında, öngörülemeyen şekillerde değişebileceğini ve bu değişikliklerin derleyici tarafından optimize edilmesini engellediğini belirtir. Yani, volatile kullanılan bir değişkenin değeri, programın beklenen akışı dışında, örneğin donanım veya dış etkenlerden kaynaklı olarak değişebilir.
-		- değişkenin Optimizasyonu Engelleme: volatile kullanılan bir değişkenin değeri, derleyici tarafından optimize edilerek bellek veya register içinde tutulabilir. Bu nedenle, bu tür değişkenlerin değerlerine her zaman doğrudan erişmek ve okumak gereklidir.
-		- Dışsal Değişikliklere Karşı Hassaslık: volatile değişkenler, programın normal akışı dışında (örneğin donanım veya dışarıdan gelen sinyaller nedeniyle) değişebilecek veriler için kullanılır. Bu değişkenler, derleyicinin bu değişiklikleri göz ardı etmesini engeller.
-			```cpp
-			#include <iostream>
+	- const
+	- volatile
+	- restrict
+		- **const**: Objects of type const cannot be altered during execution. Const objects cannot be modified by your program while it is running.
+		- **volatile**: The modifier volatile tells the compiler that a variable’s value can be changed in ways that are not explicitly defined by the program. The compiler is informed by the modifier volatile that a variable’s value might change in ways that aren’t clearly stated in the program.
+			- volatile anahtar kelimesi, C ve C++ programlama dillerinde kullanılan bir nitelik (qualifier) veya belirleyicidir. Bu nitelik, bir değişkenin değerinin programın normal akışı dışında, öngörülemeyen şekillerde değişebileceğini ve bu değişikliklerin derleyici tarafından optimize edilmesini engellediğini belirtir. Yani, volatile kullanılan bir değişkenin değeri, programın beklenen akışı dışında, örneğin donanım veya dış etkenlerden kaynaklı olarak değişebilir.
 
-			int main() {
-				volatile int sensorValue = 0;  // Volatile olarak tanımlanan bir değişken
-
-				while (true) {
-					// Değişkenin değerini okuma
-					std::cout << "Sensor value: " << sensorValue << std::endl;
-
-					// Değişkenin değerini güncelleme (örneğin, dışarıdan gelen bir sinyal)
-					sensorValue = readSensor();  // Sensörden yeni veri okunduğunu varsayalım
-
-					// Kısa bir bekleme süresi
-					std::this_thread::sleep_for(std::chrono::milliseconds(100));
-				}
-
-				return 0;
-			}
-			```
-		- Yukarıdaki örnekte, sensorValue isimli değişken volatile olarak tanımlanmıştır. Bu değişkenin değeri, programın normal akışı dışında (örneğin, readSensor() fonksiyonu aracılığıyla) değişebilir. Bu durumda, sensorValue değişkeninin her döngüde doğrudan okunması ve güncellenmesi önemlidir.
-		- volatile anahtar kelimesi genellikle donanım ile etkileşim gerektiren veya kesme hizmeti (interrupt service) sağlayan programlar, zamanlayıcılar (timers), port işlemleri gibi durumlarda kullanılır. Ancak, modern C++'ta volatile kullanımı yerine std::atomic veya özel senkronizasyon teknikleri (mutex, semaphore gibi) tercih edilmektedir. volatile değişkenlerin yanlış kullanımı, programın doğruluğunu ve taşınabilirliğini etkileyebileceğinden dikkatli bir şekilde kullanılmalıdır.
-	3. **restrict**: A pointer qualified by restricting is initially the only means by which the object it points to can be accessed. The object restricts links that can only initially be accessed via a pointer qualified by it. Restrict is a new type of qualifier that is only added in C99.
-		- restrict, C ve C++ programlama dillerinde kullanılan bir nitelik (qualifier) veya belirleyicidir. Bu nitelik, bir işaretçinin (pointer) işaret ettiği bellek alanının başka bir işaretçi veya referans tarafından değiştirilmeyeceğini garanti eder. Bu belirleyici, derleyiciye işaretçinin optimize edilmesinde ve bellek erişiminde daha agresif davranmasına izin verir.
-		- Bellek Erişimi Optimizasyonu: restrict belirleyicisi, işaretçinin işaret ettiği bellek bloğunun başka işaretçiler veya referanslar tarafından değiştirilmeyeceğini garanti eder. Bu sayede derleyici, işaretçinin eriştiği bellek bloğunu daha etkin bir şekilde optimize edebilir.
-		- Bellek Erişimi Güvenliği: restrict kullanımı, programcının derleyiciye veri bağımsızlığı (data aliasing) hakkında bilgi verir. Bu belirleyiciyi kullanan bir işaretçi, aynı bellek bloğunu işaret eden başka işaretçilerle çakışma yaşamaz.
-			```cpp
-				#include <stdio.h>
-
-				void add_arrays(int* restrict result, const int* restrict arr1, const int* restrict arr2, int size) {
-					for (int i = 0; i < size; ++i) {
-						result[i] = arr1[i] + arr2[i];
-					}
-				}
+			- Dışsal Değişikliklere Karşı Hassaslık: volatile değişkenler, programın normal akışı dışında (örneğin donanım veya dışarıdan gelen sinyaller nedeniyle) değişebilecek veriler için kullanılır. Bu değişkenler, derleyicinin bu değişiklikleri göz ardı etmesini engeller.
+				```cpp
+				#include <iostream>
 
 				int main() {
-					int arr1[] = {1, 2, 3, 4, 5};
-					int arr2[] = {5, 4, 3, 2, 1};
-					int result[5];
+					volatile int sensorValue = 0;  // Volatile olarak tanımlanan bir değişken
 
-					add_arrays(result, arr1, arr2, 5);
+					while (true) {
+						// Değişkenin değerini okuma
+						std::cout << "Sensor value: " << sensorValue << std::endl;
 
-					printf("Result array: ");
-					for (int i = 0; i < 5; ++i) {
-						printf("%d ", result[i]);
+						// Değişkenin değerini güncelleme (örneğin, dışarıdan gelen bir sinyal)
+						sensorValue = readSensor();  // Sensörden yeni veri okunduğunu varsayalım
+
+						// Kısa bir bekleme süresi
+						std::this_thread::sleep_for(std::chrono::milliseconds(100));
 					}
-					printf("\n");
 
 					return 0;
 				}
-			```
-		- Yukarıdaki örnekte, add_arrays fonksiyonunda restrict belirleyicisi kullanılmıştır. Bu belirleyici ile result, arr1 ve arr2 işaretçilerinin aynı bellek bloğunu işaret etmediği garanti edilir. Bu sayede derleyici, bu işaretçilerin bağımsız olarak optimize edilmesini sağlar.
-		- restrict belirleyicisi özellikle bellek yoğun uygulamalarda (örneğin, işlemciye yakın programlama, veri işleme gibi) performansı artırmak için kullanılır. Ancak, restrict belirleyicisinin yanlış kullanımı programın doğruluğunu etkileyebilir ve tanımsız davranışlara (undefined behavior) yol açabilir. Bu nedenle, restrict belirleyicisini kullanırken dikkatli olunmalı ve programın gereksinimlerine uygun olarak doğru şekilde kullanılmalıdır.
+				```
+			- Yukarıdaki örnekte, sensorValue isimli değişken volatile olarak tanımlanmıştır. Bu değişkenin değeri, programın normal akışı dışında (örneğin, readSensor() fonksiyonu aracılığıyla) değişebilir. Bu durumda, sensorValue değişkeninin her döngüde doğrudan okunması ve güncellenmesi önemlidir.
+			- volatile anahtar kelimesi genellikle donanım ile etkileşim gerektiren veya kesme hizmeti (interrupt service) sağlayan programlar, zamanlayıcılar (timers), port işlemleri gibi durumlarda kullanılır. Ancak, modern C++'ta volatile kullanımı yerine std::atomic veya özel senkronizasyon teknikleri (mutex, semaphore gibi) tercih edilmektedir. volatile değişkenlerin yanlış kullanımı, programın doğruluğunu ve taşınabilirliğini etkileyebileceğinden dikkatli bir şekilde kullanılmalıdır.
+			- volatile anahtar kelimesi, C ve C++ programlama dillerinde bir değişkenin değerinin programın akışı dışında, örneğin donanım veya bir başka program tarafından değiştirilebileceğini belirtmek için kullanılır. volatile anahtar kelimesi, derleyiciye bu değişkenin değerini optimize etmemesi gerektiğini söyler. Şimdi volatile kullanmanın ve kullanmamanın etkilerini inceleyelim.
+				- Kullanım Durumları
+					- Donanım Kaynakları:
+						- Bellekteki belirli adreslere harici donanım cihazları tarafından erişilebilir ve değiştirilebilir.
+						- Örneğin, mikrodenetleyici programlarında donanım register'ları.
+
+					- Paylaşımlı Bellek:
+						- Birden fazla iş parçacığının (thread) aynı değişkene eriştiği çoklu iş parçacıklı programlarda.
+						- İşlemci, bu değişkeni önbelleğe alabilir ve başka bir iş parçacığı bu değeri değiştirdiğinde güncellenmiş değeri fark etmeyebilir.
+					- Sinyaller:
+
+						- Bir sinyal işleyicisi tarafından değiştirilebilecek değişkenlerde.
+
+				- volatile Kullanmazsak Ne Olur?
+					- Optimizasyon Sorunları
+						-  Önbelleğe Alma:
+							- Derleyici, değişkenin değerini bir kez okur ve aynı değeri tekrar tekrar kullanır, çünkü değişkenin değeri değişmediği varsayılır.
+							- Değerin gerçekten donanım veya başka bir iş parçacığı tarafından değiştirildiği durumlarda, program hatalı çalışır çünkü güncellenmiş değeri göremez.
+					- Döngü Optimizasyonu:
+						- Derleyici, döngünün koşulunu sabit olarak değerlendirebilir ve döngüyü optimize edebilir. Örneğin, yukarıdaki döngüyü sonsuz döngü olarak görebilir.
+			- Özet
+				- volatile kullanıldığında: Değişkenin değeri her erişimde bellekten okunur ve derleyici bu değişkeni optimize etmez. Bu, donanım veya başka bir iş parçacığı tarafından değiştirilebilen değişkenler için gereklidir.
+				- volatile kullanılmadığında: Derleyici, değişkenin değerini optimize edebilir ve önbelleğe alabilir. Bu, değişkenin gerçekten değiştiği durumlarda hatalara yol açabilir.
+
+
+		3. **restrict**: A pointer qualified by restricting is initially the only means by which the object it points to can be accessed. The object restricts links that can only initially be accessed via a pointer qualified by it. Restrict is a new type of qualifier that is only added in C99.
+			- restrict, C ve C++ programlama dillerinde kullanılan bir nitelik (qualifier) veya belirleyicidir. Bu nitelik, bir işaretçinin (pointer) işaret ettiği bellek alanının başka bir işaretçi veya referans tarafından değiştirilmeyeceğini garanti eder. Bu belirleyici, derleyiciye işaretçinin optimize edilmesinde ve bellek erişiminde daha agresif davranmasına izin verir.
+			- Bellek Erişimi Optimizasyonu: restrict belirleyicisi, işaretçinin işaret ettiği bellek bloğunun başka işaretçiler veya referanslar tarafından değiştirilmeyeceğini garanti eder. Bu sayede derleyici, işaretçinin eriştiği bellek bloğunu daha etkin bir şekilde optimize edebilir.
+			- Bellek Erişimi Güvenliği: restrict kullanımı, programcının derleyiciye veri bağımsızlığı (data aliasing) hakkında bilgi verir. Bu belirleyiciyi kullanan bir işaretçi, aynı bellek bloğunu işaret eden başka işaretçilerle çakışma yaşamaz.
+				```cpp
+					#include <stdio.h>
+
+					void add_arrays(int* restrict result, const int* restrict arr1, const int* restrict arr2, int size) {
+						for (int i = 0; i < size; ++i) {
+							result[i] = arr1[i] + arr2[i];
+						}
+					}
+
+					int main() {
+						int arr1[] = {1, 2, 3, 4, 5};
+						int arr2[] = {5, 4, 3, 2, 1};
+						int result[5];
+
+						add_arrays(result, arr1, arr2, 5);
+
+						printf("Result array: ");
+						for (int i = 0; i < 5; ++i) {
+							printf("%d ", result[i]);
+						}
+						printf("\n");
+
+						return 0;
+					}
+				```
+			- Yukarıdaki örnekte, add_arrays fonksiyonunda restrict belirleyicisi kullanılmıştır. Bu belirleyici ile result, arr1 ve arr2 işaretçilerinin aynı bellek bloğunu işaret etmediği garanti edilir. Bu sayede derleyici, bu işaretçilerin bağımsız olarak optimize edilmesini sağlar.
+			- restrict belirleyicisi özellikle bellek yoğun uygulamalarda (örneğin, işlemciye yakın programlama, veri işleme gibi) performansı artırmak için kullanılır. Ancak, restrict belirleyicisinin yanlış kullanımı programın doğruluğunu etkileyebilir ve tanımsız davranışlara (undefined behavior) yol açabilir. Bu nedenle, restrict belirleyicisini kullanırken dikkatli olunmalı ve programın gereksinimlerine uygun olarak doğru şekilde kullanılmalıdır.
+			- **explanations**
+				```cpp
+				int* restrict result
+				const int* restrict arr1
+				int* restrict arr2
+				```
+				- int* restrict result
+					- Tür: int* (int türünde bir işaretçi)
+					- restrict Anahtar Kelimesi: result işaretçisinin işaret ettiği belleğe yalnızca result işaretçisi üzerinden erişileceğini belirtir.
+					- Kullanım: Derleyici, result işaretçisinin işaret ettiği belleğe başka bir işaretçiyle erişilmeyeceğini varsayabilir ve bu bilgiyi optimizasyon için kullanabilir
+				- const int* restrict arr
+					- Tür: const int* (const int türünde bir işaretçi)
+					- const Anahtar Kelimesi: arr1 işaretçisinin işaret ettiği verilerin değiştirilemeyeceğini belirtir.
+					- restrict Anahtar Kelimesi: arr1 işaretçisinin işaret ettiği belleğe yalnızca arr1 işaretçisi üzerinden erişileceğini belirtir.
+				- int* restrict arr2
+					- Tür: int* (int türünde bir işaretçi)
+					- restrict Anahtar Kelimesi: arr2 işaretçisinin işaret ettiği belleğe yalnızca arr2 işaretçisi üzerinden erişileceğini belirtir.
+					- Kullanım: Derleyici, arr2 işaretçisinin işaret ettiği belleğe başka bir işaretçiyle erişilmeyeceğini varsayabilir ve bu bilgiyi optimizasyon için kullanabilir.
+				- Değiştirilebilirlik:
+
+					- result ve arr2 işaretçileri tarafından işaret edilen bellek bölgelerindeki veriler değiştirilebilir.
+					- arr1 işaretçisi tarafından işaret edilen bellek bölgesindeki veriler değiştirilemez (çünkü const ile tanımlanmıştır).
+
+				- Erişim Kısıtlamaları:
+
+					- restrict anahtar kelimesi, her üç işaretçi için de geçerlidir ve her bir işaretçinin işaret ettiği belleğe yalnızca kendi üzerinden erişileceğini belirtir. Bu, bellek erişimlerinin çakışmadığını garanti eder ve derleyicinin daha agresif optimizasyon yapmasına olanak tanır.
+					- Kullanım: arr1 işaretçisinin işaret ettiği belleğe başka bir işaretçiyle erişilmeyeceğini varsayabilir. Ayrıca, bu veriler değiştirilemez.
 ## Type Conversion
 - A type cast is basically a conversion from one type to another. There are two types of type conversion:
 	1. Implicit Type Conversion Also known as ‘automatic type conversion’
@@ -407,7 +433,7 @@ Each object will have its own copy of the instance variable**
 					```
 				- Yukarıdaki örnekte, dynamic_cast operatörü kullanılarak Base* tipindeki işaretçi Derived* tipine güvenli bir şekilde dönüştürülüyor. Bu operatör, dönüşümün güvenli olduğunu kontrol eder. Eğer dönüşüm başarısızsa (örneğin, basePtr aslında Derived türünden bir nesneyi işaret etmiyorsa), dynamic_cast null işaretçisi döndürür.
 			- Const Cast
-				- const_cast operatörü, bir değişkenin const niteliğini kaldırmak veya const bir değişkeni geçici olarak const olmayan bir değişkene dönüştürmek için kullanılır.
+				- const_cast operatörü, bir değişkenin const niteliğini kaldırmak veya const bir değişkeni geçici olarak const olmayan bir değişkene dönüştürmek için kullanılır. Pointerlar ve referanslar ile kullanılır.
 					```cpp
 					void printValue(const int& value) {
 						int& mutableValue = const_cast<int&>(value);
@@ -425,8 +451,39 @@ Each object will have its own copy of the instance variable**
 					}
 					```
 				- Yukarıdaki örnekte, const_cast operatörü kullanılarak const int& tipindeki bir referans geçici olarak int& tipine dönüştürülüyor. Bu sayede printValue fonksiyonu içinde value referansı üzerinden const niteliği kaldırılıyor ve num değişkeni fonksiyon içinde değiştirilebiliyor.
+					- Geçici mi Kalıcı mı?
+						- const_cast kullanarak bir nesnenin const niteliğini kaldırdığınızda, bu nitelik kaldırma geçici veya kalıcı olabilir, bu durum nesnenin aslında const olup olmadığına bağlıdır
+							- Gerçekten const Olan Nesneler: Eğer bir nesne gerçekten const olarak tanımlanmışsa, const_cast ile bu nesneyi değiştirmeye çalışmak tanımsız davranıştır. Örneğin:
+								```cpp
+								const int x = 10;
+								int* px = const_cast<int*>(&x);
+								*px = 20; // Tanımsız davranış
+								```
+								- Yukarıdaki örnekte, x gerçekten const olarak tanımlanmıştır. const_cast kullanarak x'in const niteliğini kaldırmak ve ardından x'i değiştirmeye çalışmak tanımsız davranışa yol açar.
+							- const Nitelikli Bir İşaretçiden Gelen Nesneler:Eğer bir işaretçi veya referans const bir nesneyi işaret ediyorsa, ancak nesnenin kendisi aslında const değilse, const_cast kullanarak nesneyi değiştirmek mümkündür. Örneğin:
+							```cpp
+							void foo(const int* p) {
+								int* non_const_p = const_cast<int*>(p);
+								*non_const_p = 20; // Güvenli olabilir, ancak dikkatle kullanılmalı
+							}
+
+							int main() {
+								int y = 10;
+								foo(&y);
+								// y şimdi 20
+							}
+							```
+							- Bu örnekte, foo fonksiyonuna geçirilen int değişkeni const nitelikli bir işaretçi ile alınır, ancak değişkenin kendisi const değildir. const_cast kullanarak bu işaretçinin const niteliğini kaldırmak ve değişkeni değiştirmek güvenlidir. sadece fonksiyon içinde const kullanılmasını istiyoruz normalde genellikle arraylerle kullanılır bu const parametreler.
+
+				- Özet
+					- const_cast kullanarak const niteliğini kaldırmak, nesnenin const olarak tanımlandığı durumlardan farklı sonuçlar doğurabilir.
+					- Eğer nesne gerçekten const olarak tanımlanmışsa (const int x = 10; gibi), const_cast ile bu nesneyi değiştirmeye çalışmak tanımsız davranıştır ve bu tür değişiklikler güvenli değildir.
+					- Eğer nesne aslında const değilse, ancak bir const işaretçi veya referans ile erişiliyorsa, const_cast kullanarak nesneyi geçici olarak değiştirmek mümkündür ve güvenli olabilir.
+					- Genel olarak, const_cast dikkatle ve sadece gerekli durumlarda kullanılmalıdır. Kodunuzu yazarken const_cast kullanımı yerine tasarımınızı gözden geçirerek daha güvenli ve okunabilir çözümler aramak her zaman daha iyi bir yaklaşımdır.
+
+
 			- Reinterpret Cast
-				- reinterpret_cast operatörü, türler arasında düşük seviyeli bir dönüşüm yapmak için kullanılır. Bu operatör, bir türün başka bir türe dönüştürülmesini sağlar ve genellikle iki tür arasında anlam taşımayan dönüşümler için kullanılır. Bu operatörün kullanımı genellikle riskli olduğundan ve platforma bağımlı olduğundan dikkatli kullanılmalıdır.
+				- reinterpret_cast operatörü, pointer türleri arasında düşük seviyeli bir dönüşüm yapmak için kullanılır. Bu operatör, bir türün başka bir türe dönüştürülmesini sağlar ve genellikle iki tür arasında anlam taşımayan dönüşümler için kullanılır. Bu operatörün kullanımı genellikle riskli olduğundan ve platforma bağımlı olduğundan dikkatli kullanılmalıdır.
 					```cpp
 					int main() {
 					int intValue = 100;
@@ -670,9 +727,13 @@ Each object will have its own copy of the instance variable**
 		```
 	- <<: Shifts the value to left by the number of bits specified by the right operand.
 		```cpp
-		int a = 2, b = 3;
+		int a = 2, b = 3; 
 
 		(a << 1); //returns 4
+		// a << 1  // 'a' nın bitlerini sola 1 konum kaydırın
+		// 0000 0010  (2'nin ikilik gösterimi)
+		// << 1
+		// 0000 0100  (Sola kaydırılmış hali, sağdaki boşluk sıfır ile dolduruldu)
 		```
 	- **>>**: Shifts the value to right by the number of bits specified by the right operand.
 		```cpp
@@ -754,7 +815,7 @@ Each object will have its own copy of the instance variable**
 			int a = 6;
 			int b = (a+1, a-2, a+5); // b = 11
 			```
-		- **-> Operator**: This operator is used to access the variables of classes or structures.
+		- **-> Operator**: This operator is used to access the variables and functions of classes or structures. id emp created as a pointer of a class
 			```cpp
 			cout<<emp->first_name;
 			```
@@ -763,7 +824,7 @@ Each object will have its own copy of the instance variable**
 			float a = 11.567;
 			int c = (int) a; // returns 11
 			```
-		- **Dot Operator(.)**: This operator is used to access members of structure variables or class objects in C++.
+		- **Dot Operator(.)**: This operator is used to access the variables and functions of structure variables or class objects in C++.
 			```cpp
 			cout<<emp.first_name;
 			```
@@ -813,6 +874,11 @@ Each object will have its own copy of the instance variable**
 	g++ -c MyClass.cpp -o MyClass.o
 	g++ -c main.cpp -o main.o
 	g++ MyClass.o main.o -o program
+	```
+- 
+	```cpp
+	g++ main.cpp MyClass.cpp -o my_prog
+	./example
 	```
 ## Extra Reading
 

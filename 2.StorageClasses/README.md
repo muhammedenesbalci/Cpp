@@ -14,9 +14,18 @@
     - mutable Storage Class
     - thread_local Storage Class   
 
+## Content
+- [auto Storage Clas](#auto-storage-class)
+- [extern Storage Class](#extern-storage-class)
+- [static Storage Class](#static-storage-class)
+- [Differences static and extern](#differences-static-and-extern)
+- [register Storage Class](#register-storage-class)
+- [mutable Storage Class](#mutable-storage-class)
+- [thread_local Storage Class](#thread_local-storage-class)
+
 ## auto Storage Class
 - The auto storage class is the default class of all the variables declared inside a block. The auto stands for automatic and all the local variables that are declared in a block automatically belong to this class.
-- roperties of auto Storage Class Objects
+- properties of auto Storage Class Objects
     - Scope: Local
     - Default Value: Garbage Value
     - Memory Location: RAM
@@ -55,7 +64,7 @@
 
 - Bu yöntemle, C++ programınızda farklı dosyalardaki değişkenler arasında veri paylaşımı sağlayabilirsiniz. extern anahtar kelimesi, derleyiciye değişkenin başka yerlerde tanımlı olduğunu ve oradan alınması gerektiğini bildirir.
 
-- tanım yapıldıu extern kullanıldığı dosyadaki son değeri alır hep bizim değişkenimiz. Her zamanm bir mainimiz olduğu için extern kullandığımızda son değer neyse o değer kullanılır hep.
+- tanım yapıldı extern kullanıldığı dosyadaki son değeri alır hep bizim değişkenimiz. Her zamanm bir mainimiz olduğu için extern kullandığımızda son değer neyse o değer kullanılır hep.
 
 - Son bir örnmek
     1. Başlık Dosyası (Header File) Oluşturma:
@@ -121,6 +130,7 @@
             }
             ```
     - Bu şekilde, extern anahtar kelimesini kullanarak common_variable gibi bir değişkene programınızın farklı dosyalarından erişebilir ve bu değişken üzerinde yapılan değişikliklerin tüm dosyalara yansımasını sağlayabilirsiniz. common_variable değişkeni common_variable.cpp dosyasında tanımlanmış ve common_variable.h başlık dosyası aracılığıyla diğer dosyalara bildirilmiştir. Bu sayede common_variable değişkenine programınızın farklı bölümlerinden erişilebilirsiniz.
+    - extern i sadece header de kullandık ve daha sonra sürekli belirtmek zorunda kalmadık
 
 - **With const**:
     ```cpp
@@ -200,7 +210,7 @@
     - Default Value: Zero
     - Memory Location: RAM
     - Lifetime: Till the end of the program
-- Note: Global Static variables can be accessed in any function.
+- Note: Global Static variables can be accessed in any function. global olması o dosya içinde global olduğu anlamına geliyor
     ```cpp
     // C++ program to illustrate the static storage class
     // objects
@@ -313,14 +323,14 @@
             }
             ```
 - Özet:
-- static anahtar kelimesi, değişken veya fonksiyonun sadece tanımlandığı dosya (derleme birimi) içinde erişilebilir olduğunu belirtir.
-- extern anahtar kelimesi, değişken veya fonksiyonun tanımının başka bir dosyada veya derleme biriminde olduğunu belirtir ve bu tanımın referansını sağlar.
+    - static anahtar kelimesi, değişken veya fonksiyonun sadece tanımlandığı dosya (derleme birimi) içinde erişilebilir olduğunu belirtir.
+    - extern anahtar kelimesi, değişken veya fonksiyonun tanımının başka bir dosyada veya derleme biriminde olduğunu belirtir ve bu tanımın referansını sağlar.
 
-- Bir değişken global olarak tanımlandığında ve static ya da extern belirteçlerinden herhangi biri kullanılmazsa, bu değişken varsayılan olarak dış bağlantılıdır (extern). Bu, başka dosyalardan bu global değişkene erişilebileceği anlamına gelir, yani başka dosyalardaki kodlar bu global değişkeni kullanabilir. Ancak bu erişimi sağlamak için başka dosyalarda bu global değişkenin extern ile bildirimini yapmak gerekir.
+    - Bir değişken global olarak tanımlandığında ve static ya da extern belirteçlerinden herhangi biri kullanılmazsa, bu değişken varsayılan olarak dış bağlantılıdır (extern). Bu, başka dosyalardan bu global değişkene erişilebileceği anlamına gelir, yani başka dosyalardaki kodlar bu global değişkeni kullanabilir. Ancak bu erişimi sağlamak için başka dosyalarda bu global değişkenin extern ile bildirimini yapmak gerekir.
 
-- Eğer global değişken static anahtar kelimesi ile tanımlanırsa, bu değişken yalnızca tanımlandığı dosya içinde erişilebilir olur ve bu dosya dışından erişilemez. Yani, static değişkenin erişim kapsamı sadece tanımlandığı dosya ile sınırlıdır
+    - Eğer global değişken static anahtar kelimesi ile tanımlanırsa, bu değişken yalnızca tanımlandığı dosya içinde erişilebilir olur ve bu dosya dışından erişilemez. Yani, static değişkenin erişim kapsamı sadece tanımlandığı dosya ile sınırlıdır. fonksiyon veya main dışında değişkenleri tanımladığımızda global oluyor bunu static olarak tanımlarsak sadece o dosyada kullanılabilir olduğunu ifade ederiz. Diğer türlü diğer dosyalardan da erişilebilir extern ifadesi kullanılarak bunun önüne geçmiş oluyoruz aslında
 
-- Bu yüzden, bir global değişkenin başka dosyalardan erişilebilir olup olmamasını static kullanarak kontrol edebilirsiniz (erişimi sınırlamak için). Eğer bir global değişkene dosya dışından erişmek istiyorsanız ve o değişken diğer bir dosyada tanımlanmışsa, o değişkeni extern anahtar kelimesi ile başka dosyalarda bildirmeniz gerekir.
+    - Bu yüzden, bir global değişkenin başka dosyalardan erişilebilir olup olmamasını static kullanarak kontrol edebilirsiniz (erişimi sınırlamak için). Eğer bir global değişkene dosya dışından erişmek istiyorsanız ve o değişken diğer bir dosyada tanımlanmışsa, o değişkeni extern anahtar kelimesi ile başka dosyalarda bildirmeniz gerekir.
 
 ## register Storage Class
 - The register storage class declares register variables using the ‘register’ keyword which has the same functionality as that of the auto variables. The only difference is that the compiler tries to store these variables in the register of the microprocessor if a free register is available. This makes the use of register variables to be much faster than that of the variables stored in the memory during the runtime of the program. If a free register is not available, these are then stored in the memory only. 
@@ -331,6 +341,14 @@
     - Default Value: Garbage Value
     - Memory Location: Register in CPU or RAM
     - Lifetime: Till the end of its scope
+
+- register anahtar kelimesi, derleyiciye belirli bir değişkenin CPU'nun genel amaçlı kayıtlarından birine yerleştirilmesini istediğinizi belirtmek için kullanılır. Ancak, modern derleyiciler genellikle register anahtar kelimesini dikkate almazlar ve bu nedenle register anahtar kelimesini kullanmak, derleyici tarafından tamamen göz ardı edilebilir.
+
+- register anahtar kelimesi, bir değişkenin bellekte değil, CPU kayıtlarında saklanmasını sağlamak amacıyla C dilinde eklenmiştir. Böylece, bu değişkenin erişimi daha hızlı olabilir. Ancak, modern derleyiciler genellikle, derleyici optimizasyonları ve CPU'nun kendi veri önbelleği yönetimi gibi faktörler nedeniyle, register anahtar kelimesini görmezden gelirler.
+
+- Bununla birlikte, bir değişkenin register anahtar kelimesiyle belirtilmesi, derleyiciye bu değişkenin sıkça kullanılacağını ve mümkünse kayıtlara yerleştirilmesi gerektiğini belirtir. Ancak, derleyicinin bu talebi yerine getirmesi tamamen tercihine bağlıdır ve register anahtar kelimesi bir zorunluluk değildir.
+
+- Modern C ve C++ kodlarında, register anahtar kelimesi yerine, derleyicinin kendisi en uygun optimizasyonları yapmasına izin vermek genellikle daha iyidir. Bu nedenle, register anahtar kelimesini kullanmanın genellikle gereksiz olduğu kabul edilir
 
     ```cpp
     // C++ Program to illustrate the use of register variables
@@ -364,6 +382,7 @@
 - Note: The register keyword is deprecated in C++17 onwards.
 
 ## mutable Storage Class
+- Bir sınınftan obje oluşturuken const olarak oluşturudğumuzda onun member datalarını değiştiremeyiz. ama değiştirilebilir verilerde oluşturmak istiyorsak mutable keywordunu kullanmalıyız.
 - Sometimes there is a requirement to modify one or more data members of class/struct through the const function even though you don’t want the function to update other members of class/struct. This task can be easily performed by using the mutable keyword. The keyword mutable is mainly used to allow a particular data member of a const object to be modified. 
 
 - When we declare a function as const, this pointer passed to the function becomes const. Adding a mutable to a variable allows a const pointer to change members.
@@ -463,7 +482,7 @@ The mutable specifier does not affect the linkage or lifetime of the object. It 
 
 - As we can see, each thread got its own copy of the thread_local variable and was only assigned the value that was specified in its callable.
 
-- eğer kullanazsak
+- eğer kullanmazsak
     - Paylaşılan Durumların Güvenliği Sorunları:
         - thread_local değişkenler, çoklu iş parçacığı (multithreaded) ortamlarda güvenli bir şekilde veri paylaşımını sağlar. Eğer thread_local kullanmazsanız, aynı değişkeni farklı iş parçacıklarında paylaşmaya çalışmak standart değişkenlerle oluşabilecek yarış durumlarına (race condition) ve veri bütünlüğü sorunlarına neden olabilir.
     - Bağımsız İş Parçacıkları Arasında İletişim:
