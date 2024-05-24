@@ -434,6 +434,8 @@ See the following C++ program for better clarification:
 				- Yukarıdaki örnekte, dynamic_cast operatörü kullanılarak Base* tipindeki işaretçi Derived* tipine güvenli bir şekilde dönüştürülüyor. Bu operatör, dönüşümün güvenli olduğunu kontrol eder. Eğer dönüşüm başarısızsa (örneğin, basePtr aslında Derived türünden bir nesneyi işaret etmiyorsa), dynamic_cast null işaretçisi döndürür.
 			- Const Cast
 				- const_cast operatörü, bir değişkenin const niteliğini kaldırmak veya const bir değişkeni geçici olarak const olmayan bir değişkene dönüştürmek için kullanılır. Pointerlar ve referanslar ile kullanılır.
+				- value değerini dönüşümden sonra bile direkt değiştirmeyeiz.
+				- biz burada mutable_value değerini değiştiriyoruz ve aynısı value ye de etki ediyor çünkğü ikiside aynı bellek alanına işaret ediyor.
 					```cpp
 					void printValue(const int& value) {
 						int& mutableValue = const_cast<int&>(value);
@@ -694,7 +696,7 @@ See the following C++ program for better clarification:
 ## Operators 
 - Arithmetic Operators
 	- These operators are used to perform arithmetic or mathematical operations on the operands. For example, ‘+’ is used for addition, ‘-‘ is used for subtraction ‘*’ is used for multiplication, etc. 
-		- Unary Operators: These operators operate or work with a single operand. For example: Increment(++) and Decrement(–) Operators.
+		- Unary Operators: These operators operate or work with a single operand. For example: Increment(++) and Decrement(–-) Operators.
 			- Note: ++a and a++, both are increment operators, however, both are slightly different. In ++a, the value of the variable is incremented first and then It is used in the program. In a++, the value of the variable is assigned first and then It is incremented. Similarly happens for the decrement operator.
 
 		- Binary Operators: These operators operate or work with two operands. For example: Addition(+), Subtraction(-), etc.

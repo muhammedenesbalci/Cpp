@@ -2,10 +2,19 @@
 
 **Content**
 
-- String creation and using.
-- string and cstring.
+- [Strings](#strings)
+- [Ways to Define a String](#ways-to-define-a-string)
+- [How to Take String Input](#how-to-take-string-input)
+- [How to Pass Strings to Functions](#how-to-pass-strings-to-functions)
+- [Strings like arrays](#strings-like-arrays)
+- [Pointers and Strings](#pointers-and-strings)
+- [Difference between String and Character array](#difference-between-string-and-character-array)
+- [Cpp String Functions](#cpp-string-functions)
+- [Cpp Strings iterator functions](#cpp-strings-iterator-functions)
+- [Array of Strings](#array-of-strings)
+- [String Concatenation](#string-concatenation)
 
-## Strings in C++
+## Strings
 - C++ strings are sequences of characters stored in a char array. Strings are used to store words and text. They are also used to store data, such as numbers and other types of information. Strings in C++ can be defined either using the std::string class or the C-style character arrays.
 
 1. C Style Strings
@@ -61,12 +70,12 @@
 
         //ggggg
         ```
-## Ways to Define a String in C++
+## Ways to Define a String
 - Strings can be defined in several ways in C++. Strings can be accessed from the standard library using the string class. Character arrays can also be used to define strings. String provides a rich set of features, such as searching and manipulating, which are commonly used methods. Despite being less advanced than the string class, this method is still widely used, as it is more efficient and easier to use. Ways to define a string in C++ are:
     - Using String keyword
     - Using C-style strings
 
-## How to Take String Input in C++
+## How to Take String Input
 - String input means accepting a string from a user. In C++. We have different types of taking input from the user which depend on the string. The most common way is to take input with cin keyword with the extraction operator (>>) in C++. Methods to take a string as input are
     - cin
     - getline
@@ -79,49 +88,49 @@
     ```
 
 2. Using getline 
-    - The getline() function in C++ is used to read a string from an input stream. It is declared in the <string> header file. direkt satırı almak için çok kullanışlı
+    - The getline() function in C++ is used to read a string from an input stream. It is declared in the <string> header file. direkt satırı almak için çok kullanışlı. parçalı değerler de alabiliyor çok iyi. enes balcı bunu alabiliyor mesela
     ```cpp
     getline(cin,s);
     ```
 3. Using stringstream
-    - The stringstream class in C++ is used to take multiple strings as input at once. #include <sstream> library. buda stringi parçalıyor gibi
+    - The stringstream class in C++ is used to take multiple strings as input at once. #include <sstream> library. buda stringi parçalıyor gibi. getline ile full bir line alırsın sonra bunula parçalarsın kullanırsın o değerleri
     ```cpp
     stringstream stringstream_object(string_name);
     ```
-## How to Pass Strings to Functions?
+## How to Pass Strings to Functions
 - In the same way that we pass an array to a function, strings in C++ can be passed to functions as character arrays
     - incele: String function, 2, 3
+    - arraylarin aksine stringleri döndürebiliyoruz
 
 ## Strings like arrays
-    - stringler char arrayleridir döngülerle vs içinde gezebilirsn
+- stringler char arrayleridir döngülerle vs içinde gezebilirsn
 
 ## Pointers and Strings
-    - Pointers in C++ are symbolic representations of addresses. They enable programs to simulate call-by-reference as well as to create and manipulate dynamic data structures. By using pointers we can get the first character of the string, which is the starting address of the string. As shown below, the given string can be accessed and printed through the pointers.
+- Pointers in C++ are symbolic representations of addresses. They enable programs to simulate call-by-reference as well as to create and manipulate dynamic data structures. By using pointers we can get the first character of the string, which is the starting address of the string. As shown below, the given string can be accessed and printed through the pointers.
 
 ## Difference between String and Character array
-     - Stringler tanımlandıkran sonra değişebilir
-     - char arrayleri de katakter karakter değiştirilebilir
-     - char *str tanımlaması string literali hiç bir şekilde değiştirlemez çünkü direkt const oluyor
-     - Strings define objects that can be represented as string streams. The null character terminates a character array of characters.
-     - No Array decay occurs in strings as strings are represented as objects. The threat of array decay is present in the case of the character array 
-     - A string class provides numerous functions for manipulating strings. Character arrays do not offer inbuilt functions to manipulate strings.
-     - Memory is allocated dynamically.	The size of the character array has to be allocated statically. 
+- Stringler tanımlandıkran sonra değişebilir
+- char arrayleri de karakter karakter değiştirilebilir
+- char *str tanımlaması string literali hiç bir şekilde değiştirlemez çünkü direkt const oluyor
+- Strings define objects that can be represented as string streams. The null character terminates a character array of characters.
+- No Array decay occurs in strings as strings are represented as objects. The threat of array decay is present in the case of the character array 
+- A string class provides numerous functions for manipulating strings. Character arrays do not offer inbuilt functions to manipulate strings.
+- Memory is allocated dynamically.	The size of the character array has to be allocated statically. 
+-  A string is a class that defines objects that be represented as a stream of characters.
+    - A character array is simply an array of characters that can be terminated by a null character.
+- In the case of strings, memory is allocated dynamically. More memory can be allocated at run time on demand. As no memory is preallocated, no memory is wasted.
+    - The size of the character array has to be allocated statically, more memory cannot be allocated at run time if required. Unused allocated memory is also wasted
+- As strings are represented as objects, no array decay occurs.
+    - There is a threat of array decay in the case of the character array. 
+- Strings are slower when compared to implementation than character array.
+    - implementation of character array is faster than std:: string. 
+- String class defines a number of functionalities that allow manifold operations on strings.
+    - Character arrays do not offer many inbuilt functions to manipulate strings.
 
-     -  A string is a class that defines objects that be represented as a stream of characters.
-        - A character array is simply an array of characters that can be terminated by a null character.
-    - In the case of strings, memory is allocated dynamically. More memory can be allocated at run time on demand. As no memory is preallocated, no memory is wasted.
-        - The size of the character array has to be allocated statically, more memory cannot be allocated at run time if required. Unused allocated memory is also wasted
-    - As strings are represented as objects, no array decay occurs.
-        - There is a threat of array decay in the case of the character array. 
-    - Strings are slower when compared to implementation than character array.
-        - implementation of character array is faster than std:: string. 
-    - String class defines a number of functionalities that allow manifold operations on strings.
-        - Character arrays do not offer many inbuilt functions to manipulate strings.
-
-## C++ String Functions
+## Cpp String Functions
 - length(): This function returns the length of the string.
 - swap(): This function is used to swap the values of 2 strings.
-- size(): Used to find the size of string
+- size(): Used to find the size of string: String classlarda stringin boyutu olması gerekenden fazla görünür bunun sebebi onun bir obje olması. c style stringler 1 fazla görünüür sebebi sonundaki /0 ibaresi null character.
 - resize(): This function is used to resize the length of the string up to the given number of characters.
 - find(): Used to find the string which is passed in parameters
 - push_back(): This function is used to push the passed character at the end of the string
@@ -139,7 +148,7 @@
 - capacity(): This function returns the capacity which is allocated to the string by the compiler
 - shrink_to_fit(): This function decreases the capacity and makes it equal to the minimum.
 
-## C++ Strings iterator functions 
+## Cpp Strings iterator functions 
 - begin(): This function returns an iterator pointing to the beginning of the string.
 - end(): This function returns an iterator that points to the end of the string.
 - rfind(): This function is used to find the string’s last occurrence.

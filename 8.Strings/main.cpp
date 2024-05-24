@@ -67,6 +67,7 @@ string cpp_string_func_3() {
     string str = "local string\n";
     return str;
 }
+
 //------------------------------------------------------------------------------------------------------------------
 void string_iterator_ex_fun() {
     // declaring an iterator
@@ -123,6 +124,19 @@ void string_capacity_ex_fun() {
 //------------------------------------------------------------------------------------------------------------------
 void array_of_strings_using_pointers() {
     const char* colour[4] = { "Blue", "Red", "Orange", "Yellow" }; // const yazmasaydık da otomatik olarak const oluyor
+ 
+  // Printing Strings stored in 2D array
+    for (int i = 0; i < 4; i++)
+        std::cout << colour[i] << "\n";
+
+    cout << "-------------------------\n";
+
+    for (int i = 0; i < 4; i++)
+        std::cout << *(colour + i) << "\n";
+}
+
+void array_of_strings_using_pointers_2() {
+    string colour[4] = { "Blue", "Red", "Orange", "Yellow" }; 
  
   // Printing Strings stored in 2D array
     for (int i = 0; i < 4; i++)
@@ -252,26 +266,26 @@ void string_concatenation_for_loop(){
 
 //------------------------------------------------------------------------------------------------------------------
 void cpp_strings_basics() {
-    cout << "basics------------------------------------------\n";
-    string str("GeeksforGeeks");
+    cout << "\nbasics------------------------------------------\n";
+    string str("enes 1");
     cout << str << endl;
 
-    cout << "basics------------------------------------------\n";
-    string str2 = "GeeksforGeeks";
+    cout << "\nbasics------------------------------------------\n";
+    string str2 = "enes 2";
     cout << str2<< endl;
 
-    cout << "basics------------------------------------------\n";
+    cout << "\nbasics------------------------------------------\n";
     string str3(5, 'e');
     cout << str3<< endl;;
 
-    cout << "basics------------------------------------------\n";
+    cout << "\nbasics------------------------------------------\n";
     string str10 = "Muhammed Enes BALCI";
     cout << str10 << endl;
 
     str10 = "Furkan Efe BALCI";
     cout << str10 << endl;
 
-    cout << "cin input ------------------------------------------\n";
+    cout << "\ncin input ------------------------------------------\n";
     string str4;
        
     cout<<"Enter String"<<endl;
@@ -279,14 +293,14 @@ void cpp_strings_basics() {
     cout<<"String is: "<<str4<<endl;
     cin.ignore(); // cin den sonra ignore kullanmayı unutma yoksa çok sıkıntı yapıyor
 
-    cout << "getline input ------------------------------------------\n";
+    cout << "\ngetline input ------------------------------------------\n";
     string str5;
 
     cout << "Enter String" << endl;
     getline(cin, str5);
     cout << "String is: " << str5 << endl;
 
-    cout << "stringstream input ------------------------------------------\n";
+    cout << "\nstringstream input ------------------------------------------\n";
     string str6 = " Enes to the Moon ";
     stringstream obj(str6);
     // string to store words individually
@@ -296,18 +310,18 @@ void cpp_strings_basics() {
         cout << temp << endl;
     }
 
-    cout << "String function ------------------------------------------\n";
+    cout << "\nString function ------------------------------------------\n";
     cpp_string_func("enes");
 
-    cout << "String function 2 ------------------------------------------\n";
+    cout << "\nString function 2 ------------------------------------------\n";
     string my_str = cpp_string_func_2("enes");
     cout << "my_str: " << my_str << endl;
 
-    cout << "String function 3 ------------------------------------------\n";
+    cout << "\nString function 3 ------------------------------------------\n";
     string my_str_2 =  cpp_string_func_3();
     cout << "my_str_2: " << my_str_2 << endl;
 
-    cout << "String like arrays ------------------------------------------\n";
+    cout << "\nString like arrays ------------------------------------------\n";
     string str_array = "Muhammed Enes BALCI";
 
     for (auto str : str_array) {
@@ -315,14 +329,14 @@ void cpp_strings_basics() {
     }
     cout << endl;
 
-    cout << "String like arrays 2 ------------------------------------------\n";
+    cout << "\nString like arrays 2 ------------------------------------------\n";
     string str_array2 = "Muhammed Enes BALCI";
     
     for (int i = 0; i < str_array2.length(); i++) {
         cout << "str_array2" << "[" << i << "]" << " = " << str_array2[i] << endl;
     }
 
-    cout << "String like addres 3------------------------------------------\n";
+    cout << "\nString like addres 3------------------------------------------\n";
     string str_array3 = "Muhammed Enes BALCI";
     
     for (int i = 0; i < str_array3.length(); i++) {
@@ -330,7 +344,7 @@ void cpp_strings_basics() {
     }
     cout << endl;
 
-    cout << "String like addres 4 ------------------------------------------\n";
+    cout << "\nString like addres 4 ------------------------------------------\n";
     string str_array4 = "Muhammed Enes BALCI";
     
     char *ptr_s = &str_array4[0]; // starting addres of a string
@@ -340,52 +354,59 @@ void cpp_strings_basics() {
     }
     cout << endl;
 
-    cout << "string_iterator_ex_fun  ------------------------------------------\n";
+    cout << "\nstring_iterator_ex_fun  ------------------------------------------\n";
     string_iterator_ex_fun();
 
-    cout << "string_capacity_ex_fun  ------------------------------------------\n";
+    cout << "\nstring_capacity_ex_fun  ------------------------------------------\n";
     string_capacity_ex_fun();
 
-    cout << "size a string  ------------------------------------------\n";
+    cout << "\nsize a string  ------------------------------------------\n";
     string kzy = "Said Kuzey";
-    cout << "size: " << sizeof(kzy) << endl;
+    cout << "lenght string: " << kzy.length() << endl;
+    cout << "size string: " << sizeof(kzy) << endl;
 
-    cout << "array of strings(Using Pointers)------------------------------------------\n";
+    char c_array_str[] = "Said Kuzey";
+    cout << "size c_array_str: " << sizeof(c_array_str) << endl;
+
+    cout << "\narray of strings(Using Pointers)------------------------------------------\n";
     array_of_strings_using_pointers();
 
-    cout << "array_of_strings_using_2d_array------------------------------------------\n";
+    cout << "\nrray of strings(Using Pointers)_2------------------------------------------\n";
+    array_of_strings_using_pointers_2();
+
+    cout << "\narray_of_strings_using_2d_array------------------------------------------\n";
     array_of_strings_using_2d_arrays();
 
-    cout << "array_of_strings_using_string_class------------------------------------------\n";
+    cout << "\narray_of_strings_using_string_class------------------------------------------\n";
     array_of_strings_using_string_class();
 
-    cout << "array_of_strings_using_vector------------------------------------------\n";
+    cout << "\narray_of_strings_using_vector------------------------------------------\n";
     array_of_strings_using_vector();
 
-    cout << "array_of_strings_using_array_class------------------------------------------\n";
+    cout << "\narray_of_strings_using_array_class------------------------------------------\n";
     array_of_strings_using_array_class();
 
-    cout << "string_concatenation_append------------------------------------------\n";
+    cout << "\nstring_concatenation_append------------------------------------------\n";
     string_concatenation_append();
 
-    cout << "string_concatenation_plus------------------------------------------\n";
+    cout << "\nstring_concatenation_plus------------------------------------------\n";
     string_concatenation_plus();
 
-    cout << "string_concatenation_strcat------------------------------------------\n";
+    cout << "\nstring_concatenation_strcat------------------------------------------\n";
     string_concatenation_strcat();
 
-    cout << "string_concatenation_for_loop------------------------------------------\n";
-    string_concatenation_for_loop()
+    cout << "\nstring_concatenation_for_loop------------------------------------------\n";
+    string_concatenation_for_loop();
 }
 
 void c_style_strings_basics() {
-    cout << "basics------------------------------------------\n";
+    cout << "\nbasics------------------------------------------\n";
     char s[] = "GeeksforGeeks";
     s[0] = 'e';
     cout << s << endl;
     
 
-    cout << "basics------------------------------------------\n";
+    cout << "\nbasics------------------------------------------\n";
     char s1[] = { 'g', 'f', 'g', '\0' }; //nul terminator
     char s2[4] = { 'g', 'f', 'g', '\0' }; //nul terminator
     char s3[4] = "gfg";
@@ -397,10 +418,10 @@ void c_style_strings_basics() {
     cout << "s4 = " << s4 << endl;
 }
 int main() {
-    cout << "Cpp style strings-------------------------\n";
+    cout << "\nCpp style strings-------------------------\n";
     cpp_strings_basics();
 
-    cout << "C style strings-------------------------\n";
+    cout << "\nC style strings-------------------------\n";
     //c_style_strings_basics();
 
     return 0;

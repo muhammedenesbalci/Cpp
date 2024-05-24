@@ -1,16 +1,42 @@
-# Pointers and References
+
+,# Pointers and References
 - In C++ pointers and references both are mechanisms used to deal with memory, memory address, and data in a program. Pointers are used to store the memory address of another variable whereas references are used to create an alias for an already existing variable.
-- Pointers in C++ are a symbolic representation of addresses. They enable programs to simulate call-by-reference and create and manipulate dynamic data structures. Pointers store the address of variables or a memory location. 
+- Pointers in C++ are a symbolic representation of addresses. They enable programs to simulate call-by-reference, call by pointer and create and manipulate dynamic data structures. Pointers store the address of variables or a memory location. 
+
+## Content
+- [First example](#first-example)
+- [Application of Pointers](#application-of-pointers)
+- [Features and Use of Pointers](#features-and-use-of-pointers)
+- [this Pointer ](#this-pointer)
+- [How to use a pointer](#how-to-use-a-pointer)
+- [References and Pointers](#references-and-pointers)
+- [Array Name as Pointers](#array-name-as-pointers)
+- [Return pointer](#return-pointer)
+- [Advanced Pointer Notation](#advanced-pointer-notation)
+- [Pointers and String literals](#pointers-and-string-literals)
+- [Void Pointers](#void-pointers)
+- [nullptr](#nullptr)
+- [Invalid pointers](#invalid-pointers)
+- [Advantages of Pointers](#advantages-of-pointers)
+- [References](#references)
+- [Applications of Reference](#applications-of-reference)
+- [References vs Pointers](#references-vs-pointers)
+- [Limitations of References](#limitations-of-references)
+- [Advantages of using References](#advantages-of-using-references)
+- [Can References Refer to Invalid Location](#can-references-refer-to-invalid-location)
+- [When do we pass arguments by pointer](#when-do-we-pass-arguments-by-pointer)
+
+## First example
 - Explanation(basic_ex_1): The above program declares an integer variable ‘x’ initialized with value 10 and a pointer variable named ‘myptr’. The memory address of x is assigned to myptr. Then it prints the value of x, the address stored in myptr, and the value of x obtained by dereferencing the pointer myptr.
     ```cpp
     datatype *var_name; 
     int *ptr;   // ptr can point to an address which holds int data
     ```
 
-## Application of Pointers in C++
+## Application of Pointers
 - To pass arguments by reference: Passing by reference serves two purposes
-- For accessing array elements: The Compiler internally uses pointers to access array elements.
-- To return multiple values: For example in returning square and the square root of numbers.
+    - For accessing array elements: The Compiler internally uses pointers to access array elements.
+    - To return multiple values: For example in returning square and the square root of numbers.
 - Dynamic memory allocation: We can use pointers to dynamically allocate memory. The advantage of dynamically allocated memory is, that it is not deleted until we explicitly delete it.
 - To implement data structures.
 - To do system-level programming where memory addresses are useful.
@@ -136,12 +162,12 @@
     ```cpp
     int *ptr;
     ```
-## ‘this’ Pointer 
+## this Pointer 
 - this pointer'i C++ programlama dilinde sınıf üyeleri içinde kullanılan özel bir işaretçidir. this, bir sınıfın bir örneğini işaret eden bir pointer'dır ve sınıfın içindeki fonksiyonlar aracılığıyla o anki nesneye erişim sağlar. (ilerde ayrıntılı işleyeceğiz oop de)
 
 - The ‘this’ pointer is passed as a hidden argument to all nonstatic member function calls and is available as a local variable within the body of all nonstatic functions. ‘this’ pointer is not available in static member functions as static member functions can be called without any object (with class name). Even if only one member of each function exists which is used by multiple objects, the compiler supplies an implicit pointer along with the names of the functions as ‘this’. 
 
-## How to use a pointer?
+## How to use a pointer
 - Define a pointer variable
 - Assigning the address of a variable to a pointer using the unary operator (&) which returns the address of that variable.
 - Accessing the value stored in the address using unary operator (*) which returns the value of the variable located at the address specified by its operand.
@@ -178,7 +204,7 @@
 - The array and pointers are derived data types that have lots of differences and similarities. In some cases, we can even use pointers in place of an array, and arrays automatically get converted to pointers when passed to a function. So, it is necessary to know about the differences between arrays and pointers to properly utilize them in our program.
 - What is an Array?
     - an array is a data structure that represents a collection of elements of the same type stored in contiguous memory locations. It provides a way to store and access multiple values of the same data type using a single variable name.
-    - t stores a homogeneous collection of data.
+    - it stores a homogeneous collection of data.
     - Its size can be decided by the programmer.
     - It provides random access.
 - The array is one of the most used data types in many programming languages due to its simplicity and capability.
@@ -319,7 +345,7 @@
     - pass by value dışarıdan gelen değerler
     - static array içeride oluşturulan array
     - memory allocation içeride oluşturulan array
-    - aynısı char arrayleri içinde geçerli olması
+    - aynısı char arrayleri içinde geçerli olması lazım
 
 ## Advanced Pointer Notation
 - C++ programlama dilinde "pointer to pointers" veya "double pointers" olarak adlandırılan yapı, bir pointer'ın başka bir pointer'ın adresini tutmasıdır. Bu konsept, bellek yönetimini dinamik olarak yapmak veya pointer dizileri üzerinde işlem yapmak gibi durumlarda oldukça kullanışlıdır. Pointer to pointers (iki katlı pointerlar), daha ileri seviye C++ programlamada özellikle karmaşık veri yapıları veya dinamik bellek yönetimiyle uğraşırken önemli bir kavramdır.
@@ -334,13 +360,13 @@
 - Kullanım Senaryoları:
     - Pointer to Pointers ile Dinamik Bellek Yönetimi:
     - Fonksiyon Parametreleri ile Kullanım:
-    - Çok Boyutlu Dizilerle Çalışma:
+    - Çok Boyutlu Dizilerle Çalışma(string arrays):
     - returning pointer to pointer variable
 
 ## Pointers and String literals
 - String Literals (Dize Sabitleri): Dize sabitleri (string literals), C ve C++ gibi dillerde kullanılan sabit karakter dizileridir. Dize sabitleri çift tırnak içinde belirtilirler ve bellekte programın kod segmentinde (read-only bellek bölgesinde) saklanırlar. Dize sabitleri değiştirilemezler (immutable) ve program çalışma zamanında değiştirilmemelidir. (önemli bilgi değiştrebilmek için özel fonksiyonlar kullanmamız gerekiyor)
 
-- normal (statik veya otomatik) dizilerde, dizi ismi bir işaretçiye dönüşür ve ilk elemanın adresini temsil eder. Ancak std::cout kullanırken, bir karakter dizisini doğrudan yazdırmak istediğinizde, işaretçinin işaret ettiği dizenin tamamı yazdırılır (null karakterine kadar).
+- normal (statik veya otomatik) dizilerde, dizi ismi bir işaretçiye dönüşür ve ilk elemanın adresini temsil eder. Ancak std::cout kullanırken, bir karakter dizisini doğrudan yazdırmak istediğinizde, işaretçinin işaret ettiği dizenin tamamı yazdırılır (null karakterine kadar).(Stringlere veya character stringlerine özel)
 
 ## Void Pointers
 - void işaretçiler (void pointers), C ve C++ gibi dillerde kullanılan özel işaretçi türleridir. void işaretçiler, herhangi bir türdeki veriyi gösteren genel bir işaretçi türüdür ve verinin türünü belirtmez. Bu nedenle, herhangi bir veri türünden işaretçileri void işaretçileriyle tutabilir ve geçirebilirsiniz.
@@ -426,7 +452,7 @@
             *ptr = 10;   // Geçersiz işlem, çünkü ptr artık geçersizdir
             ```
         - ex2, Function Call: When the local variable is not static and the function returns a pointer to that local variable. The pointer pointing to the local variable becomes dangling pointer.
-        - The below example demonstrates a dangling pointer when the local variable is not static.
+        - The below example demonstrates a dangling pointer when the local variable is not static. burad abu kod çalışır ama istediğimiz gibi çalışmöaz çünkü işaret ettiği yer artık ulaşılabilir değil saçma sonuçlar verir
             ```cpp
             // C program to demonstrate the pointer pointing to local
             // variable becomes dangling when local variable is not
@@ -455,6 +481,7 @@
                 return 0;
             }
             //output 0
+            
             ```
             - In the above example, p becomes dangling as the local variable (x) is destroyed as soon as the value is returned by the pointer. This can be solved by declaring the variable x as a static variable as shown in the below example. illa malloc veya new kullanmaya gerek yok yani.
 
@@ -515,7 +542,7 @@
     #include <iostream>
 
     // Function to calculate sum and product of two numbers
-    void calculateSumAndProduct(int a, int b, int* sumResult, int* productResult) {
+    void calculateSumAndProduct(int a, int b, int* sumResult, int productResult) {
         *sumResult = a + b;       // Store sum in sumResult pointer
         *productResult = a * b;   // Store product in productResult pointer
     }
@@ -695,7 +722,7 @@ cout << "x = " << x << endl; // 'x' değişkeninin yeni değeri (20) yazdırıl�
 - Safer: Since references must be initialized, wild references like wild pointers are unlikely to exist. It is still possible to have references that don’t refer to a valid location
 - Easier to use: References don’t need a dereferencing operator to access the value. They can be used like normal variables. The ‘&’ operator is needed only at the time of declaration. Also, members of an object reference can be accessed with the dot operator (‘.’), unlike pointers where the arrow operator (->) is needed to access members.
 
-## Can References Refer to Invalid Location in C++?
+## Can References Refer to Invalid Location
 - Reference Variables: You can create a second name for a variable in C++, which you can use to read or edit the original data contained in that variable. While this may not sound appealing at first, declaring a reference and assigning it a variable allows you to treat the reference as if it were the original variable for the purposes of accessing and modifying the value of the original variable
 - even if the second name (the reference) is in a different scope. This means that if you make your function arguments references, you’ll be able to essentially change the data given into the function. This is in contrast to how C++ generally works, in which function parameters are copied into new variables. It also helps to save time.(rakes refernce variables funciton)
 - In C++, Reference variables are safer than pointers because reference variables must be initialized and they cannot be changed to refer to something else once they are initialized. But there are exceptions where we can have invalid references.

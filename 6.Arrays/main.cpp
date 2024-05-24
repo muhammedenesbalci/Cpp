@@ -55,8 +55,6 @@ void old_lectures() {
 }
 
 //-----------------------------------------------------------------
-#include <stdio.h>
-
 // function to initialize array pointer olarak verdiğimiz için return etmemize gerek yok
 void initialize(int* arr, int size)
 {
@@ -66,8 +64,7 @@ void initialize(int* arr, int size)
 }
 
 // function to print an array
-void printArray(int size)
-{
+void printArray(int size) {
     // variable length array
     int arr[size];
     initialize(arr, size);
@@ -76,11 +73,69 @@ void printArray(int size)
         printf("%d ", arr[i]);
     }
     printf("\n");
+
+    //fazladan idndexlere ulaşmaaya çalışrsak saçma değerler verir
+    for (int i = 0; i < size+2; i++) {
+        printf("%d ", arr[i]);
+    }
+        printf("\n");
+
 }
 
 void use_of_variable_length_arrays() {
     int n = 5;
     printArray(n);
+}
+//-----------------------------------------------------------------
+void pointer_arrays() {
+	int values[5] = {10, 20, 30, 40, 50};
+	int *valuesPtr;
+
+    cout << "values---------------------------\n";
+	printf("values: %p\n", values); //ilk elemanın adresini yazar
+    printf("values + 1: %p\n", values + 1);
+    printf("values + 2: %p\n", values + 2);
+    printf("values + 3: %p\n", values + 3);
+    printf("values + 4: %p\n", values + 4);
+
+    cout << "*(values)---------------------------\n";
+    printf("*(values): %d\n", *values); //ilk elemanın adresini yazar
+    printf("*(values + 1): %d\n", *(values + 1));
+    printf("*(values + 2): %d\n", *(values + 2));
+    printf("*(values + 3): %d\n", *(values + 3));
+    printf("*(values + 4): %d\n", *(values + 4));
+   
+    //dikkat edersen 4 byte 4 byte artıyor yani her bir veri 4 byte yer tutuyor(itn degerleri)
+    cout << "&values[0]---------------------------\n";
+    printf("&values[0]: %p\n", &values[0]);
+    printf("&values[1]: %p\n", &values[1]);
+    printf("&values[2]: %p\n", &values[2]);
+    printf("&values[3]: %p\n", &values[3]);
+    printf("&values[4]: %p\n", &values[4]);
+    
+    cout << "valuesPtr---------------------------\n";
+    valuesPtr = values; //direkt ilk elemanın adresini atare
+    //valuesPtr = &values[0]; // şeklinde de tanımlayabilirdik
+    
+    printf("valuesPtr: %p\n", valuesPtr);
+    printf("valuesPtr+1: %p\n", valuesPtr+1);
+    printf("valuesPtr+2: %p\n", valuesPtr+2);
+    printf("valuesPtr+3: %p\n", valuesPtr+3);
+    printf("valuesPtr+4: %p\n", valuesPtr+4);
+
+    printf("*(valuesPtr)--------------------------\n");
+    printf("*(valuesPtr): %d\n", *(valuesPtr));
+    printf("*(valuesPtr+1): %d\n", *(valuesPtr+1));
+    printf("*(valuesPtr+2): %d\n", *(valuesPtr+2));
+    printf("*(valuesPtr+3): %d\n", *(valuesPtr+3));
+    printf("*(valuesPtr+4): %d\n", *(valuesPtr+4));
+
+    printf("values[0]------------------------------\n");
+    printf("values[0]: %d\n", values[0]);
+    printf("values[1]: %d\n", values[1]);
+    printf("values[2]: %d\n", values[2]);
+    printf("values[3]: %d\n", values[3]);
+    printf("values[4]: %d\n", values[4]);
 }
 
 //-----------------------------------------------------------------
@@ -100,14 +155,11 @@ void first_element_pointer_and_all_array_pointer() {
         
     printf("p = %p, ptr = %p\n", p, ptr);
     printf("*p = %d, *ptr = %p\n", *p, *ptr);
-    printf("**ptr = %d\n", **ptr);
+    printf("**ptr = %d\n\n", **ptr);
         
-    p++; 
-    ptr++;
-        
-    printf("p = %p, ptr = %p\n", p, ptr);
-    printf("*p = %d, *ptr = %p\n", *p, *ptr);
-    printf("**ptr = %d\n", **ptr);
+    printf("p + 1 = %p, ptr + 1 = %p\n", p + 1, ptr + 1);
+    printf("*(p + 1) = %d, *(ptr + 1) = %p\n", *(p + 1), *(ptr + 1));
+    printf("**(ptr + 1) = %d\n", **ptr);
 }
 
 //-----------------------------------------------------------------
@@ -145,8 +197,7 @@ int arr[2][3][2] = {
     for (j = 0; j < 3; j++)
     {
        for (k = 0; k < 2; k++)
-         printf("%d\t", *(*(*(arr + i) + j) +k));
-       printf("\n");
+         printf("arr[%d][%d][%d] = %d\n", i, j, k, *(*(*(arr + i) + j) +k));
     }
   }
 }
@@ -228,30 +279,34 @@ void pass_by_reference_array() {
     pDecay(&a);
 }
 
+
 //-----------------------------------------------------------------
 int main() {
-    cout << "use_of_variable_length_arrays-----------------------------\n";
+    cout << "\nuse_of_variable_length_arrays-----------------------------\n";
     use_of_variable_length_arrays();
 
-    cout << "first_element_pointer_and_all_array_pointer-----------------------------\n";
+    cout << "\npointer_arrays----------------------------------\n";
+    pointer_arrays();
+
+    cout << "\nfirst_element_pointer_and_all_array_pointer-----------------------------\n";
     first_element_pointer_and_all_array_pointer();
 
-    cout << "first_element_pointer_and_all_array_pointer - 2-----------------------------\n";
+    cout << "\nfirst_element_pointer_and_all_array_pointer - 2-----------------------------\n";
     first_element_pointer_and_all_array_pointer_2();
 
-    cout << "three_dim_array -----------------------------\n";
+    cout << "\nthree_dim_array -----------------------------\n";
     three_dim_array();
 
-    cout << "two_dim_array -----------------------------\n";
+    cout << "\ntwo_dim_array -----------------------------\n";
     two_dim_array();
 
-    cout << "findSize -----------------------------\n";
+    cout << "\nfindSize -----------------------------\n";
     use_of_findSize();
 
-    cout << "checking_size_after_passing_array_as_parameter -----------------------------\n";
+    cout << "\nchecking_size_after_passing_array_as_parameter -----------------------------\n";
     checking_size_after_passing_array_as_parameter();
 
-    cout << "printing_array_of_Characters_using_function----------------------------------\n";
+    cout << "\nprinting_array_of_Characters_using_function----------------------------------\n";
     printing_array_of_Characters_using_function();
 
     return 0;

@@ -134,8 +134,6 @@ int staticFun() {
     return count;
 }
 
-// Function containing non-static variables
-// memory is destroyed
 int nonStaticFun()
 {
     cout << "For Non-Static variables: ";

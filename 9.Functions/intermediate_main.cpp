@@ -3,7 +3,7 @@
 #include<tuple>
 using namespace std;
 
-//-------------------------------------------------------------------------
+//Normal Functions--------------------------------------------------------------
 int max(int x, int y)
 {
     if (x > y)
@@ -21,7 +21,7 @@ void use_max() {
     cout << "m is " << m << endl;;
 }
 
-//-------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 int min(int, int);
 void use_min() {
     int a = 10, b = 20;
@@ -32,7 +32,7 @@ void use_min() {
     cout << "m is " << m << endl;;
 }
 
-//-------------------------------------------------------------------------
+//pass by value----------------------------------------------------------------
 void increment(int x);
 void use_increment() {
     int a = 5;
@@ -41,16 +41,16 @@ void use_increment() {
     // a will still be 5 here.
 }
 
-//-------------------------------------------------------------------------
+//pass by reference------------------------------------------------------------
 void increment_2(int &x);
 void use_increment_2() {
     int a = 5;
     increment_2(a);
     cout << "a: " << a << endl;
-    // a will still be 5 here.
+    // a will be 6 here.
 }
 
-//-------------------------------------------------------------------------
+//pass by pointer---------------------------------------------------------------
 void increment_3(int *x);
 void use_increment_3() {
     int a = 5;
@@ -59,7 +59,7 @@ void use_increment_3() {
     // a will be 6 here.
 }
 
-//-------------------------------------------------------------------------
+//Pass by Const Reference------------------------------------------------------
 void printValue(const int &x);
 void use_const_pass_by_reference() {
     int a = 5;
@@ -67,7 +67,7 @@ void use_const_pass_by_reference() {
     cout << "a: " << a << endl;
 }
 
-//-------------------------------------------------------------------------
+//Print Array---------------------------------------------------------------
 void printArray(int[], int);
 void use_array_1() {
     int myArray[] = {1, 2, 3, 4, 5};
@@ -94,12 +94,14 @@ void use_array_3() {
 
 }
 
-//-------------------------------------------------------------------------
+//Overolading Functions 1---------------------------------------------------
 class Cal {
 public:
-    static int add(int a, int b) { return a + b; }
-    static int add(int a, int b, int c)
-    {
+    static int add(int a, int b) { 
+        return a + b; 
+    }
+
+    static int add(int a, int b, int c){
         return a + b + c;
     }
 };
@@ -120,7 +122,7 @@ void use_of_overloading_functions_2() {
     cout << "r2 is : " << r2 << endl;
 }
 
-//-------------------------------------------------------------------------
+//Multiple return Functions 1 with pointers------------------------------------------------
 void compare(int a, int b, int* add_great, int* add_small) {
     if (a > b) {
  
@@ -144,10 +146,10 @@ void use_of_multiple_retuen_1() {
     // The last two arguments are passed
     // by giving addresses of memory locations
     compare(x, y, &great, &small);
-    cout << "\nThe greater number is " << great << " and the smaller number is " << small << endl;;
+    cout << "The greater number is " << great << " and the smaller number is " << small << endl;;
 }
 
-//-------------------------------------------------------------------------
+//Multiple return Functions 2 with struct--------------------------------------
 struct greaterSmaller {
     int greater, smaller;
 };
@@ -177,15 +179,14 @@ void use_of_multiple_retuen_2() {
     y = 10;
  
     result = findGreaterSmaller(x, y);
-    printf("\nThe greater number is %d and the"
+    printf("The greater number is %d and the"
            "smaller number is %d\n",
            result.greater, result.smaller);
 }
 
-//-------------------------------------------------------------------------
+//Multiple return Functions 3 with array-----------------------------------------------------------
 // Store the greater element at 0th index
-void findGreaterSmaller(int a, int b, int arr[])
-{
+void findGreaterSmaller(int a, int b, int arr[]) {
  
     // Store the greater element at
     // 0th index of the array
@@ -211,7 +212,7 @@ void use_of_multiple_retuen_3() {
     cout << "\nThe greater number is " << arr[0]  << " and the "
            "smaller number is " << arr[1] << endl;;
 }
-//-------------------------------------------------------------------------
+///Multiple return Functions 3 with tuple-------------------------------------------------------
 tuple <int, int> findGreaterSmaller_1(int a, int b)
 {
     if (a < b) {
@@ -233,7 +234,7 @@ void use_of_multiple_retuen_5() {
 }
 
 
-//-------------------------------------------------------------------------
+//Multiple return Functions 6 variable pointer-------------------------------------------------------------
 void calculateSumAndProduct(int a, int b, int* sumResult, int* productResult) {
     *sumResult = a + b;       // Store sum in sumResult pointer
     *productResult = a * b;   // Store product in productResult pointer
@@ -251,7 +252,7 @@ void use_of_multiple_retuen_6() {
     std::cout << "Product: " << product << std::endl;
 }
 
-//-------------------------------------------------------------------------
+//Return dynamic array -------------------------------------------------------------------------
 // Fonksiyon, dinamik olarak oluşturulan bir dizi (array) döndürür
 int* createArray(int size) {
     // Bellekten 'size' uzunluğunda bir dizi için alan tahsis edilir
@@ -376,6 +377,7 @@ void lambda_ex_2() {
     };
 
     std::cout << "Result: " << lambda() << std::endl;
+    std::cout << "x: " << x << std::endl;
 }
 //-------------------------------------------------------------------------
 void lambda_ex_3() {
@@ -388,6 +390,8 @@ void lambda_ex_3() {
     };
 
     std::cout << "Result: " << lambda() << std::endl;
+    std::cout << "x: " << x << std::endl;
+    std::cout << "y: " << y << std::endl;
 }
 //-------------------------------------------------------------------------
 void lambda_ex_4() {
@@ -401,6 +405,9 @@ void lambda_ex_4() {
     };
 
     std::cout << "Result: " << lambda() << std::endl;
+
+    std::cout << "x: " << x << std::endl;
+    std::cout << "y: " << y << std::endl;
 }
 
 class MyClass {
@@ -556,7 +563,7 @@ void printArray_2(int* arr, int size) {
     std::cout << std::endl;
 }
 //-------------------------------------------------------------------------
-void printArray(std::array<int, 5>& arr) {
+void printArray(std::array<int, 5>& arr) { //buraya sadece bir pointer iletiliyor o yüzden direkt for i,le dönemezsin
     for (int num : arr) {
         std::cout << num << " ";
     }

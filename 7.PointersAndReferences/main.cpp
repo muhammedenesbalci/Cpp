@@ -4,6 +4,21 @@
 
 using namespace std; 
 
+void basic_ex_0() {
+
+    int* myptr; // pointer variable
+    cout << "myptr: " << myptr << endl;
+    cout << "*myptr: " << *myptr << endl;
+
+    int* myptr_2 = NULL; // pointer variable
+    cout << "myptr_2: " << myptr_2 << endl;
+    //cout << "*myptr_2: " << *myptr_2 << endl; segmentation fAULT
+
+    int* myptr_3 = nullptr; // pointer variable
+    cout << "myptr_3: " << myptr_3 << endl;
+    //cout << "*myptr_3: " << *myptr_3 << endl; segmentation fault
+}
+
 //-------------------------------------------------------------------------
 void basic_ex_1() {
     int x = 10; // variable declared
@@ -18,6 +33,9 @@ void basic_ex_1() {
     // print the address stored in myptr pointer variable
     cout << "Address stored in myptr is: ";
     cout << myptr << endl;
+
+    cout << "Address x is: ";
+    cout << &x << endl;
  
     // printing value of x using pointer myptr
     cout << "Value of x using *myptr is: ";
@@ -112,8 +130,10 @@ void array_name_as_pointers() {
     // We can use ptr=&val[0];(both are same) 
     ptr = val; 
     cout << "Elements of the array are: "; 
-    cout << ptr[0] << " " << ptr[1] << " " << ptr[2] << endl;; 
-}
+    cout << ptr[0] << " " << ptr[1] << " " << ptr[2] << endl;
+    cout << ptr + 0 << " " << ptr + 1 << " " << ptr + 2 << endl; 
+    cout << *(ptr + 0) << " " << *(ptr + 1) << " " << *(ptr + 2) << endl; 
+}   
 
 void use_of_array_name_as_pointers() {
     array_name_as_pointers();
@@ -192,21 +212,49 @@ void array_pointer_function_input() {
 
 //-------------------------------------------------------------------------
 void use_of_dynamic_mem_allocation_pointer_to_pointer() {
+    /*
+        matrix (int**)
+    |
+    |---> [0] --> [0] --> (int) 0x...   [1] --> (int) 0x...   [2] --> (int) 0x...   [3] --> (int) 0x...
+    |               ^                       ^                       ^                       ^
+    |               |                       |                       |                       |
+    |               0                       0                       0                       0
+    |
+    |---> [1] --> [0] --> (int) 0x...   [1] --> (int) 0x...   [2] --> (int) 0x...   [3] --> (int) 0x...
+    |               ^                       ^                       ^                       ^
+    |               |                       |                       |                       |
+    |               0                       0                      42                       0
+    |
+    |---> [2] --> [0] --> (int) 0x...   [1] --> (int) 0x...   [2] --> (int) 0x...   [3] --> (int) 0x...
+                    ^                       ^                       ^                       ^
+                    |                       |                       |                       |
+                    0                       0                       0                       0
+    */
     // Dynamically allocate an array of pointers to integers
     int** matrix = new int*[3]; // matrix is a pointer to pointers
+    /*
+    Bu satır, matrix adında, 3 adet int* (integer pointer) 
+    içeren bir dizi oluşturur. Yani matrix, 3 adet satır için bellekte yer ayırır.
+    */
 
     // Allocate memory for each row of the matrix
     for (int i = 0; i < 3; ++i) {
         matrix[i] = new int[4]; // Each matrix[i] points to an array of integers
     }
+    /*
+    Bu döngü, her bir satır için 4 adet int içeren bir dizi oluşturur. 
+    Yani her satır, 4 sütun için bellekte yer ayırır.
+    */
 
     // Initialize and use the matrix
     matrix[1][2] = 42; // Accessing and modifying elements using double pointers
 
+    cout << "size: " << sizeof(matrix)<< endl;
+
 
     for(int i = 0; i < 3 ; i++) {
         for(int j = 0; j < 4; j++) {
-            cout << matrix << "[" << i << "]" << "[" << j << "]" << "= " << matrix[i][j] << endl; 
+            cout << "matrix" << "[" << i << "]" << "[" << j << "]" << "= " << matrix[i][j] << " address " << &matrix[i][j] <<endl; 
         }
     }
 }
@@ -230,8 +278,8 @@ void multi_dim_array() {
     int cols = 3;
     int** grid = new int*[rows];
 
-    for (int i = 0; i < rows; ++i) {
-        grid[i] = new int[cols]; // Each grid[i] points to a row of integers
+    for (int row = 0; row < rows; ++row) {
+        grid[row] = new int[cols]; // Each grid[i] points to a row of integers
     }
 
     // Access and modify elements in the grid
@@ -239,7 +287,7 @@ void multi_dim_array() {
 
     for(int i = 0; i < rows ; i++) {
         for(int j = 0; j < cols; j++) {
-            cout << grid << "[" << i << "]" << "[" << j << "]" << "= " << grid[i][j] << endl; 
+            cout << "grid" << "[" << i << "]" << "[" << j << "]" << "= " << grid[i][j] << " address " << &grid[i][j] <<endl; 
         }
     }
 }
@@ -331,7 +379,7 @@ void dangling_ex_wrong() {
 int* fun_right() {
     // x now has scope throughout the program
     static int x = 5;
-
+    x++;
     return &x;
 }
 
@@ -340,6 +388,18 @@ void dangling_ex_right() {
 
     // Not a dangling pointer as it points
     // to static variable.
+    printf("%d\n", *p);
+
+    fun_right();
+    printf("%d\n", *p);
+
+    fun_right();
+    printf("%d\n", *p);
+
+    fun_right();
+    printf("%d\n", *p);
+
+    *p =  *p + 5;
     printf("%d\n", *p);
 }
 
@@ -478,6 +538,13 @@ void reference_pointer_ex_2() {
          << "S = " << S << "\t"
          << "S0 = " << S0 << "\t"
          << "S1 = " << S1 << '\n';
+
+    S0 = 30;
+
+    cout << "a = " << a << "\t"
+         << "S = " << S << "\t"
+         << "S0 = " << S0 << "\t"
+         << "S1 = " << S1 << '\n';
 }
 //-------------------------------------------------------------------------
 int& multiplyByTwo(int &x) {
@@ -491,7 +558,10 @@ void returning_reference() {
     std::cout << "Before: num = " << num << std::endl;
     // Fonksiyon, num'un değerini 2 ile çarparak aynı referansı döndürüyor.
     int& result = multiplyByTwo(num);
+    std::cout << "After: num = " << num << std::endl;
+
     int result_2 = multiplyByTwo(num);
+    std::cout << "After: num = " << num << std::endl;
 
     std::cout << "After: num = " << num << std::endl;
     std::cout << "Result: result = " << result << std::endl;
@@ -562,91 +632,93 @@ void use_of_create_and_return_array_with_static_keyword() {
         cout << "arr" << "[" << i << "]" << "= " << arr_1[i] << endl; 
     }
 }
-int main()  
-{  
-    cout << "basic example 1 ------------------------------------------------\n";
+int main()  {
+    cout << "\nbasic example 0 ------------------------------------------------\n";
+    basic_ex_0();
+
+    cout << "\nbasic example 1 ------------------------------------------------\n";
     basic_ex_1();  
 
-    cout << "basic example ------------------------------------------------\n";
+    cout << "\nbasic example ------------------------------------------------\n";
     basic_ex_2(); 
 
-    cout << "pass by value ------------------------------------------------\n";
+    cout << "\npass by value ------------------------------------------------\n";
     use_of_pass_by_value();
 
-    cout << "pass by pointer ------------------------------------------------\n";
+    cout << "\npass by pointer ------------------------------------------------\n";
     use_of_pass_by_pointer();
 
-    cout << "pass by reference ------------------------------------------------\n";
+    cout << "\npass by reference ------------------------------------------------\n";
     use_of_pass_by_reference();
 
-    cout << "array_name_as_pointers ------------------------------------------------\n";
+    cout << "\narray_name_as_pointers ------------------------------------------------\n";
     use_of_array_name_as_pointers();
 
-    cout << "Behavior of sizeof operator ------------------------------------------------\n";
+    cout << "\nBehavior of sizeof operator ------------------------------------------------\n";
     behavior_of_sizeof_operator();
 
-    cout << "Array members are accessed using pointer arithmetic-------------------------\n";
+    cout << "\nArray members are accessed using pointer arithmetic-------------------------\n";
     array_pointer_arithmetic_1();
 
-    cout << "Array members are accessed using pointer arithmetic-------------------------\n";
+    cout << "\nArray members are accessed using pointer arithmetic-------------------------\n";
     array_pointer_arithmetic_2();
 
-    cout << "Array parameters are always passed as pointers, even when we use square brackets------\n";
+    cout << "\nArray parameters are always passed as pointers, even when we use square brackets------\n";
     array_pointer_function_input();
     
-    cout << "use_of_dynamic_mem_allocation_pointer_to_pointer ------------------------------------------------\n";
+    cout << "\nuse_of_dynamic_mem_allocation_pointer_to_pointer ------------------------------------------------\n";
     use_of_dynamic_mem_allocation_pointer_to_pointer();
 
-    cout << "use_of_pointer_to_pointer_function_parameters ------------------------------------------------\n";
+    cout << "\nuse_of_pointer_to_pointer_function_parameters ------------------------------------------------\n";
     use_of_pointer_to_pointer_function_parameters();
 
-    cout << "multi_dim_array ------------------------------------------------\n";
+    cout << "\nmulti_dim_array ------------------------------------------------\n";
     multi_dim_array();
 
-    cout << "use_of_string_literals ------------------------------------------------\n";
+    cout << "\nuse_of_string_literals ------------------------------------------------\n";
     use_of_string_literals();
 
-    cout << "use_of_void_pointers ------------------------------------------------\n";
+    cout << "\nuse_of_void_pointers ------------------------------------------------\n";
     use_of_void_pointers();
 
-    cout << "multiple values ------------------------------------------------\n";
+    cout << "\nmultiple values ------------------------------------------------\n";
     use_of_multiple_values_return();
 
-    cout << "dangling_ex_wrong ------------------------------------------------\n";
+    cout << "\ndangling_ex_wrong ------------------------------------------------\n";
     //dangling_ex_wrong(); //hata veriyor
 
-    cout << "dangling_ex_right ------------------------------------------------\n";
+    cout << "\ndangling_ex_right ------------------------------------------------\n";
     dangling_ex_right();
 
-    cout << "reference example ------------------------------------------------\n";
+    cout << "\nreference example ------------------------------------------------\n";
     reference_ex();
 
-    cout << "function_reference_ex ------------------------------------------------\n";
+    cout << "\nfunction_reference_ex ------------------------------------------------\n";
     function_reference_ex();
 
-    cout << "avoid_copy_large_structures ------------------------------------------------\n";
+    cout << "\navoid_copy_large_structures ------------------------------------------------\n";
     avoid_copy_large_structures();
 
-    cout << "for_each_ex ------------------------------------------------\n";
+    cout << "\nfor_each_ex ------------------------------------------------\n";
     for_each_reference_ex();
 
-    cout << "for_each_ex 2 ------------------------------------------------\n";
+    cout << "\nfor_each_ex 2 ------------------------------------------------\n";
     for_each_reference_ex_2();
 
-    cout << "reference_pointer_ex_2 ------------------------------------------------\n";
+    cout << "\nreference_pointer_ex_2 ------------------------------------------------\n";
     reference_pointer_ex_2();
 
-    cout << "returning_reference ------------------------------------------------\n";
+    cout << "\nreturning_reference ------------------------------------------------\n";
     returning_reference();
 
-    cout << "use_of_array_pointer_returning ------------------------------------------------\n";
+    cout << "\nuse_of_array_pointer_returning ------------------------------------------------\n";
     use_of_array_pointer_returning();
 
-    cout << "use_of_create_and_return_array ------------------------------------------------\n";
+    cout << "\nuse_of_create_and_return_array ------------------------------------------------\n";
     use_of_create_and_return_array();
 
-    cout << "use_of_create_and_return_array_with_static_keyword ------------------------------------------------\n";
-
+    cout << "\nuse_of_create_and_return_array_with_static_keyword ------------------------------------------------\n";
     use_of_create_and_return_array_with_static_keyword();
+
     return 0;
 }

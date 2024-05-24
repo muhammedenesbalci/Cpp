@@ -7,6 +7,22 @@
 ## Informations
 
 - ***Array*** is a container that holds a fixed number of elements of the same type. It provides a way to store and access a collection of values in a contiguous memory block.
+- 
+    ```cpp
+    //yanlış
+    int arr[];
+    arr[] = {1,2}
+
+    //dogru
+    int arr[]  = {1,2};
+
+    //dogru
+    int arr[2];
+    arr[2]  = {1,2};
+
+    //dogru
+    int arr[2]  = {1,2};
+    ```
 
 ## Variable Length Arrays (VLAs) in C
 - In C, variable length arrays (VLAs) are also known as runtime-sized or variable-sized arrays. The size of such arrays is defined at run-time.
@@ -180,9 +196,9 @@ int main()
         ```
 
     - in both of the above syntax, even though we are defining the argument as array it will still be passed as a pointer. So we can also write the syntax as:
-    ```c
-    return_type foo ( array_type* array_name, ...);
-    ```
+        ```c
+        return_type foo ( array_type* array_name, ...);
+        ```
 
 - Example 1: Checking Size After Passing Array as Parameter
     ```cpp

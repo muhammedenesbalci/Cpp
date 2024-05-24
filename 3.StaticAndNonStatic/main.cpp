@@ -26,7 +26,6 @@ void static_variable_in_function_ex_2() {
 
     cout << "count: " << count << endl;
     cout << "count address: " << &count << endl;
-
 }
 
 void static_variable_in_function_ex_usage() {
@@ -42,6 +41,47 @@ void static_variable_in_function_ex_usage() {
         }
     //count++;
 }
+
+int* static_variable_in_function_ex_3() {
+    static int count = 0;
+    count++;
+    return &count;
+}
+
+void use_of_static_variable_in_function_ex_3(){
+    int* p = static_variable_in_function_ex_3();
+    printf("%d\n", *p);
+
+    static_variable_in_function_ex_3();
+    printf("%d\n", *p);
+
+    static_variable_in_function_ex_3();
+    printf("%d\n", *p);
+
+    static_variable_in_function_ex_3();
+    printf("%d\n", *p);
+
+    *p = *p + 5;
+    printf("%d\n", *p);
+
+    static_variable_in_function_ex_3();
+    printf("%d\n", *p);
+}
+
+int* static_variable_in_function_ex_4() {
+    static int my_arr[] = {1, 2, 3, 4, 5, 6};
+
+    return my_arr;
+}
+
+void use_of_static_variable_in_function_ex_4(){
+    int* p = static_variable_in_function_ex_4();
+
+    for(int i = 0; i < 6; i++) {
+        cout  << *(p + i) << endl;
+    }
+}
+
 //Static Global Variable ex ------------------------------------------------------------
 static int static_global_count = 0;
 void static_global_variable_ex() {
@@ -63,7 +103,7 @@ void static_global_variable_ex_usage() {
         cout << i << ": " << endl;
         static_global_variable_ex();
         }
-        
+
     for (int i = 0; i < 5; i++){
         cout << i << ": " << endl;
         static_global_variable_ex_2();
@@ -111,6 +151,7 @@ void usage_of_static_v_class_4() {
     GfG::static_member_not_initialized = 9;
     cout << obj.static_member_not_initialized <<endl;
     cout << GfG::static_member_not_initialized << endl;
+    
     GfG::static_member_not_initialized = 5;
     cout << GfG::static_member_not_initialized << endl;
 }
@@ -142,6 +183,12 @@ void usage_of_static_functions() {
 int main() {   
     cout << "\nstatic variable in a function ex-------------------------------------------\n";
     static_variable_in_function_ex_usage();
+
+    cout << "\nstatic variable in a function ex 3-------------------------------------------\n";
+    use_of_static_variable_in_function_ex_3();
+
+    cout << "\nstatic variable in a function ex 4-------------------------------------------\n";
+    use_of_static_variable_in_function_ex_4();
 
     cout << "\nstatic global variable ex-------------------------------------------\n";
     static_global_variable_ex_usage();

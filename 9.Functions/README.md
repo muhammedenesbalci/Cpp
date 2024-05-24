@@ -1,7 +1,22 @@
 # Functions
 
 **Content**
-- Function creation and using.
+- [Function](#function)
+- [Why Do We Need Functions?](#why-do-we-need-functions)
+- [Function Declaration](#function-declaration)
+- [Types of Functions](#types-of-functions)
+- [Parameter Passing to Functions](#parameter-passing-to-functions)
+- [Points to Remember About Functions](#points-to-remember-about-functions)
+- [Recursion](#recursion)
+- [Main Function ](#main-function)
+- [Passing Array to Function](#passing-array-to-function)
+- [Overloading Function](#overloading-function)
+- [Function Overloading and Ambiguity](#function-overloading-and-ambiguity)
+- [Friend Function](#friend-function)
+- [return statement](#return-statement)
+- [Default Arguments](#default-arguments)
+- [Inline Functions](#inline-functions)
+- [lambda expression](#lambda-expression)
 
 ## Function
 - A function is a set of statements that takes input, does some specific computation, and produces output. The idea is to put some commonly or repeatedly done tasks together to make a function so that instead of writing the same code again and again for different inputs, we can call this function. In simple terms, a function is a block of code that runs only when it is called.
@@ -40,6 +55,7 @@
 - Functions provide abstraction. For example, we can use library functions without worrying about their internal work.
 
 ## Function Declaration
+- function prototype ile aynı şey
 - A function declaration tells the compiler about the number of parameters, data types of parameters, and returns type of function. Writing parameter names in the function declaration is optional but it is necessary to put them in the definition. Below is an example of function declarations. (parameter names are not present in the below declarations) 
     ```cpp
     // C++ Program to show function that takes
@@ -64,15 +80,15 @@
     int fun(char, int);
     ```
 ## Types of Functions
-- User Defined Function: are user/customer-defined blocks of code specially customized to reduce the complexity of big programs. They are also commonly known as “tailor-made functions” which are built only to satisfy the condition in which the user is facing issues meanwhile reducing the complexity of the whole program.
+- **User Defined Function**: are user/customer-defined blocks of code specially customized to reduce the complexity of big programs. They are also commonly known as “tailor-made functions” which are built only to satisfy the condition in which the user is facing issues meanwhile reducing the complexity of the whole program.
 
-- Library Function : Library functions are also called “built-in Functions“. These functions are part of a compiler package that is already defined and consists of a special function with special and different meanings. Built-in Function gives us an edge as we can directly use them without defining them whereas in the user-defined function we have to declare and define a function before using them. For Example: sqrt(), setw(), strcat(), etc.
+- **Library Function**: Library functions are also called “built-in Functions“. These functions are part of a compiler package that is already defined and consists of a special function with special and different meanings. Built-in Function gives us an edge as we can directly use them without defining them whereas in the user-defined function we have to declare and define a function before using them. For Example: sqrt(), setw(), strcat(), etc.
 
 ## Parameter Passing to Functions
 - The parameters passed to the function are called actual parameters. For example, in the program below, 5 and 10 are actual parameters. 
 - The parameters received by the function are called formal parameters. For example, in the above program x and y are formal parameters. 
 
-### There are two most popular ways to pass parameters
+### There are three most popular ways to pass parameters
 1. **Pass by Value**: This is the simplest and often default way of passing parameters. When a parameter is passed by value, the function receives a copy of the argument, and any modifications to the parameter inside the function do not affect the original argument.
     ```cpp
     void increment(int x) {
@@ -101,7 +117,8 @@
         // a will be 6 here.
     }
     ```
-3. **Pass by Pointer**: Passing by pointer is similar to passing by reference in that changes to the pointed-to data within the function affect the original data. This method is used for legacy reasons, to handle arrays (since arrays decay to pointers when passed to functions), or when nullability needs to be represented (pointers can be null, references cannot).
+3. **Pass by Pointer**: Passing by pointer is similar to passing by reference in that changes to the pointed-to data within the function affect the original data. This method is used for legacy reasons, to handle arrays (since arrays decay to pointers when passed to functions), or when nullability needs to be represented 
+- pointers can be null, references cannot.
     ```cpp
     void increment(int *x) {
     if (x) {
@@ -115,24 +132,24 @@
         // a will be 6 here.
     }
     ```
-- Difference pass by Reference and Pass by Value
-    - Benzerlikler
-        - Ortak Amaç: Hem "pass by reference" hem de "pass by pointer", bir fonksiyona değişkenin orijinalini ileterek, değişkenin değerini fonksiyon içinde değiştirmeyi sağlar.
-        - Veri Paylaşımı: Her iki yaklaşım da fonksiyonlar arasında veri paylaşımını ve etkileşimi sağlar.
-        - Her ikisi de bir fonksiyona değişkenin adresini ileterek, fonksiyonun orijinal değişken üzerinde değişiklik yapmasını sağlar. Ancak aralarında bazı önemli farklar bulunmaktadır.
-    - Farklar
-        - Semantik Farklılıklar:
-            - Pass by Reference: Referans ile parametre geçme, dilin sağladığı özel bir dil özelliğidir. Referanslar, bir değişkenin başka bir adı olarak görülür ve işlev çağrısında değişkenin kendisi ile çalışılır.
-            - Pass by Pointer: İşaretçiler (pointers), değişkenin bellek adresini tutar ve bu adres üzerinden değişkenin değerine erişilir.
-    - Dil Özellikleri:
-        - Pass by Reference: C++ dilinde özgün bir özelliktir. Referanslar, işaretçilerin daha okunaklı ve güvenli bir alternatifidir.
-        - Pass by Pointer: C ve C++ dillerinde kullanılabilir. İşaretçiler daha genel amaçlıdır ve daha düşük seviyeli bellek manipülasyonlarına izin verir.
-    - Null İşaretçi (Null Pointer) Kullanımı:
-        - Pass by Reference: Referanslar, null değerini alamazlar. Dolayısıyla, işlevlere geçirilen referans parametreler her zaman geçerli bir değişkeni temsil eder.
-        - Pass by Pointer: İşaretçiler null değerini alabilirler. Bu nedenle, işlevlere geçirilen işaretçi parametreleri, işlevin geçerli bir değişkeni temsil edip etmediğini kontrol etmelidir.
-    - C++ Tercihi: C++ dilinde, genellikle "pass by reference" kullanımı tavsiye edilir. Referanslar, işaretçilere kıyasla daha güvenli ve okunabilir bir kod sağlar.
+### Difference pass by Reference and Pass by Pointer
+- Benzerlikler
+    - Ortak Amaç: Hem "pass by reference" hem de "pass by pointer", bir fonksiyona değişkenin orijinalini ileterek, değişkenin değerini fonksiyon içinde değiştirmeyi sağlar.
+    - Veri Paylaşımı: Her iki yaklaşım da fonksiyonlar arasında veri paylaşımını ve etkileşimi sağlar.
+    - Her ikisi de bir fonksiyona değişkenin adresini ileterek, fonksiyonun orijinal değişken üzerinde değişiklik yapmasını sağlar. Ancak aralarında bazı önemli farklar bulunmaktadır.
+- Farklar
+    - Semantik Farklılıklar:
+        - Pass by Reference: Referans ile parametre geçme, dilin sağladığı özel bir dil özelliğidir. Referanslar, bir değişkenin başka bir adı olarak görülür ve işlev çağrısında değişkenin kendisi ile çalışılır.
+        - Pass by Pointer: İşaretçiler (pointers), değişkenin bellek adresini tutar ve bu adres üzerinden değişkenin değerine erişilir.
+- Dil Özellikleri:
+    - Pass by Reference: C++ dilinde özgün bir özelliktir. Referanslar, işaretçilerin daha okunaklı ve güvenli bir alternatifidir.
+    - Pass by Pointer: C ve C++ dillerinde kullanılabilir. İşaretçiler daha genel amaçlıdır ve daha düşük seviyeli bellek manipülasyonlarına izin verir.
+- Null İşaretçi (Null Pointer) Kullanımı:
+    - Pass by Reference: Referanslar, null değerini alamazlar. Dolayısıyla, işlevlere geçirilen referans parametreler her zaman geçerli bir değişkeni temsil eder.
+    - Pass by Pointer: İşaretçiler null değerini alabilirler. Bu nedenle, işlevlere geçirilen işaretçi parametreleri, işlevin geçerli bir değişkeni temsil edip etmediğini kontrol etmelidir.
+- C++ Tercihi: C++ dilinde, genellikle "pass by reference" kullanımı tavsiye edilir. Referanslar, işaretçilere kıyasla daha güvenli ve okunabilir bir kod sağlar.
 
-    - C Dilinde: C dilinde ise, işaretçiler daha yaygın olarak kullanılır. Ancak C dilinde de referans benzeri işlevsellikler sağlayacak teknikler bulunmaktadır.
+- C Dilinde: C dilinde ise, işaretçiler daha yaygın olarak kullanılır. Ancak C dilinde de referans benzeri işlevsellikler sağlayacak teknikler bulunmaktadır.
         
 
 4. **Pass by Const Reference**: When you want to avoid making a copy of the parameter and do not intend to modify it, you can pass it by const reference. This ensures efficiency and also guarantees that the function will not alter the argument.
@@ -148,7 +165,67 @@
         // a is safely passed without being modified.
     }
     ```
-5. **Passing by R-value Reference (C++11 onwards)**: Used primarily in moving semantics and perfect forwarding scenarios. This method allows a function to take ownership of a temporary object without copying it.
+5. **Pass by Const Pointer**: 
+- **Pointerin işaret ettiği değerin** değişmesini engellemek için const anahtar kelimesi pointer tipinin önüne yazılır:
+    ```cpp
+    void function(const int *ptr) {
+        // ptr'nin işaret ettiği değeri değiştirmeye çalışmak derleme hatası verir
+        // *ptr = 10; // Bu satır hata verir
+
+        // Ancak ptr'nin kendisini değiştirebilirsiniz
+        int anotherValue = 20;
+        ptr = &anotherValue; // Bu geçerli bir işlemdir
+    }
+
+    int main() {
+        int value = 5;
+        function(&value);
+        return 0;
+    }
+    ```
+    Bu örnekte const int *ptr, pointerin işaret ettiği değerin (*ptr) değiştirilemeyeceği anlamına gelir. Ancak, pointerin kendisi (ptr) değiştirilebilir.
+- **Pointerin Kendisi Değişmesin**
+    ```cpp
+    void function(int *const ptr) {
+        // ptr'nin işaret ettiği değeri değiştirebilirsiniz
+        *ptr = 10; // Bu geçerli bir işlemdir
+
+        // Ancak ptr'nin kendisini değiştirmeye çalışmak derleme hatası verir
+        // int anotherValue = 20;
+        // ptr = &anotherValue; // Bu satır hata verir
+    }
+
+    int main() {
+        int value = 5;
+        function(&value);
+        return 0;
+    }
+    ```
+    Bu örnekte int *const ptr, pointerin kendisinin (ptr) değiştirilemeyeceği anlamına gelir. Ancak, pointerin işaret ettiği değer (*ptr) değiştirilebilir.
+- **Hem Pointerin Kendisi Hem de İşaret Ettiği Değer Değişmesin**
+    ```cpp
+    void function(const int *const ptr) {
+        // ptr'nin işaret ettiği değeri değiştirmeye çalışmak derleme hatası verir
+        // *ptr = 10; // Bu satır hata verir
+
+        // ptr'nin kendisini değiştirmeye çalışmak da derleme hatası verir
+        // int anotherValue = 20;
+        // ptr = &anotherValue; // Bu satır da hata verir
+    }
+
+    int main() {
+        int value = 5;
+        function(&value);
+        return 0;
+    }
+    ```
+    Bu durumda, const int *const ptr ifadesi, pointerin kendisinin de işaret ettiği değerin de değiştirilemeyeceği anlamına gelir.
+
+- Özet
+    - const int *ptr: Pointerin işaret ettiği değer değiştirilemez, pointerin kendisi değiştirilebilir.
+    - int *const ptr: Pointerin kendisi değiştirilemez, pointerin işaret ettiği değer değiştirilebilir.
+    - const int *const ptr: Hem pointerin kendisi hem de işaret ettiği değer değiştirilemez.
+6. **Passing by R-value Reference (C++11 onwards)**: Used primarily in moving semantics and perfect forwarding scenarios. This method allows a function to take ownership of a temporary object without copying it.
     ```cpp
     void process(std::string &&str) {
         std::cout << str << std::endl;
@@ -160,6 +237,7 @@
         // Temporary string "Hello" is moved into process.
     }
     ```
+
 - Summary, Each of these methods has its use cases:
 
     - Pass by value: Use when the function does not need to modify the input and the value is small.
@@ -192,6 +270,23 @@
     ```
     - The reason for having the parameter option for the main function is to allow input from the command line. When you use the main function with parameters, it saves every group of characters (separated by a space) after the program name as elements in an array named argv. 
     - Since the main function has the return type of int, the programmer must always have a return statement in the code. The number that is returned is used to inform the calling program what the result of the program’s execution was. Returning 0 signals that there were no problems.
+### Arguments
+- We can give arguments to our program. Main function takes two argument. 
+    ```cpp
+    int main(int argc, char *argv[])
+    {    
+        return 0;
+    }
+    ```
+- The first argument is count of given arguments on cli.
+- The second argument is real arguments. the first one is program's name other ones other arguments.
+- we can run this program like below.
+    ```
+    gcc -c main.c
+    gcc -o main main.o
+    ./main(argument one) 6(argument two)
+    ```
+
 ## Recursion
 - When function is called within the same function, it is known as recursion in C++. The function which calls the same function, is known as recursive function.
 A function that calls itself, and doesn’t perform any task after function call, is known as tail recursion. In tail recursion, we generally call the same function with return statement.
@@ -202,7 +297,7 @@ recursionfunction()
 }
 ```
 
-## C++ Passing Array to Function
+## Passing Array to Function
 - In C++, to reuse the array logic, we can create a function. To pass an array to a function in C++,  we need to provide only the array name.
     ```cpp
     //function_name(array_name[]); //passing array to function
@@ -228,7 +323,7 @@ recursionfunction()
     // Minimum element is: 10
     ```
 
-## C++ Overloading (Function)
+## Overloading Function
 - If we create two or more members having the same name but different in number or type of parameters, it is known as C++ overloading. In C++, we can overload.
     - methods,
     - constructors
@@ -293,18 +388,39 @@ recursionfunction()
     void fun(int);
     void fun(float);
     void fun(int i) { cout << "Value of i is : " << i << endl; }
-    void fun(float j)
-    {
+    void fun(float j) {
         cout << "Value of j is : " << j << endl;
     }
-    int main()
-    {
+    int main() {
         fun(12);
         fun(1.2);
         return 0;
     }
     ```
     - The above example shows an error “call of overloaded ‘fun(double)’ is ambiguous“. The fun(10) will call the first function. The fun(1.2) calls the second function according to our prediction. But, this does not refer to any function as in C++, all the floating point constants are treated as double not as a float. If we replace float to double, the program works. Therefore, this is a type conversion from float to double.
+    ```cpp
+    #include <iostream>
+    using namespace std;
+
+    void fun(int i) {
+        cout << "Value of i is : " << i << endl;
+    }
+
+    void fun(float j) {
+        cout << "Value of j is : " << j << endl;
+    }
+
+    void fun(double k) {
+        cout << "Value of k is : " << k << endl;
+    }
+
+    int main() {
+        fun(12);    // int türünde argüman
+        fun(1.2f);  // float türünde argüman
+        fun(1.2);   // double türünde argüman
+        return 0;
+    }
+    ```
     ```cpp
     #include <iostream>
     using namespace std;
@@ -325,25 +441,25 @@ recursionfunction()
     ```
     - The above example shows an error “call of overloaded ‘fun(int)’ is ambiguous“. The fun(int a, int b=9) can be called in two ways: first is by calling the function with one argument, i.e., fun(12) and another way is calling the function with two arguments, i.e., fun(4,5). The fun(int i) function is invoked with one argument. Therefore, the compiler could not be able to select among fun(int i) and fun(int a,int b=9).
 
-## Function with Pass By Reference
+- Function with Pass By Reference
 
-```cpp
-#include <iostream>
-using namespace std;
-void fun(int);
-void fun(int&);
-int main()
-{
-    int a = 10;
-    fun(a); // error, which fun()?
-    return 0;
-}
-void fun(int x) { cout << "Value of x is : " << x << endl; }
-void fun(int& b)
-{
-    cout << "Value of b is : " << b << endl;
-}
-```
+    ```cpp
+    #include <iostream>
+    using namespace std;
+    void fun(int);
+    void fun(int&);
+    int main()
+    {
+        int a = 10;
+        fun(a); // error, which fun()?
+        return 0;
+    }
+    void fun(int x) { cout << "Value of x is : " << x << endl; }
+    void fun(int& b)
+    {
+        cout << "Value of b is : " << b << endl;
+    }
+    ```
 - The above example shows an error “call of overloaded ‘fun(int&)’ is ambiguous“. The first function takes one integer argument and the second function takes a reference parameter as an argument. In this case, the compiler does not know which function is needed by the user as there is no syntactical difference between the fun(int) and fun(int &).
 
 ## Friend Function
@@ -404,7 +520,6 @@ void fun(int& b)
 - C++ programlama dilinde friend anahtar kelimesi, bir fonksiyonun veya sınıfın, başka bir sınıfın private veya protected üyelerine erişim izni kazanmasını sağlar. friend fonksiyonları sınıfın üye fonksiyonları değildir; bunun yerine sınıf dışında tanımlanan normal fonksiyonlardır. Bu fonksiyonlar, ilgili sınıfın private veya protected üyelerine doğrudan erişebilir.
     - friend fonksiyonu, sınıfın private ve protected üyelerine erişim izni kazanır.
     - friend fonksiyonu, sınıfın üye fonksiyonu değildir; yani sınıfın içinde tanımlanmaz.
-    - friend fonksiyonları, ilgili sınıfın private veya protected üyelerine erişmek için kullanılır, ancak genellikle bu üyelerin değerlerini değiştirmezler.
     - friend fonksiyonları, sınıfın private veya protected üyelerine erişmek için friend olarak tanımlanmış bir sınıfın bir üyesi olarak davranır.
     - ilişkili Sınıflar Arasında Veri Paylaşımı:
         - İki sınıf arasında doğrudan veri paylaşımı veya işbirliği gerekiyorsa, bu durumda sınıfın private üyelerine erişim sağlamak için friend fonksiyonları kullanılabilir.
@@ -420,6 +535,7 @@ void fun(int& b)
         - friend fonksiyonları, sınıfın kapsülleme prensibini zayıflatabilir ve sınıfın iç yapısını dışarıya açabilir.
         - friend fonksiyonlarını gereksiz yere kullanmak yerine, sınıfın kapsülleme prensibini koruyacak ve sınıf dışından erişimi en aza indirecek tasarımı tercih etmek daha iyidir.
         - friend fonksiyonları, dikkatli ve ihtiyaç doğrultusunda kullanılmalıdır. Sınıfın private veya protected üyelerine doğrudan erişimin gerekliliği durumunda 
+    - ENormalde, herhangi bir fonksiyon veya sınıfın dışındaki kod, bir nesnenin private veya protected üyelerine doğrudan erişemez. Ancak, friend fonksiyonlar tanımlandığında, bu fonksiyonlar sınıfın private ve protected üyelerine erişebilir ve onları değiştirebilir.
     - **Note!!!!!** friend fonksiyonu class dosyasında veya main de yazılabilir. definitiondan bashediyorum fonksiyon bodysi hem class dosayının olduğu yerde hemde main dosyada yazılabilir
     - ekstra dosyalar olduğu için bu şekilde derlemelisin
         ```cpp
@@ -456,7 +572,6 @@ void fun(int& b)
     } 
     //Welcome to GeeksforGeeks
     ```
-
     - Using the return statement in void return type function Now the question arises, what if there is a return statement inside a void return type function? Since we know that, if there is a void return type in the function definition, then there will be no return statement inside that function. But if there is a return statement inside it, then also there will be no problem
     - This syntax is used in function just as a jump statement in order to break the flow of the function and jump out of it. One can think of it as an alternative to “break statement” to use in functions.
 
@@ -489,8 +604,12 @@ void fun(int& b)
         - By using pointers.
         - By using structures.
         - By using Arrays.
+        - By using Class.
+        - By using Tuples
+        - By using Vectors
+        - By using static (static and not static bölümünde bunun örneğini görebilirsin)
     1. Returning multiple values Using pointers: Pass the argument with their address and make changes in their value using pointer. So that the values get changed into the original argument.
-    2. Returning multiple values using structures : As the structure is a user-defined datatype. The idea is to define a structure with two integer variables and store the greater and smaller values into those variable, then use the values of that structure. 
+    2. Returning multiple values using structures : As the structure is a user-defined datatype. The idea is to define a structure with two integer variables and store the greater and smaller values into those variable, then use the values of that structure. int ve string gibi farklı veri tipleri de döndürebilirsin.
     3. Returning multiple values using an array (Works only when returned items are of same types): When an array is passed as an argument then its base address is passed to the function so whatever changes made to the copy of the array, it is changed in the original array. Below is the program to return multiple values using array i.e. store greater value at arr[0] and smaller at arr[1]. 
     4. Returning multiple values using Class and Object : The idea is similar to structures. We create a class with two integer variables and store the greater and smaller values into those variable, then use the values of that structure. 
         ```cpp
@@ -539,7 +658,7 @@ void fun(int& b)
     5. Returning multiple values using STL tuple : The idea is similar to structures. We create a tuple with two integer variables and return the tuple, and then inside main function we use tie function to assign values to min and max that is returned by the function. 
 
 3. return array
-    -  bir fonksiyon bir dizi (array) döndürebilir. Ancak C++'ta fonksiyonlar doğrudan bir dizi döndüremezler. Bunun yerine, bir fonksiyon bir dizi döndürmek istiyorsa, genellikle dinamik bellek tahsisi yapılır ve bu bellek bloğunun adresi bir pointer aracılığıyla döndürülür. Bu pointer, işaret ettiği bellek bloğunu temsil eden diziye erişim sağlar.
+    -  dynamic array: bir fonksiyon bir dizi (array) döndürebilir. Ancak C++'ta fonksiyonlar doğrudan bir dizi döndüremezler. Bunun yerine, bir fonksiyon bir dizi döndürmek istiyorsa, genellikle dinamik bellek tahsisi yapılır ve bu bellek bloğunun adresi bir pointer aracılığıyla döndürülür. Bu pointer, işaret ettiği bellek bloğunu temsil eden diziye erişim sağlar.
 
 ## Default Arguments
 1. A default argument is a value provided in a function declaration that is automatically assigned by the compiler if the calling function doesn’t provide a value for the argument. In case any value is passed, the default value is overridden. 
@@ -605,7 +724,7 @@ void fun(int& b)
 ## Inline Functions
 - C++ provides inline functions to reduce the function call overhead. An inline function is a function that is expanded in line when it is called. When the inline function is called whole code of the inline function gets inserted or substituted at the point of the inline function call. This substitution is performed by the C++ compiler at compile time. An inline function may increase efficiency if it is small.
 - C++ dilinde inline fonksiyonlar, derleyiciye fonksiyonun metnini fonksiyon çağrısı yerine doğrudan yerleştirmesi için bir öneri olarak sunan bir özelliktir. Bu, kodun performansını artırabilir ve fonksiyon çağrılarının maliyetini azaltabilir.
-- inline fonksiyonlar genellikle kısa ve basit olan fonksiyonlar için kullanılır. Fonksiyonun tanımı genellikle başlık dosyalarında (header files) yer alır, bu nedenle her dosyada tekrar tanımlamaya gerek kalmaz.
+- inline fonksiyonlar genellikle kısa ve basit olan fonksiyonlar için kullanılır. Fonksiyonun tanımı genellikle başlık dosyalarında (header files) yer alır, bu nedenle her dosyada tekrar tanımlamaya gerek kalmaz. header de tanımlanır source de tanımlanmaz. her şeyi, header da olur
 - exp: 
     - Bu örnekte add fonksiyonu inline olarak tanımlanmıştır. Derleyici, bu fonksiyonu çağrıldığında, kodun doğrudan a + b ifadesiyle değiştirilmesini tercih edebilir. Ancak derleyici bu tercihe uymak zorunda değildir; inline sadece bir öneridir.
 - Küçük fonksiyonlar için işlemci belleğinde daha az maliyetli olabilir.
@@ -635,7 +754,9 @@ void fun(int& b)
 
 - Generally, the return-type in lambda expressions is evaluated by the compiler itself and we don’t need to specify it explicitly. Also the -> return-type part can be ignored.  However, in some complex cases e.g. conditional statements, the compiler can’t determine the return type and explicit specification is required. 
 
-- lambda fonksiyonları C++'ta oldukça kullanışlı ve güçlü bir özelliktir. Lambda fonksiyonları, anonim (isimsiz) fonksiyonlar oluşturmanıza ve bu fonksiyonları yerinde (inline) olarak kullanmanıza olanak tanır. İşte bir lambda 
+- lambda fonksiyonları C++'ta oldukça kullanışlı ve güçlü bir özelliktir. Lambda fonksiyonları, anonim (isimsiz) isimde olabilir aslında fonksiyonlar oluşturmanıza ve bu fonksiyonları yerinde (inline) olarak kullanmanıza olanak tanır. İşte bir lambda 
+
+- genellikle kullanılcağı scope da yazılır onun haricinde çok işlevsel değil
 
     ```cpp
     #include <iostream>
@@ -659,7 +780,8 @@ void fun(int& b)
     - Lambda fonksiyonları ayrıca diğer fonksiyonlara parametre olarak veya algoritma fonksiyonları (örneğin std::for_each, std::sort gibi) içinde de kullanılabilir. Ayrıca lambda fonksiyonları, fonksiyon nesneleri (function objects) olarak da kullanılabilir, yani bir değişkene atanabilir veya başka fonksiyonların parametresi olarak kullanılabilir.
     - Lambda fonksiyonları, özellikle basit ve tek seferlik kullanımlar için idealdir. Fonksiyonel programlama yaklaşımını destekleyerek C++ kodunu daha kısa ve anlaşılır hale getirebilirler.
 
-    - Lambda ifadesindeki [ ] kısmı, lambda fonksiyonunun yakalama listesini belirtmek için kullanılır. Yakalama listesi, lambda fonksiyonunun dışındaki değişkenlere erişimini kontrol etmek için kullanılır. Bu bölümde kullanabileceğiniz bazı öğeler şunlardır:
+    - Lambda ifadesindeki [ ] kısmı, lambda fonksiyonunun yakalama listesini belirtmek için kullanılır. Yakalama listesi, lambda fonksiyonunun dışındaki değişkenlere erişimini kontrol etmek için kullanılır. Bu bölümde kullanabileceğiniz bazı öğeler şunlardır: 
+    - değişkenlerinde türlerini otomatik atar. kendi türü hep auto olmalıdır
         1. Boş Yakalama Listesi ([]):
             - Lambda fonksiyonu dışındaki hiçbir değişkene erişemez. Sadece fonksiyon parametreleri ve kendisine özgü değişkenler kullanılabilir.
         2. Değişken Referans Yakalama ([&]):
