@@ -26,6 +26,7 @@
 - [Can References Refer to Invalid Location](#can-references-refer-to-invalid-location)
 - [When do we pass arguments by pointer](#when-do-we-pass-arguments-by-pointer)
 
+
 ## First example
 - Explanation(basic_ex_1): The above program declares an integer variable ‘x’ initialized with value 10 and a pointer variable named ‘myptr’. The memory address of x is assigned to myptr. Then it prints the value of x, the address stored in myptr, and the value of x obtained by dereferencing the pointer myptr.
     ```cpp
@@ -764,3 +765,36 @@ cout << "x = " << x << endl; // 'x' değişkeninin yeni değeri (20) yazdırıl�
 - To Modify the Content of Dynamically Allocated Memory.
     - By passing arguments by pointer to a function we can do modification in the content of dynamically allocated memory. It is mainly used when you want to allocate memory dynamically (by using functions like malloc, calloc, or realloc).
     
+## const with pointers
+- const anahtar kelimesinin pointer (işaretçi) ile kullanımı, işaretçinin ve işaret ettiği değerin değiştirilebilirliği konusunda önemli farklar yaratır. Aşağıda, const anahtar kelimesinin pointer ile farklı kullanımlarını ve anlamlarını açıklayan örnekler bulunmaktadır.
+1. const Değişkenler
+Bir değişkeni const olarak tanımlamak, bu değişkenin değerinin değiştirilemez olduğunu belirtir.
+2. Sabit Bir Değeri İşaret Eden Değiştirilebilir Pointer (Pointer to const)
+    - Bu kullanımda, pointer (işaretçi) değiştirilebilir, ancak işaret ettiği değerin değiştirilmesine izin verilmez.
+    ```cpp
+    const int* ptr;
+    int a = 5;
+    int b = 10;
+
+    ptr = &a; // ptr'yi a'ya işaret ettik
+    ptr = &b; // ptr'yi b'ye işaret ettik
+
+    // *ptr = 15; // Hata: ptr'nin işaret ettiği değeri değiştiremezsiniz
+    ```
+3. Sabit Pointer (const Pointer)
+    - Bu kullanımda, pointerın kendisi sabittir ve başka bir adresi işaret edemez, ancak işaret ettiği değerin değiştirilmesine izin verir.
+    ```cpp
+    int* const ptr = &a; // ptr'yi a'ya işaret eden sabit pointer olarak tanımladık
+
+    *ptr = 20; // ptr'nin işaret ettiği değeri değiştirebiliriz
+    // ptr = &b; // Hata: ptr'yi başka bir adresi işaret edecek şekilde değiştiremeyiz
+    ```
+4. Sabit Bir Değeri İşaret Eden Sabit Pointer (const Pointer to const)
+    - Bu kullanımda, pointer da sabittir ve işaret ettiği değer de sabittir. Hem pointerın adresi hem de işaret ettiği değer değiştirilemez.
+    
+    ```cpp
+    const int* const ptr = &a; // ptr, a'ya işaret eden sabit bir pointerdır ve a'nın değeri değiştirilemez
+
+    // *ptr = 20; // Hata: ptr'nin işaret ettiği değeri değiştiremeyiz
+    // ptr = &b; // Hata: ptr'yi başka bir adresi işaret edecek şekilde değiştiremeyiz
+    ```
