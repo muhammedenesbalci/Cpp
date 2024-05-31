@@ -19,13 +19,15 @@
 - [Invalid pointers](#invalid-pointers)
 - [Advantages of Pointers](#advantages-of-pointers)
 - [References](#references)
+- [Return reference](#return-reference)
 - [Applications of Reference](#applications-of-reference)
 - [References vs Pointers](#references-vs-pointers)
 - [Limitations of References](#limitations-of-references)
 - [Advantages of using References](#advantages-of-using-references)
 - [Can References Refer to Invalid Location](#can-references-refer-to-invalid-location)
 - [When do we pass arguments by pointer](#when-do-we-pass-arguments-by-pointer)
-
+- [const with pointers](#const-with-pointers)
+- [const with references](#const-with-references)
 
 ## First example
 - Explanation(basic_ex_1): The above program declares an integer variable ‘x’ initialized with value 10 and a pointer variable named ‘myptr’. The memory address of x is assigned to myptr. Then it prints the value of x, the address stored in myptr, and the value of x obtained by dereferencing the pointer myptr.
@@ -341,10 +343,10 @@
 - Note: Pointer arithmetic is meaningless unless performed on an array.
 
 ## Return pointer
-- benim bilidğim 4 farklı şekilde array pointeri döndürebilirz. örnekleri en sonda
+- benim bilidğim 4 farklı şekilde array pointeri döndürebilirz. örnekleri en sonda. ve fonksiyonlar bölümünde.
     - pass by pointer dışarıdan gelen değerler
     - pass by value dışarıdan gelen değerler
-    - static array içeride oluşturulan array
+    - static array içeride oluşturulan array(örnekler hem burada hem static not static de var )
     - memory allocation içeride oluşturulan array
     - aynısı char arrayleri içinde geçerli olması lazım
 
@@ -566,7 +568,7 @@
 
 # References 
 - Referanslar (references), C++ programlama dilinde kullanılan ve bir değişkenin başka bir isimle anılmasını sağlayan özel bir yapıdır. Referanslar, bir değişkenin var olan adını başka bir isim altında kullanmamızı sağlar ve bu sayede değişken üzerinde işlem yaparken alternatif bir yol sunar.
-    1. **Başka bir isimle erişim sağlar**: Bir referans, bir değişkenin başka bir ismi olarak kullanılır. Bu şekilde, bir değişkene hem asıl adıyla hem de referans adıyla erişilebilir.
+    1. **Başka bir isimle erişim sağlar**: Bir referans, bir değişkenin başka bir ismi olarak kullanılır. Bu şekilde, bir değişkene hem asıl adıyla hem de referans adıyla erişilebilir. direkt 10 gibi bir değer atayamayız.
     2. **Bir kez tanımlandıktan sonra değiştirilemez**: Bir referans tanımlandıktan sonra başka bir değişkene veya değere bağlanamaz. Yani, referans bir kez belirli bir değişkeni temsil etmeye başladığında, başka bir değişkene bağlanamaz veya başka bir değere atanamaz.
     3. **Adres operatörü (&) ile tanımlanır**: Bir referans tanımlamak için değişkenin isminin önüne "&" (adres operatörü) eklenir.
 - Referanslar özellikle fonksiyonlara parametre geçirirken veya fonksiyonlardan geri dönüş alırken kullanılarak bellek ve performans tasarrufu sağlar. Ayrıca, referanslar C++ dilinde nesne tabanlı programlamada önemli bir yapıdır ve sıklıkla kullanılır.
@@ -575,17 +577,27 @@
 - Değişken Erişimi: Referanslar, ilgili değişkenin yerini temsil eder. Yani, referans aracılığıyla değişkenin kendisi değil, içeriği (değeri) erişilir veya değiştirilir.
 - Değişkeni İzleme: Bir referans tanımlandığında, ilgili değişkenin başka bir adı haline gelir. Referans üzerinden yapılan herhangi bir değişiklik, asıl değişkene de yansır.
 - Fonksiyonlarda Kullanım: Referanslar, fonksiyonlara parametre olarak geçirilirken kullanılır. Bu şekilde, fonksiyonlar üzerinde doğrudan değişkenin kendisi üzerinde işlem yapılabilir, böylece değeri kopyalamak yerine doğrudan orijinal değişken üzerinde çalışılabilir.
-```cpp
-int x = 10;
-int& ref = x; // 'ref', 'x' değişkeninin referansı olarak tanımlanıyor
+- **(Önemli)** referanslar kesinlikle boş başlatılmamalı bir değere initialize ederek başlatılmalıdır. constlar da aynı şekilde.
+- referanslara direkt değer atılamaz normalde. ama const olarak tanımlarsan direkt refarans atayabilirsin. const with references kısmına bakabilirsin en altta.
+    ```cpp
+    int x = 10;
+    int& ref = x; // 'ref', 'x' değişkeninin referansı olarak tanımlanıyor
 
-cout << "x = " << x << endl; // 'x' değişkeninin değeri yazdırılır
-cout << "ref = " << ref << endl; // 'ref', 'x' değişkeninin değerini yansıtır
+    cout << "x = " << x << endl; // 'x' değişkeninin değeri yazdırılır
+    cout << "ref = " << ref << endl; // 'ref', 'x' değişkeninin değerini yansıtır
 
-ref = 20; // 'ref' üzerinden 'x' değişkeninin değeri 20 olarak değiştirilir
-cout << "x = " << x << endl; // 'x' değişkeninin yeni değeri (20) yazdırılır
-```
+    ref = 20; // 'ref' üzerinden 'x' değişkeninin değeri 20 olarak değiştirilir
+    cout << "x = " << x << endl; // 'x' değişkeninin yeni değeri (20) yazdırılır
+    ```
+    ```cpp
+    //yanlış kullanım
+    int& ref = 10;
 
+    int& ref; // Hata: referans oluşturulurken başlatılmalıdır
+    ref = 10; // Bu ifade geçersizdir, çünkü ref'in bağlanacağı bir değişken yoktur
+    ```
+## Return reference
+- ayrıntılar fonksiyon bölümünde
 ## Applications of Reference
 - There are multiple applications for references in C++, a few of them are mentioned below:
     - Modify the passed parameters in a function
@@ -674,7 +686,7 @@ cout << "x = " << x << endl; // 'x' değişkeninin yeni değeri (20) yazdırıl�
     int a = 5;
     int b = 6;
     int &p = a;
-    int &p = b; // This will throw an error of "multiple declaration is not allowed"
+    int &p = b; // This will throw an error of "multiple declaration is not allowed" normal değer atayabilirsin ama başka bir değişkeni atayamazsın.
 
     // However it is valid statement,
     int &q = p;
@@ -743,6 +755,7 @@ cout << "x = " << x << endl; // 'x' değişkeninin yeni değeri (20) yazdırıl�
     ```
     - Once fun() returns, the space allocated to it on the stack frame will be taken back. So the reference to a local variable will not be valid.
     - bu fonksiyon düzgün çalışmaz çünkü local veri yok olacaktır. doğru kullanımı aşağıdaki gibidir
+    - static değişkenin referansını döndürürsek artık o fonksiyonun içindeki static veriye dışarıdan da ulaşabilir oluyoruz. aynısını pointerlar ile de yapabilirsin.
         ```cpp
         int& fun() {
             static int a = 10; // static olarak tanımlanmış bir değişken kullanılıyor
@@ -770,7 +783,7 @@ cout << "x = " << x << endl; // 'x' değişkeninin yeni değeri (20) yazdırıl�
 1. const Değişkenler
 Bir değişkeni const olarak tanımlamak, bu değişkenin değerinin değiştirilemez olduğunu belirtir.
 2. Sabit Bir Değeri İşaret Eden Değiştirilebilir Pointer (Pointer to const)
-    - Bu kullanımda, pointer (işaretçi) değiştirilebilir, ancak işaret ettiği değerin değiştirilmesine izin verilmez.
+    - Bu kullanımda, pointer (işaretçi) değiştirilebilir, ancak işaret ettiği değerin değiştirilmesine izin verilmez. (tutulan pointer aracılığı ile)
     ```cpp
     const int* ptr;
     int a = 5;
@@ -782,7 +795,7 @@ Bir değişkeni const olarak tanımlamak, bu değişkenin değerinin değiştiri
     // *ptr = 15; // Hata: ptr'nin işaret ettiği değeri değiştiremezsiniz
     ```
 3. Sabit Pointer (const Pointer)
-    - Bu kullanımda, pointerın kendisi sabittir ve başka bir adresi işaret edemez, ancak işaret ettiği değerin değiştirilmesine izin verir.
+    - Bu kullanımda, pointerın kendisi sabittir ve başka bir adresi işaret edemez, ancak işaret ettiği değerin değiştirilmesine izin verir. (tutulan pointer aracılığı ile)
     ```cpp
     int* const ptr = &a; // ptr'yi a'ya işaret eden sabit pointer olarak tanımladık
 
@@ -790,7 +803,7 @@ Bir değişkeni const olarak tanımlamak, bu değişkenin değerinin değiştiri
     // ptr = &b; // Hata: ptr'yi başka bir adresi işaret edecek şekilde değiştiremeyiz
     ```
 4. Sabit Bir Değeri İşaret Eden Sabit Pointer (const Pointer to const)
-    - Bu kullanımda, pointer da sabittir ve işaret ettiği değer de sabittir. Hem pointerın adresi hem de işaret ettiği değer değiştirilemez.
+    - Bu kullanımda, pointer da sabittir ve işaret ettiği değer de sabittir. Hem pointerın adresi hem de işaret ettiği değer değiştirilemez. 
     
     ```cpp
     const int* const ptr = &a; // ptr, a'ya işaret eden sabit bir pointerdır ve a'nın değeri değiştirilemez
@@ -798,3 +811,77 @@ Bir değişkeni const olarak tanımlamak, bu değişkenin değerinin değiştiri
     // *ptr = 20; // Hata: ptr'nin işaret ettiği değeri değiştiremeyiz
     // ptr = &b; // Hata: ptr'yi başka bir adresi işaret edecek şekilde değiştiremeyiz
     ```
+
+
+## const with references
+- const Referanslar
+    - const referanslar, referans alınan değerin değiştirilmesini engeller. Bu, geçici değerlere (temporary values), literal sabitlere ve değişkenlere referans oluşturmaya olanak tanır. const referansların bazı önemli özellikleri şunlardır:
+    - Geçici Değerlerle Kullanım:
+        - const referanslar, geçici değerlere bağlanabilir ve onların ömrünü referansın ömrü boyunca uzatır.
+            ```cpp
+            #include <iostream>
+
+            int main() {
+                const int& ref = 10; // Geçici değere const referans
+                std::cout << "Value of ref: " << ref << std::endl; // 10
+
+                // ref = 20; // Derleme hatası: const referans ile işaret edilen değer değiştirilemez
+                return 0;
+            }
+            ```
+
+    - const refeerence:
+        - Sabit değerlere referans oluşturabilir ve onların değiştirilemezliğini korur.
+            ```cpp
+            #include <iostream>
+
+            int main() {
+                int a = 20;
+                const int& ref = a; // Değişkene const referans
+
+                std::cout << "Value of ref: " << ref << std::endl; // 20
+
+                // ref = 30; // Derleme hatası: const referans ile işaret edilen değer değiştirilemez
+                a = 30; // Geçerli: a'nın değeri değiştirilebilir
+                std::cout << "New value of a: " << a << std::endl; // 30
+                std::cout << "Value of ref: " << ref << std::endl; // 30
+
+                return 0;
+            }
+            ```
+        - Bu örnekte, const int& ref = a; ifadesi a değişkenine const referans oluşturur. ref aracılığıyla a'nın değeri değiştirilemez, ancak a'nın kendisi doğrudan değiştirilebilir.
+
+    - Fonksiyon Parametreleri:
+        - Büyük veri yapıları veya objeler için fonksiyon parametresi olarak kullanılabilir, böylece kopyalama maliyetinden kaçınılır ve verinin değiştirilemezliği garanti edilir.
+            ```cpp
+            #include <iostream>
+
+            void printValue(const int& value) {
+                std::cout << "Value: " << value << std::endl;
+            }
+
+            int main() {
+                int a = 40;
+                printValue(a); // Değişken ile çalışır
+                printValue(50); // Geçici değer ile çalışır
+
+                return 0;
+            }
+            ```
+    - sabitlere reference: const bir değişkene referans olabilnmek için referansında const olması lazım.
+        ```cpp
+        #include <iostream>
+
+        int main() {
+            const int a = 10;       // a bir const değişken
+            const int& ref = a;     // ref, a'nın const referansı
+            // int& ref2 = a;       // Derleme hatası: const olmayan referans, const bir değişkene bağlanamaz
+
+            std::cout << "Value of a: " << a << std::endl;       // 10
+            std::cout << "Value of ref: " << ref << std::endl;   // 10
+
+            // ref = 20; // Derleme hatası: const referans ile işaret edilen değer değiştirilemez
+
+            return 0;
+        }
+        ```

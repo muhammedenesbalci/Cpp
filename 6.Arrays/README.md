@@ -16,13 +16,19 @@
     //dogru
     int arr[]  = {1,2};
 
-    //dogru
+    //yanlış(stringler aklına gelsin orda karşımıza çıkmıştı bu)
     int arr[2];
     arr[2]  = {1,2};
+
+     //dogru(stringler aklına gelsin orda karşımıza çıkmıştı bu)
+    int arr[2];
+    arr[0] = 1;
+    arr[1] = 2; // Bu ifade doğrudur
 
     //dogru
     int arr[2]  = {1,2};
     ```
+- dizi tanım sırasında direkt başlatılmalıdır yani içeirği doldurulmalıdır toplu bir şekilde yapmak isityorsan. toplu yapmak istemiyorsan tek tek ekleyebilrisn sonradan. ama sonrdan eklerken toplu değil tek tek ekleyebilrsn sadecee. char stringlerinde vardı bu konu hatırlarsan. en başta direkt atayabiliyorduk sonradan değiştiremiyorduk.Değiştirmek istersek sonradan tek tek atamamız gerekiyordu.
 
 ## Variable Length Arrays (VLAs) in C
 - In C, variable length arrays (VLAs) are also known as runtime-sized or variable-sized arrays. The size of such arrays is defined at run-time.

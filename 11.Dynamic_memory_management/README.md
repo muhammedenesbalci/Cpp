@@ -18,6 +18,7 @@
     - Diziler (Arrays):
         - Büyük ve değişken boyutlu diziler dinamik olarak tahsis edilerek, programın çalışma zamanındaki bellek gereksinimlerine uyum sağlanır. 
         - Aynı zamanda fonksiyon içinden array döndürükende kullanılabilir. Local oluşturulan arrayleri döndüremiyoruz çünkü
+- Dynmaic olarak alan ayırıdğımız için elimize geçen pointera direkt değer atayabilriz.
 
 ## Content
 - [Dynamic Memory Allocation in C](#dynamic-memory-allocation-in-c)
@@ -30,6 +31,7 @@
 - [Differences new and malloc](#differences-new-and-malloc)
 - [Memory Leaks](#memory-leaks)
 - [Difference between Static and Dynamic Memory Allocation](#difference-between-static-and-dynamic-memory-allocation)
+- [Extra syntax for new operator](#extra-syntax-for-new-operator)
 
 ## Dynamic Memory Allocation in C
 - Since C is a structured language, it has some fixed rules for programming. One of them includes changing the size of an array. An array is a collection of items stored at contiguous memory locations. 
@@ -89,6 +91,7 @@
     - C uses the malloc() and calloc() function to allocate memory dynamically at run time and uses a free() function to free dynamically allocated memory. C++ supports these functions and also has two operators new and delete, that perform the task of allocating and freeing the memory in a better and easier way.
 ## new and delete operator
 - The new operator denotes a request for memory allocation on the Free Store. If sufficient memory is available, a new operator initializes the memory and returns the address of the newly allocated and initialized memory to the pointer variable. 
+- new operatörünü kullanırken dynamic olarak alan tahsis ettiğimiz için. direkt o pointerı dereference edip değer atayabiliriz. Yani herhangi bir değişkenin adresini vermemiz gerekmiyor. Zaten ayrılmış bir alanın pointeri geçiyor elimize. aslında alan ayırırken bni yandan da initialize ediyor genellikle.(Özellikle classlarda ççok önemli)
 - Syntax to use new operator
     ```cpp
     pointer-variable = new data-type;
@@ -108,8 +111,8 @@
     int *p = new int;
     ```
 - Arrays
-- Class and Structure. Consturctor olması lazım bunlarda kullanabilmek için. Genellikle olur yani.
-- Yeniden alan tahsis etme yok realloc için onun için aiağıdaki gibi bir yöntem izleyebilirsin. aynı pointerin üzerine tekrar new ile yazmak memory leaks e sebeb olcuaktır(kayıp pointer aşağıda anlattık)
+- Class and Structure. Consturctor olması lazım bunlarda kullanabilmek için. Çünkü new veya delete kullanılırken constructor ve destructor çağrılıyor. Objeyi oluşturuyor çünkü alan ayırırken.
+- Yeniden alan tahsis etme yok realloc için onun için aiağıdaki gibi bir yöntem izleyebilirsin. aynı pointerin üzerine tekrar new ile yazmak memory leaks e sebeb olcuaktır(kayıp pointer aşağıda anlattık). alan ayırırken temp arrayı deallocate etme çünkü onu deallocate edersen yeni arrayinde işlevsiz kalır çünkü alanları gitmiş oluyor. zaten alanı kopyalamıyoruz iki pointerimiz var ikiside aynı alana işaret ediyor belki temp_arrayi nullptr yapabilirsn. DSA ARRAYS extend and narrow fonksiyonlarını incele.
     ```cpp
     #include <iostream>
     #include <algorithm> // std::copy için gerekli
@@ -357,3 +360,88 @@
 9. **Çalışma Zamanında Bellek Tahsisi**: Bellek çalışma zamanında tahsis edilir.
 10. **Herhangi Bir Zaman Bellek Serbest Bırakma**: Tahsis edilen bellek programın herhangi bir anında serbest bırakılabilir.
 11. **Örnek**: Dinamik bellek tahsisi genellikle bağlantılı listeler (linked lists) için kullanılır.
+
+## Extra syntax for new operator
+- Hangisini kullanmak istediğin sana kalmış
+- Tek Bir Değer:
+    ```cpp
+    int* ptr = new int(10); // Dinamik bellek tahsisi ve değer atama
+    cout << "Value: " << *ptr << endl;
+    delete ptr; // Belleği serbest bırakma
+    ```
+
+    ```cpp
+    int* ptr = new int; // Dinamik bellek tahsisi
+    *ptr = 10; // Değer atama
+    cout << "Value: " << *ptr << endl;
+    delete ptr; // Belleği serbest bırakma
+    ```
+
+- Dizi (Array)::
+    ```cpp
+    int* arr = new int[5]{1, 2, 3, 4, 5}; // Dinamik bellek tahsisi ve diziye değer atama
+    for(int i = 0; i < 5; ++i) {
+        cout << "arr[" << i << "] = " << arr[i] << endl;
+    }
+    delete[] arr; // Belleği serbest bırakma
+    ```
+    ```cpp
+    int* arr = new int[5]; // Dinamik bellek tahsisi
+    for(int i = 0; i < 5; ++i) {
+        arr[i] = i + 1; // Değer atama
+    }
+    for(int i = 0; i < 5; ++i) {
+        cout << "arr[" << i << "] = " << arr[i] << endl;
+    }
+    delete[] arr; // Belleği serbest bırakma
+    ```
+
+- Sınıflar (Classes):
+    ```cpp
+   class MyClass {
+    public:
+        int value;
+        MyClass(int v) : value(v) {
+            cout << "MyClass constructor called with value: " << value << endl;
+        }
+        ~MyClass() {
+            cout << "MyClass destructor called for value: " << value << endl;
+        }
+        void display() const {
+            cout << "Value: " << value << endl;
+        }
+    };
+
+    MyClass* obj = new MyClass(10); // Dinamik bellek tahsisi ve nesne oluşturma ve parametreli constructor çağrısı.
+    obj->display();
+    delete obj; // Belleği serbest bırakma
+    ```
+    ```cpp
+    class MyClass {
+    public:
+        int value;
+        MyClass() : value(0) {
+            cout << "MyClass default constructor called" << endl;
+        }
+        MyClass(int v) : value(v) {
+            cout << "MyClass parameterized constructor called with value: " << value << endl;
+        }
+        ~MyClass() {
+            cout << "MyClass destructor called for value: " << value << endl;
+        }
+        void setValue(int v) {
+            value = v;
+        }
+        void display() const {
+            cout << "Value: " << value << endl;
+        }
+    };
+
+    int main() {
+        MyClass* obj = new MyClass; // Dinamik bellek tahsisi ve default constructor çağrısı
+        obj->setValue(10); // Değer atama
+        obj->display();
+        delete obj; // Belleği serbest bırakma
+        return 0;
+    }
+    ```

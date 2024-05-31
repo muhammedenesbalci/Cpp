@@ -114,7 +114,7 @@ void pointer_arrays() {
     printf("&values[4]: %p\n", &values[4]);
     
     cout << "valuesPtr---------------------------\n";
-    valuesPtr = values; //direkt ilk elemanın adresini atare
+    valuesPtr = values; //direkt ilk elemanın adresini atar
     //valuesPtr = &values[0]; // şeklinde de tanımlayabilirdik
     
     printf("valuesPtr: %p\n", valuesPtr);

@@ -17,6 +17,7 @@
 - [Default Arguments](#default-arguments)
 - [Inline Functions](#inline-functions)
 - [lambda expression](#lambda-expression)
+- [Function Declaration and Definition](#function-declaration-and-definition)
 
 ## Function
 - A function is a set of statements that takes input, does some specific computation, and produces output. The idea is to put some commonly or repeatedly done tasks together to make a function so that instead of writing the same code again and again for different inputs, we can call this function. In simple terms, a function is a block of code that runs only when it is called.
@@ -549,29 +550,29 @@ recursionfunction()
 1. Methods not returning a value
     - In C++ one cannot skip the return statement when the methods are of the return type. The return statement can be skipped only for void types.
     - Not using a return statement in void return type function When a function does not return anything, the void return type is used. So if there is a void return type in the function definition, then there will be no return statement inside that function
-    ```cpp
-    // C++ code to show not using return 
-    // statement in void return type function 
-    #include <iostream> 
-    using namespace std; 
-    
-    // void method 
-    void Print() 
-    { 
-        cout << "Welcome to GeeksforGeeks"; 
-    } 
-    
-    // Driver method 
-    int main() 
-    { 
-    
-        // Calling print 
-        Print(); 
-    
-        return 0; 
-    } 
-    //Welcome to GeeksforGeeks
-    ```
+        ```cpp
+        // C++ code to show not using return 
+        // statement in void return type function 
+        #include <iostream> 
+        using namespace std; 
+        
+        // void method 
+        void Print() 
+        { 
+            cout << "Welcome to GeeksforGeeks"; 
+        } 
+        
+        // Driver method 
+        int main() 
+        { 
+        
+            // Calling print 
+            Print(); 
+        
+            return 0; 
+        } 
+        //Welcome to GeeksforGeeks
+        ```
     - Using the return statement in void return type function Now the question arises, what if there is a return statement inside a void return type function? Since we know that, if there is a void return type in the function definition, then there will be no return statement inside that function. But if there is a return statement inside it, then also there will be no problem
     - This syntax is used in function just as a jump statement in order to break the flow of the function and jump out of it. One can think of it as an alternative to “break statement” to use in functions.
 
@@ -660,6 +661,186 @@ recursionfunction()
 3. return array
     -  dynamic array: bir fonksiyon bir dizi (array) döndürebilir. Ancak C++'ta fonksiyonlar doğrudan bir dizi döndüremezler. Bunun yerine, bir fonksiyon bir dizi döndürmek istiyorsa, genellikle dinamik bellek tahsisi yapılır ve bu bellek bloğunun adresi bir pointer aracılığıyla döndürülür. Bu pointer, işaret ettiği bellek bloğunu temsil eden diziye erişim sağlar.
 
+4. return reference(bunu örneklerini canlı olarak çok yazmadım static bölümünde bulabilirsin veya oop de this kullanımında chainlerde)
+    - Referans döndüren fonksiyonlar, çağrıldıklarında bir nesnenin veya değerin kendisine referans döndüren fonksiyonlardır. Bu, fonksiyonun dönüş değerinin, fonksiyonun çağrıldığı nesne veya değerin adresini içerdiği anlamına gelir. Bu tür fonksiyonlar, özellikle büyük veri yapılarıyla çalışırken performans avantajı sağlar ve daha esnek kod yazma imkanı sunar. 
+    - referans döndüreceksen, o fonksiyonu bir referans yakalamalı.
+
+    - Performans:
+        - kopyalama Maliyeti: Referans döndürmek, veri kopyalama işlemini ortadan kaldırır. Büyük nesneler veya veri yapılarıyla çalışırken, veri kopyalama işlemi yüksek maliyetli olabilir. Referans döndürerek bu maliyet azaltılır.
+        - Bellek Kullanımı: Kopyalama yapılmadığı için bellekte gereksiz veri kopyaları oluşmaz.
+
+    - Method Chaining:
+        - Zincirleme Fonksiyon Çağrıları: Referans döndüren fonksiyonlar, zincirleme fonksiyon çağrılarına olanak tanır. Bu, bir nesne üzerinde birden fazla işlemi tek bir ifadede gerçekleştirmeyi sağlar.
+        - Temiz ve Okunabilir Kod: Method chaining, kodun daha okunabilir ve yönetilebilir olmasını sağlar.
+
+    - Esneklik ve Kontrol:
+        - doğrudan Erişim: Referans döndürmek, fonksiyonun çağrıldığı nesne veya değere doğrudan erişim sağlar. Bu, nesne üzerinde doğrudan değişiklik yapmayı mümkün kılar.
+        - Yan Etki Yönetimi: Referans döndüren fonksiyonlar, yan etkilerin yönetilmesinde daha fazla kontrol sunar, çünkü doğrudan aynı nesne üzerinde çalışılır.
+
+    - Örnekler:
+        - Basit Veri Tipleri: Basit veri tiplerinde referans döndüren fonksiyonlar, bir değişkenin kendisine referans döndürerek değişikliklerin doğrudan bu değişken üzerinde yapılmasını sağlar. dönürülen değişkene herhangi sağına soluna bir operator yazmıyoruz. ya içeriye referans olarak almış oluyoruz. ya da içerden direkt döndürüyoruz döndükten sonra referansa eşitliyoruz. (Burada input olarak referans almışsız)
+            ```cpp
+            #include <iostream>
+            // Function that returns a reference to an integer
+            int& increment(int& value) {
+                value++;
+                return value;
+            }
+
+            int main() {
+                int a = 5;
+                int& ref = increment(a);  // ref is a reference to a
+                std::cout << "a: " << a << std::endl;  // Output: a: 6
+                std::cout << "ref: " << ref << std::endl;  // Output: ref: 6
+
+                ref++;  // Increment through the reference
+                std::cout << "a: " << a << std::endl;  // Output: a: 7
+                return 0;
+            }
+            ```
+        - Diziler: Dizilerle çalışırken, bir dizinin elemanına referans döndüren fonksiyonlar, bu elemanlar üzerinde doğrudan değişiklik yapmayı sağlar. buradaki referans döndürme arrayın sakladığı eleman yerien direkt array[2] yi döndürüyor yani onu döndürdükten sonra yaptığımız işlemler. array[2] olarak düşünebilirsin
+            ```cpp
+            #include <iostream>
+            // Function that returns a reference to an element of an array
+            int& getElement(int* array, int index) {
+                return array[index];
+            }
+
+            int main() {
+                int arr[5] = {1, 2, 3, 4, 5};
+                getElement(arr, 2) = 10;  // Set the third element to 10
+
+                for (int i = 0; i < 5; ++i) {
+                    std::cout << arr[i] << " ";  // Output: 1 2 10 4 5
+                }
+                std::cout << std::endl;
+                return 0;
+            }
+            ```
+
+        - Sınıflarla çalışırken, bir sınıfın üye fonksiyonlarının referans döndürmesi, method chaining ve daha esnek nesne yönetimi sağlar.
+            ```cpp
+            #include <iostream>
+            #include <string>
+
+            class Person {
+            public:
+                Person(const std::string& name, int age) : name(name), age(age) {}
+
+                // Set the name and return a reference to the current object
+                Person& setName(const std::string& name) {
+                    this->name = name;
+                    return *this; // Returns a reference to the current object
+                }
+
+                // Set the age and return a reference to the current object
+                Person& setAge(int age) {
+                    this->age = age;
+                    return *this; // Returns a reference to the current object
+                }
+
+                // Print the details of the person
+                void print() const {
+                    std::cout << "Name: " << name << ", Age: " << age << std::endl;
+                }
+
+            private:
+                std::string name;
+                int age;
+            };
+
+            int main() {
+                Person p("Alice", 25);
+                p.setName("John").setAge(30).print(); // Method chaining
+                return 0;
+            }
+            ```
+        - Üye Değişkenine Referans Döndüren Fonksiyon
+            ```cpp
+            #include <iostream>
+            class MyClass {
+            private:
+                int value;
+            public:
+                MyClass(int v) : value(v) {}
+
+                int& getValue() {
+                    return value;
+                }
+            };
+
+            int main() {
+                MyClass obj(10);
+                int& ref = obj.getValue();
+
+                std::cout << "Value: " << ref << std::endl; // 10
+                ref = 20;
+                std::cout << "Modified Value: " << obj.getValue() << std::endl; // 20
+
+                return 0;
+            }
+            ```
+        - Global Değişkene Referans Döndüren Fonksiyon. böylece global ref ile de global valueyi değiştirmiş oluyoruz(pointerlar ile de yapabilirdik aynısını globalın adresini döndürebilirdik. çünkü globalın adresi local değil kaybolmaz o yüzden)
+            ```cpp
+            #include <iostream>
+
+            int globalValue = 42;
+
+            int& getGlobalValue() {
+                return globalValue;
+            }
+
+            int main() {
+                int& ref = getGlobalValue();
+
+                std::cout << "Global Value: " << ref << std::endl; // 42
+                ref = 100;
+                std::cout << "Modified Global Value: " << globalValue << std::endl; // 100
+
+                return 0;
+            }
+            ```
+        - Statik Değişkene Referans Döndüren Fonksiyon(örnekleri imcele static non static) ref değişkenine de static değişkenine erişim vermiş oluyoruz aynısını pointerlar ile de yapabilirdik(çünkü static değişkenin adresi sabit yani local değil bir yere kaybolmuyor)
+            ```cpp
+            #include <iostream>
+
+            int& getStaticValue() {
+                static int staticValue = 99;
+                return staticValue;
+            }
+
+            int main() {
+                int& ref = getStaticValue();
+
+                std::cout << "Static Value: " << ref << std::endl; // 99
+                ref = 200;
+                std::cout << "Modified Static Value: " << getStaticValue() << std::endl; // 200
+
+                return 0;
+            }
+            ```
+        - STL Container Elemanına Referans Döndüren Fonksiyon(arraylarde anlattığım mantıkla tamamen aynı)
+            ```cpp
+            #include <iostream>
+            #include <vector>
+
+            int& getVectorElement(std::vector<int>& vec, int index) {
+                return vec[index];
+            }
+
+            int main() {
+                std::vector<int> myVector = {10, 20, 30, 40, 50};
+                int& ref = getVectorElement(myVector, 3);
+
+                std::cout << "Vector Element: " << ref << std::endl; // 40
+                ref = 100;
+                std::cout << "Modified Vector Element: " << myVector[3] << std::endl; // 100
+
+                return 0;
+            }
+
+            ```
+
 ## Default Arguments
 1. A default argument is a value provided in a function declaration that is automatically assigned by the compiler if the calling function doesn’t provide a value for the argument. In case any value is passed, the default value is overridden. 
 - exp1: 
@@ -711,6 +892,15 @@ recursionfunction()
     - exp:
         - Here, we see a default constructor with no arguments and a default constructor with one default argument. The default constructor with argument has a default parameter x, which has been assigned a value of 0. 
 
+- Argumanlı fonksiyon oluyşturuken dikkat etmemiz gereken bir şey var. Fonksiyonu declaration ederken(Prototype) bu kısımda default parametreleri vermemen lazım(hata dönüyor yoksa). Fonksiyonuun Definitionunu yazarken vermeliyiz default parametreleri.
+```cpp
+int sum(int x, int y); //Declaration or Prototype
+
+int sum(int x = 0, int y = 0) { // Function declaration
+    return x + y;
+}
+```
+
 ### Key Points
 - Default arguments are different from constant arguments as constant arguments can’t be changed whereas default arguments can be overwritten if required.
 - Default arguments are overwritten when the calling function provides values for them. For example, calling the function sum(10, 15, 25, 30) overwrites the values of z and w to 25 and 30 respectively.
@@ -722,6 +912,7 @@ recursionfunction()
     ```
 
 ## Inline Functions
+- inline'ın derleyiciye verilen bir talimat olmadığını, sadece bir istek olduğunu ve derleyicinin bu isteği, koşullara bağlı olarak yerine getirip getirmeyeceğini unutmamak gerekir.
 - C++ provides inline functions to reduce the function call overhead. An inline function is a function that is expanded in line when it is called. When the inline function is called whole code of the inline function gets inserted or substituted at the point of the inline function call. This substitution is performed by the C++ compiler at compile time. An inline function may increase efficiency if it is small.
 - C++ dilinde inline fonksiyonlar, derleyiciye fonksiyonun metnini fonksiyon çağrısı yerine doğrudan yerleştirmesi için bir öneri olarak sunan bir özelliktir. Bu, kodun performansını artırabilir ve fonksiyon çağrılarının maliyetini azaltabilir.
 - inline fonksiyonlar genellikle kısa ve basit olan fonksiyonlar için kullanılır. Fonksiyonun tanımı genellikle başlık dosyalarında (header files) yer alır, bu nedenle her dosyada tekrar tanımlamaya gerek kalmaz. header de tanımlanır source de tanımlanmaz. her şeyi, header da olur
@@ -792,3 +983,15 @@ recursionfunction()
             - Belirli değişkenlere referans veya kopyalama aracılığıyla erişim sağlar. Örnek olarak [x, &y] ifadesi, x değişkenine kopyalama yoluyla ve y değişkenine referans yoluyla erişim sağlar.
         5. this Yakalama ([this]):
             - Sınıf üyesi bir lambda fonksiyonunda sınıfın diğer veri elemanlarına erişim sağlamak için kullanılır.
+
+## Function Declaration and Definition
+- **Function Declaration**:  Fonksiyon bildirimi veya fonksiyon prototype ı, bir fonksiyonun adını, dönüş türünü ve parametre türlerini belirterek derleyiciye fonksiyonun var olduğunu bildirmek için kullanılır. Fonksiyon bildirimi, genellikle bir başlık dosyasında (header file) veya bir programın başında yer alır. Bu, derleyicinin fonksiyonun varlığından haberdar olmasını sağlar, ancak fonksiyonun gövdesini içermez.
+    ```cpp
+    int add(int a, int b);
+    ```
+- **Function Definition**: Fonksiyon tanımı, fonksiyonun bildirimiyle birlikte fonksiyonun gövdesini de içerir. Fonksiyonun ne yapacağını belirten kod burada yer alır.
+    ```cpp
+    int add(int a, int b) {
+    return a + b;
+    }
+    ```

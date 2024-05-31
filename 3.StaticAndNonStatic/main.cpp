@@ -44,6 +44,7 @@ void static_variable_in_function_ex_usage() {
 
 int* static_variable_in_function_ex_3() {
     static int count = 0;
+    cout << "addres of static variable in function: " << &count << endl;
     count++;
     return &count;
 }
@@ -66,6 +67,7 @@ void use_of_static_variable_in_function_ex_3(){
 
     static_variable_in_function_ex_3();
     printf("%d\n", *p);
+    cout << "addres of static variable" << p << endl;
 }
 
 int* static_variable_in_function_ex_4() {
@@ -80,6 +82,27 @@ void use_of_static_variable_in_function_ex_4(){
     for(int i = 0; i < 6; i++) {
         cout  << *(p + i) << endl;
     }
+}
+
+int& static_variable_return_static_with_reference() {
+    static int a = 0;
+    cout << "addres of static variable in function: " << &a << endl;
+    a++;
+    return a;
+}
+
+void use_of_static_variable_in_function_ex_5() {
+    int& b = static_variable_return_static_with_reference();
+    cout << "b: " << b << endl;
+
+    static_variable_return_static_with_reference();
+    static_variable_return_static_with_reference();
+    static_variable_return_static_with_reference();
+    cout << "b: " << b << endl;
+
+    b = b + 9;
+    cout << "b: " << b << endl;
+    cout << "addres of static variable: " << &b << endl;
 }
 
 //Static Global Variable ex ------------------------------------------------------------
@@ -189,6 +212,9 @@ int main() {
 
     cout << "\nstatic variable in a function ex 4-------------------------------------------\n";
     use_of_static_variable_in_function_ex_4();
+
+    cout << "\nstatic variable in a function ex 5-------------------------------------------\n";
+    use_of_static_variable_in_function_ex_5();
 
     cout << "\nstatic global variable ex-------------------------------------------\n";
     static_global_variable_ex_usage();

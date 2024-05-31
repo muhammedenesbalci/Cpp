@@ -33,8 +33,12 @@
 - Note: Earlier in C++, we could use the auto keyword to declare the auto variables explicitly but after C++11, the meaning of auto keyword is changed and we could no longer use it to define the auto variables.
 
 ## extern Storage Class
+- (önemli)bu değişkene bir alan ayrılır ve o alanı işaret eden pointer hep sabittir.
+- başlanıç değeri atamazsan 0 dır.
+- fonksiyonlarda extern olabilir. ama fonkciyonlar için kullanmaya gerek yok genellikle değişkenler için kullanılır.
 - farklı dosyalardaki değişkenlere veya fonksiyonlara ulaşmak istiyorsak bunu kullanmalıyız
-- değişkenin değerini değiştirebiliyoruz ve son hali kalıyor
+- değişkenin değerini değiştirebiliyoruz ve son hali kalıyor.
+- extern keywordu ile bildiri yapıyoruz. Bu değişkenin bir yerlerde olduğuna dair.
 - C++ programında, farklı dosyalardaki değişkenlere veya fonksiyonlara erişmek için extern anahtar kelimesi kullanılabilir. Bu şekilde, bir dosyada tanımlanan ve başka bir dosyada kullanılacak olan değişken veya fonksiyonun bildirimi (declaration) yapılarak, program derlenirken bu değişkenin veya fonksiyonun başka dosyalardaki tanımına referans verilir.
     1. Değişkenin Tanımı (Definition):
         - İlk olarak, bir dosyada değişkeni tanımlamalısınız. Bu tanım, değişkenin bellekteki yerini ayrıştırır. Örnek olarak:
@@ -65,7 +69,7 @@
 - Bu yöntemle, C++ programınızda farklı dosyalardaki değişkenler arasında veri paylaşımı sağlayabilirsiniz. extern anahtar kelimesi, derleyiciye değişkenin başka yerlerde tanımlı olduğunu ve oradan alınması gerektiğini bildirir.
 
 - tanım yapıldı extern kullanıldığı dosyadaki son değeri alır hep bizim değişkenimiz. Her zamanm bir mainimiz olduğu için extern kullandığımızda son değer neyse o değer kullanılır hep.
-
+- const olarak da tanımlanabilir örneğini yaptık.
 - Son bir örnmek
     1. Başlık Dosyası (Header File) Oluşturma:
         - İlk olarak, ortak değişkenin bildirimini (declaration) içeren bir başlık dosyası oluşturun. Bu başlık dosyası, değişkenin var olduğunu ve diğer dosyalara extern anahtar kelimesiyle bildirilerek erişilebileceğini belirtir.
@@ -204,7 +208,7 @@
 - The static storage class is used to declare static variables which are popularly used while writing programs in C++ language. Static variables have the property of preserving their value even after they are out of their scope! Hence, static variables preserve the value of their last use in their scope.
 
 - We can say that they are initialized only once and exist until the termination of the program. Thus, no new memory is allocated because they are not re-declared. 
-
+- static değişkenlere bir kere alan ayrılır ve o alanı işaret eden pointer aynıdır değişmez.
 - Properties of static Storage Class
     - Scope: Local
     - Default Value: Zero
@@ -264,6 +268,7 @@
     ```
 ## Differences static and extern
 - static: static anahtar kelimesi, farklı bağlamlarda değişkenler ve fonksiyonlar için farklı anlamlar taşır:
+- en büyük fark birinin dosyaya özel olması birinin global olması.
     1. Dosya Kapsamında Kullanım (Global Değişkenler ve Fonksiyonlar):
         - Bir global değişken veya fonksiyon static olarak tanımlandığında, bu değişken veya fonksiyon sadece tanımlandığı dosya (derleme birimi) içinde erişilebilir olur. Yani, diğer dosyalardan erişilemez.
             ````cpp

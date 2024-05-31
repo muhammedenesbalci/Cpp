@@ -197,7 +197,8 @@ See the following C++ program for better clarification:
 	- const
 	- volatile
 	- restrict
-		- **const**: Objects of type const cannot be altered during execution. Const objects cannot be modified by your program while it is running.
+		- **const**: Objects of type const cannot be altered during execution. Const objects cannot be modified by your program while it is running. 	
+			- const değerine kesinlikle değer atanarak başaltılmalı yani sadece declaration yetmez initialization da yapman lazım.
 		- **volatile**: The modifier volatile tells the compiler that a variable’s value can be changed in ways that are not explicitly defined by the program. The compiler is informed by the modifier volatile that a variable’s value might change in ways that aren’t clearly stated in the program.
 			- volatile anahtar kelimesi, C ve C++ programlama dillerinde kullanılan bir nitelik (qualifier) veya belirleyicidir. Bu nitelik, bir değişkenin değerinin programın normal akışı dışında, öngörülemeyen şekillerde değişebileceğini ve bu değişikliklerin derleyici tarafından optimize edilmesini engellediğini belirtir. Yani, volatile kullanılan bir değişkenin değeri, programın beklenen akışı dışında, örneğin donanım veya dış etkenlerden kaynaklı olarak değişebilir.
 

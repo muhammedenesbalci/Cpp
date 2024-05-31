@@ -435,7 +435,6 @@ void lambda_ex_5() {
     MyClass obj(10);
     obj.testLambda();
 }
-
 int main() {   
     cout << "Basic Function ----------------------------------------\n";
     use_max();

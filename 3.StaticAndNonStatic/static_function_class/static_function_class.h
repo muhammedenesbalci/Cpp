@@ -8,7 +8,7 @@ using namespace std;
 class Efe {
 public:
     int non_static_variable = 10;
-    const static int static_variable = 5;
+    static const int static_variable = 5;
 
     // static member function
     static void printMsg();

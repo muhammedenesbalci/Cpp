@@ -123,7 +123,7 @@ void externStorageClass_file_4_common_variable() {
     function_in_file1(); // common_variable'ın değerini 100 olarak değiştir ve yazdır (file1.cpp)
     function_in_file2(); // common_variable'ın güncellenmiş değerini yazdır (file2.cpp)
     cout << "common_variable in main" <<  common_variable << endl;
-    std::cout << "common_variable address in main: " << &common_variable << std::endl;
+    std::cout << "common_variable_const address in main: " << &common_variable << std::endl;
 }
 
 // static Storage class ----------------------------------------------------------------
