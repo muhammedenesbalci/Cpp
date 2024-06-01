@@ -48,3 +48,6 @@
     - Const Sınıf Örneği: Veri üyeleri doğrudan değiştirilemez ve yalnızca const üye fonksiyonlar çağrılabilir.
     - Const Üye Fonksiyonlar: Veri üyelerini değiştirmeyen ve const nesneler üzerinde çağrılabilen fonksiyonlardır.
     - Mutable Veri Üyeleri: const üye fonksiyonlar tarafından değiştirilebilen veri üyeleridir.
+
+- **Overloading**
+    - const ve non-const fonksiyon overlaoding ini function overload bölümünde bulabilirsin.

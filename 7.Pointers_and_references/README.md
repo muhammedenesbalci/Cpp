@@ -849,7 +849,7 @@ Bir değişkeni const olarak tanımlamak, bu değişkenin değerinin değiştiri
                 return 0;
             }
             ```
-        - Bu örnekte, const int& ref = a; ifadesi a değişkenine const referans oluşturur. ref aracılığıyla a'nın değeri değiştirilemez, ancak a'nın kendisi doğrudan değiştirilebilir.
+        - Bu örnekte, const int& ref = a; ifadesi a değişkenine const referans oluşturur. ref aracılığıyla a'nın değeri değiştirilemez, ancak a'nın kendisi doğrudan değiştirilebilir. 
 
     - Fonksiyon Parametreleri:
         - Büyük veri yapıları veya objeler için fonksiyon parametresi olarak kullanılabilir, böylece kopyalama maliyetinden kaçınılır ve verinin değiştirilemezliği garanti edilir.

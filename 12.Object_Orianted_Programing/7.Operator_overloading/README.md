@@ -74,7 +74,8 @@
 
 ## Overloadable Operators
 ### Arithmetic Operators
-- (class or global ) Bu operatörler, hem sınıf üyesi fonksiyonlar olarak hem de global fonksiyonlar olarak overload edilebilir.(yeni bir obje return ederiz)
+- (class or global ) Bu operatörler, hem sınıf üyesi fonksiyonlar olarak hem de global fonksiyonlar olarak overload edilebilir.(yeni bir obje return ederiz).
+- c = a + b; yi düşün burada a lvalue b rvalue. bu yüzden yeni bi obje return ediyoruz.(move veya copy constructlarda etmiyorduk)
     - `+` (Addition)
     - `-` (Subtraction)
     - `*` (Multiplication)
@@ -94,6 +95,7 @@
 
 ### Assignment Operators
 - (class)Bu operatörler, sınıf üyesi fonksiyonlar olarak overload edilmelidir.(o anki objeyi döndürüyor)(move assignemntin amacı mevcut belleği serbest bırakarak diğer objenin belleğini almak önemli bir yaklaşım (asıl objenin belleğini almak yani))
+- a = b yi ele al. burada rvalue b lvalue a. asıl nesnemizi this ile yani a ile temsil ediyoruz. fonksiyona aldığımız obje b değeridir.
     - `=` (Assignment)
     - `+=` (Addition assignment)
     - `-=` (Subtraction assignment)
