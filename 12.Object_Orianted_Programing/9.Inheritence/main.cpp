@@ -407,23 +407,30 @@ void hybrid_inheritence_example__() {
 // Base Sınıfta Operator Overloading -1 -------------------------------------------------------
 class Base_Overload_1 {
 public:
-    int value;
-    Base_Overload_1(int val) : value(val) {}
+    int baseValue;
+    Base_Overload_1(int val) : baseValue(val) {}
 
     // Operator overloading for '+'
     Base_Overload_1 operator+(const Base_Overload_1& other) const {
-        return Base_Overload_1(this->value + other.value);
+        return Base_Overload_1(this->baseValue + other.baseValue);
     }
 
     void print() const {
-        std::cout << "Base value: " << value << std::endl;
+        std::cout << "Base value: " << this->baseValue << std::endl;
     }
 };
 
 class Derived_Overload_1 : public Base_Overload_1 {
 public:
-    Derived_Overload_1(int val) : Base_Overload_1(val) {}
+    int derivedValue;
+    Derived_Overload_1(int baseVal, int derivedVal) : Base_Overload_1(baseVal), derivedValue(derivedVal) {
+    }
     // No operator overloading in Derived class
+
+    void print() const {
+        std::cout << "Base value: " << this->baseValue << std::endl;
+        std::cout << "derived value: " << this->derivedValue << std::endl;
+    }
 };
 
 void base_overlaod_ex_1() {
@@ -434,8 +441,8 @@ void base_overlaod_ex_1() {
     b3.print();  // Output: Base value: 30
 
     cout << "Derived class----\n";
-    Derived_Overload_1 d1(30);
-    Derived_Overload_1 d2(40);
+    Derived_Overload_1 d1(30, 300);
+    Derived_Overload_1 d2(40, 400);
     Base_Overload_1 b4 = d1 + d2;  // Using Base class operator+
     b4.print();  // Output: Base value: 70 (Derived uses Base's operator+)
     cout << "Base class + derived class----\n";
@@ -490,32 +497,36 @@ void base_overlaod_ex_2() {
 // Base ve Derived class operator overlaoding overriding -------------------------------------------------------
 class Base_Overload_3 {
 public:
-    int value;
-    Base_Overload_3(int val) : value(val) {}
+    int baseValue;
+    Base_Overload_3(int val) : baseValue(val) {}
 
     // Operator overloading for '+'
     virtual Base_Overload_3 operator+(const Base_Overload_3& other) const {
         cout << "base class operator overloading called\n";
-        return Base_Overload_3(this->value + other.value);
+        return Base_Overload_3(this->baseValue + other.baseValue);
     }
 
     virtual void print() const {
-        std::cout << "Base value: " << value << std::endl;
+        std::cout << "Base value: " << baseValue << std::endl;
     }
 };
 
 class Derived_Overload_3 : public Base_Overload_3 {
 public:
-    Derived_Overload_3(int val) : Base_Overload_3(val) {}
+    int derivedValue;
+    Derived_Overload_3(int baseVal, int derivedVal) : Base_Overload_3(baseVal), derivedValue(derivedVal) {
+
+    }
 
     // Override the operator+ for the Derived class
     Derived_Overload_3 operator+(const Derived_Overload_3& other) const {
         cout << "derived class operator overloading called\n";
-        return Derived_Overload_3(this->value + other.value + 10); // Example modification
+        return Derived_Overload_3((this->baseValue + other.baseValue), (this->derivedValue + other.derivedValue)); // Example modification
     }
 
-    void print() const override {
-        std::cout << "Derived value: " << value << std::endl;
+    void print() const {
+        std::cout << "Base value: " << this->baseValue << std::endl;
+        std::cout << "derived value: " << this->derivedValue << std::endl;
     }
 };
 
@@ -527,13 +538,13 @@ void base_and_derived_overload() {
     b3.print();  
 
     cout << "Derived class----\n";
-    Derived_Overload_3 d1(30);
-    Derived_Overload_3 d2(40);
+    Derived_Overload_3 d1(30, 300);
+    Derived_Overload_3 d2(40, 400);
     Derived_Overload_3 d4 = d1 + d2;  
     d4.print();  
     cout << "Base class + derived class----\n";
     Base_Overload_3 b4 = b1 + d1;  
-    b4.print();  
+    b4.print();   
 }
 
 // Copy and move constructor example #########################################################
@@ -549,14 +560,17 @@ public:
     }
 
     // Copy Constructor
-    Base_cp(const Base_cp& other) : baseValue(other.baseValue) {
+    Base_cp(const Base_cp& other) {
         cout << "Base Copy Constructor" << endl;
+        this->baseValue = other.baseValue;
         this->dynamicPtr = new int(*(other.dynamicPtr));
     }
 
     // Move Constructor
-    Base_cp(Base_cp&& other) noexcept : baseValue(other.baseValue), dynamicPtr(other.dynamicPtr) {
+    Base_cp(Base_cp&& other) {
         cout << "Base Move Constructor" << endl;
+        this->baseValue = other.baseValue;
+        this->dynamicPtr = other.dynamicPtr;
         other.dynamicPtr = nullptr;
         other.baseValue = 0;
     }
@@ -590,18 +604,6 @@ public:
         cout << "Derived Destructor" << endl;
     }
 };
-
-void copy_and_move_constructor_ex() {
-    cout << "copy constructor ex----------------\n";
-    Derived_cp derived_c(5);
-    Derived_cp derived_c_copy = derived_c;
-
-    cout << "move constructor ex----------------\n";
-    Derived_cp derived_m(10);
-    Derived_cp derived_c_move = std::move(derived_m);
-
-    cout << "\n-------------------------------\n";
-}
 
 void copy_and_move_constrcutor_ex() {
     cout << "copy constrctor ex----------------\n";

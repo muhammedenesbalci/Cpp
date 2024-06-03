@@ -126,6 +126,7 @@
     ```
 5. **Hybrid Inheritance (Melez Kalıtım)**
     - Farklı kalıtım türlerinin bir kombinasyonudur. Bu tür kalıtım, daha karmaşık hiyerarşiler oluşturmak için kullanılır. Ancak, bu tür kalıtımda "diamond problem" adı verilen bir sorun ortaya çıkabilir ve bu sorunun çözümü için sanal kalıtım (virtual inheritance) kullanılabilir. mesela hierarchical ile multiple inheritence kombinasyonu.
+    - Burada virtual inheritence kullanırsan en derived classdan, en base classın constructorunu çağırmayı unutma.
 
 ## Diamond Problem ve Virtual Inheritance
 - Diamond Problem (Elmas Problemi), çoklu kalıtım kullanılan nesne yönelimli programlama dillerinde ortaya çıkabilen bir sorundur. Bu sorun, bir sınıfın iki farklı temel sınıftan aynı sınıfı miras alması durumunda ortaya çıkar. Bu durumda, türetilmiş sınıfta aynı temel sınıfın iki kopyası bulunur ve bu da belirsizliklere ve potansiyel hatalara yol açar.
@@ -183,20 +184,21 @@ class D : public B, public C {
     - Diamond Problem, bir sınıfın aynı temel sınıfı birden fazla yol üzerinden miras alması durumunda ortaya çıkar.
     - Virtual Inheritance (Sanal Kalıtım), bu sorunu çözmek için temel sınıfın yalnızca bir kopyasının türetilmiş sınıflar tarafından miras alınmasını sağlar.
     - Sanal kalıtım, C++'ta virtual anahtar kelimesi kullanılarak gerçekleştirilir.
-    - A classını B ve C classlarının çağırmaz. Sadece D çağırır virtual tanımladığımız için
+    - (öenmli!!) A classını B ve C classları çağırmaz. Sadece D çağırır virtual tanımladığımız için
+- virtual inheritence kullanırsan en derived classdan, en base classın constructorunu çağırmayı unutma!!! aslında bir nevi hepsi base classından inheritence yapıyor gibi oluyor
 
 ## Constructor and Destructor
 - Constrcutorlar inheritence sırasına göre çağrılır. 
-- destrucotrlar inheritence sırasının tersi yönünde çağrılır.
+- destructor inheritence sırasının tersi yönünde çağrılır.
 - C++'da constructor'lar inheritance edilmez, yani derived sınıf, base sınıfının constructor'larını miras almaz. Ancak, derived sınıfın constructor'ları, base sınıfının constructor'larını çağırmak zorundadır. Bu, constructor initializer list kullanılarak yapılır.
     - C++'da "constructor inherit edilmez" demek, derived sınıfın, base sınıfın constructor'larını otomatik olarak miras almadığı anlamına gelir. Yani, derived sınıf, base sınıfın constructor'larını doğrudan kullanamaz. Bunun yerine, derived sınıf, base sınıf constructor'ını çağırmak için kendi constructor'ını tanımlamalı ve base sınıf constructor'ını initializer list kullanarak çağırmalıdır. Değerleri initialize etmek için diyor.
-    - Aslında, derived sınıfın bir constructor'ı tanımlandığında, base sınıf constructor'ı otomatik olarak çağrılır. Bu çağrı, derived sınıf constructor'ının initializer list kısmında açıkça belirtilmezse, base sınıfın default constructor'ı çağrılır. Eğer base sınıfın parametreli constructor'ları varsa, derived sınıfın constructor'ının initializer list'inde explicit (açıkça) çağrılması gerekir.
+    - Aslında, derived sınıfın bir constructor'ı tanımlandığında, base sınıf constructor'ı otomatik olarak çağrılır. Bu çağrı, derived sınıf constructor'ının initializer list kısmında açıkça belirtilmezse, base sınıfın default constructor'ı çağrılır. Eğer base sınıfın parametreli constructor'ları varsa, derived sınıfın constructor'ının initializer list'inde explicit (açıkça) çağrılması gerekir. aynısı copy ve move constrcutor içinde geçerli
     - using keywordu ile inheritence alabilirsin.
 - C++'da destructor'lar inheritance edilen sınıflarda özel bir davranış sergiler. 
     - Non-Virtual Destructor:
-        - Derived sınıftan bir nesne yok edilirken, önce derived sınıfın destructor'ı, ardından base sınıfın destructor'ı çağrılır.
+        - Derived sınıftan bir nesne yok edilirken, önce derived sınıfın destructor'ı, ardından base sınıfın destructor'ı çağrılır. (pointer kısmında ayrıntısı var)
     - Virtual Destructor:
-        - Base sınıfın destructor'ı virtual olarak tanımlandığında, derived sınıf nesnesi base sınıf pointer'ı ile yok edildiğinde bile doğru destructor çağrılır.
+        - Base sınıfın destructor'ı virtual olarak tanımlandığında, derived sınıf nesnesi base sınıf pointer'ı ile yok edildiğinde bile doğru destructor çağrılır. (pointer kısmında ayrıntısı var)
 - constrcutor virtual olamaz.
 - destrcutor virtual olabilir.
 
@@ -209,9 +211,10 @@ class D : public B, public C {
 - Multilevel Inheritance
     - Multilevel inheritance'da, her sınıf bir üst sınıfının constructor'ını çağırır ve base sınıf constructor'ı en derived sınıfa kadar zincirleme olarak çağrılır. En derived sınıfta base sınıf constructor'ını tekrar çağırmaya gerek yoktur çünkü her aşamada constructor'lar birbirini otomatik olarak çağırır.
 - Hybrid Inheritance ve Virtual Inheritance
-    - Hybrid inheritance'da, virtual inheritance kullanıldığında, base sınıf constructor'ı yalnızca en derived sınıfta çağrılır. Bunun nedeni, virtual inheritance kullanıldığında, base sınıfın tek bir kopyası oluşturulur ve bu kopya en derived sınıf tarafından initialize edilir.
+    - Hybrid inheritance'da, virtual inheritance kullanıldığında, base sınıf constructor'ı yalnızca en derived sınıfta çağrılır. Bunun nedeni, virtual inheritance kullanıldığında, base sınıfın tek bir kopyası oluşturulur ve bu kopya en derived sınıf tarafından initialize edilir.(en derived sınıfını kullanılırken)
 - Multilevel Inheritance: Constructor zincirleme olarak çağrılır ve base sınıf constructor'ı her aşamada çağrılır.
-- Hybrid Inheritance ve Virtual Inheritance: Base sınıf constructor'ı yalnızca en derived sınıfta çağrılır ve diğer intermediate sınıflar bunu tekrar çağırmaz. Bu, base sınıfın tek bir kopyasının oluşturulmasını sağlar ve diamond problem'i önler.
+- Hybrid Inheritance ve Virtual Inheritance: Base sınıf constructor'ı yalnızca en derived sınıfta çağrılır ve diğer intermediate sınıflar bunu tekrar çağırmaz. Bu, base sınıfın tek bir kopyasının oluşturulmasını sağlar ve diamond problem'i önler.(en derived sınıfını kullanılırken)
+- virtual inheritence kullanırsan en derived classdan, en base classın constructorunu çağırmayı unutma!!! aslında bir nevi hepsi base classından inheritence yapıyor gibi oluyor.(Hybrid için  )
 
 ## Inheritence Friendship
 - friend lik durumu inherit edilmez.
@@ -324,12 +327,12 @@ class D : public B, public C {
     - Derived Sınıfta Operator Overloading Override Edilmesi: Derived sınıf, base sınıfın operator overload işlevini override edebilir ve kendi işlevselliğini ekleyebilir.
 
 1. Base Sınıfta Operator Overloading
-    - Base sınıfta bir operator overloading yapıyoruz. alt sınınf bunu miraz alır ama sadece base classı return edebilir. yani overloadingin sonucunu atayacağın obje Base classından olmalı.(ex-1)
+    - Base sınıfta bir operator overloading yapıyoruz. alt sınınf bunu miraz alır ama sadece base classı return edebilir. yani overloadingin sonucunu atayacağın obje Base classından olmalı.(ex-1).
+        - ve bu tarz overloading de şunuda göz önünde bulundur. derived classdaki data memberler ı üzerinde hiç bir işlem yapmamış oluyorsun. sadece base classın elemanları üzerinde gerçekleşiyor.
     - eğer Base türünde değilde derived türünde döndürmesini istiyorsan. derived classın içinde tür dönüşümü yapabilicek bir constrcutor yazman lazım(ex-2)
 
 2. Derived Sınıfta Operator Overloading Override Edilmesi
 - Derived sınıf, base sınıfın operator overload işlevini override edebilir ve kendi işlevselliğini ekleyebilir.
-    - base + derived yapıp sonucunu base return edersen. base in operator overloadingini kullanır.
 
 ## Copy and move constrcutor
 - Copy Constructor
@@ -343,13 +346,13 @@ class D : public B, public C {
         - Bir derived nesne kopyalanırken, önce base sınıfın copy constructor'ı, ardından derived sınıfın copy constructor'ı çağrılır.
         - Derin kopyalama gerekiyorsa, custom copy constructor tanımlanmalıdır.
     - Move Constructor:
-
-    - Bir derived nesne taşınırken, önce base sınıfın move constructor'ı, ardından derived sınıfın move constructor'ı çağrılır.
-    - Kaynakların sahipliği devredilir ve taşınan nesneler "boşaltılır" (örneğin, pointerlar null yapılır).
+        - Bir derived nesne taşınırken, önce base sınıfın move constructor'ı, ardından derived sınıfın move constructor'ı çağrılır.
+        - Kaynakların sahipliği devredilir ve taşınan nesneler "boşaltılır" (örneğin, pointerlar null yapılır).
 
 - Inheritance durumlarında, copy ve move constructor'lar önemli bir rol oynar. Derived sınıfların constructor'ları, base sınıf constructor'larını çağırmak zorundadır. Bu, nesnelerin doğru şekilde kopyalanmasını ve taşınmasını sağlar. Eğer custom copy veya move constructor'lar tanımlanmışsa, bu constructor'lar base sınıf constructor'larını explicit olarak çağırmalıdır. Bu, kaynak yönetimi ve doğru constructor sırasının korunması için gereklidir.
 
-- burada derived classda copy ve move yazarekn dikkat etmen gereken bir syntax var. Base classın da copysini veya move nu initialization list de çağırıyoruz. kodda syntax ı incele.
+- burada derived classda copy ve move yazarekn dikkat etmen gereken bir syntax var. Base classın da copysini veya move nu initialization list de çağırıyoruz. kodda syntax ı incele. 
+- böyle yaparak şunu yapmış oluyoruz mem allocatin ve deallocation işlemlerinin hepsi base de dönüyor. biz derivedin copy constructorunda geln objeyi base classa da gönderiyoruz zaten.
 
 - base classda yaptığın dynamic mem oluşturma ve silme işlemlerini derivedde de yapmana gerek yok. mantıken düşün.
 
