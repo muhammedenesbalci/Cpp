@@ -4,7 +4,7 @@
 - constrcutorlarda 
 - static fonksiyonlar
 - const veya const olmayacak şekilde overload edilen fonksiyonlar
-- Aynı fonksiyon isimlerine sahip farklı scop daki fonksiyonlar.
+- Aynı fonksiyon isimlerine sahip farklı scop daki fonksiyonlar. Namespace ler ile ayrılmış.
 - syntax
     ```cpp
     add(int a, int b)
@@ -37,7 +37,7 @@
     }
     ```
 ## Not overloadable functions
-- bunu ayırt etmenin en iyi yolu şu. Fonksiyonda bir şeyi değiştiriyorsun. çağırıkende bir şeyleri değiştirmen gerekir mu veya değiştirirsen bu farkı fonksiyon ayırt edebilir mi.bir şeyler değiştirmiyorsan ve ayırt edemiyorsa overload edilemez.
+- bunu ayırt etmenin en iyi yolu şu. Fonksiyonda bir şeyi değiştiriyorsun. çağırıkende bir şeyleri değiştirmen gerekiyor mu veya değiştirirsen bu farkı derleyici ayırt edebilir mi.bir şeyler değiştirmiyorsan ve ayırt edemiyorsa overload edilemez. bir şeyler değiştirmekten kasıtım fonksiyonu kullanırken.
 
 - Destructor: Bir sınıfın destructor'ı overload edilemez. Her sınıf yalnızca bir destructor'a sahip olabilir. Parametre vs almıyor zaten.
 - Variadic Functions: Değişken sayıda parametre alan fonksiyonlar (variadic functions) overload edilemez.
@@ -78,13 +78,13 @@
     }
     ```
 
-- isimleri aynı ve paremetre olara pointer veya array kabul eden fonksiyonlar. İkiside aynı şey o yüzden overload edilemez.
+- isimleri aynı ve paremetre olarak pointer veya array kabul eden fonksiyonlar. İkiside aynı şey o yüzden overload edilemez.
     ```cpp
     int fun(int *ptr);
     int fun(int ptr[]); // redeclaration of fun(int *ptr)
     ```
 
-- aynı isimde, aynı paremetreli alan. ama başında acces modifier olan fonksiyonlar ovverload edilemez. const volalite gibi. örnek paremetreyi const olarak tanımlamak o paremetrenin normlade de const olduğu anlmına gelmiyor. sadece o fonksiyona girerken değerinin değişemeyeceği anlamına geliyor.
+- aynı isimde, aynı paremetreli alan. ama başında access modifier olan fonksiyonlar ovverload edilemez. const volalite gibi. örnek paremetreyi const olarak tanımlamak o paremetrenin normlade de const olduğu anlmına gelmiyor. sadece o fonksiyona girerken değerinin değişemeyeceği anlamına geliyor.
     ```cpp
     #include<iostream>
     #include<stdio.h>
