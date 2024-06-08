@@ -70,5 +70,5 @@
         ```
 - Dinamik Bellek Yönetimi veya obje ye işaret eden pointer lar: Dinamik olarak ayrılmış belleği kullanırken, işaretçilerle çalışılır ve -> operatörü, bu işaretçilerin işaret ettiği veri yapılarının üyelerine erişmek için kullanılır.
 - **Dikkat**: Dynamic olara memory allocate ettiğinde new ile. new operatörü objeyi başlatır yani sadece alan ayırmakla kalmaz objeyi de oluşturur. Bu yüzden constructor çağırlır. Şimdi bu objeyi biz dynamic olarak allocate ettiğimiz için delete etmemiz gerekiyor. delete operatörü direkt destructoru kullanır o yüzden dikkatli ol.
-- dikkat ettiysen aynı kurallar geçerli parantez kullanımı açısından.
+- dikkat ettiysen aynı kurallar geçerli parantez kullanımı açısından. base veya base(diyebilrisn new kullanırken Base() demek dha iyidir)(eğer boş constrcutor tanımladyısan arasında fark yoktur.)
     

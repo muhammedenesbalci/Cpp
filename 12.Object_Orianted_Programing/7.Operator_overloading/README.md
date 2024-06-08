@@ -198,3 +198,37 @@ Bazı operatörler C++ dilinde overload edilemez. Bu operatörler şunlardır:
 
 - Comparison Operators (<, <=, >, >=):
     - Sebep: Nesneleri büyüklük veya küçüklük açısından karşılaştırmak için kullanılır. Özellikle sıralama algoritmalarında ve veri yapılarında önemlidir
+
+## Önemli()
+- aynı operatorun sınıf içinde farklı farklı overlaod edebilirsin unutma.
+- lvalue bizim asıl classı temsil eder rvalue ise fonksiyonun içine alınan objedir.
+    ```cpp
+    #include <iostream>
+
+    class MyClass {
+    public:
+        int value;
+
+        MyClass(int v) : value(v) {}
+
+        // Birinci versiyon: İki MyClass objesini toplar
+        MyClass operator+(const MyClass& other) const {
+            return MyClass(this->value + other.value);
+        }
+
+        // İkinci versiyon: MyClass objesi ile bir tamsayıyı toplar
+        MyClass operator+(int other) const {
+            return MyClass(this->value + other);
+        }
+    };
+
+    int main() {
+        MyClass obj1(10);
+        MyClass obj2(20);
+
+        MyClass result1 = obj1 + obj2;  // İki MyClass objesi toplandı
+        MyClass result2 = obj1 + 5;     // MyClass objesi ile bir tamsayı toplandı
+
+        std::cout << "result1: " << result1.value << std::endl;  // Output: 30
+    }
+    ```

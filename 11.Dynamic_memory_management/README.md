@@ -177,7 +177,7 @@
 - Başlatma (Initialization): new, tahsis edilen belleği başlatır. Temel veri türleri için varsayılan değerle başlatılırken, sınıf nesneleri için yapıcı (constructor) çağrılır.
 - Tür Güvenliği: new operatörü tür güvenlidir. Bellek tahsisi yapılan tür otomatik olarak belirlenir ve döndürülen işaretçi bu türe cast edilmez.
 - Özel Durumlar (Exceptions): new operatörü bellek tahsisi başarısız olursa std::bad_alloc istisnası fırlatır. std::nothrow seçeneği kullanılarak bu davranış değiştirilebilir.
-- Belleği Serbest Bırakma: delete operatörü, new ile tahsis edilen belleği serbest bırakır ve sınıf nesneleri için yıkıcı (destructor) çağrılır.
+- Belleği Serbest Bırakma: delete operatörü, new ile tahsis edilen belleği serbest bırakır ve sınıf nesneleri için yıkıcı (destructor) çağrılır. (Önemli!!!)ama adresi hala tutmaya devam eder o yüzden nullptr a eşitlemelisin.
     ```cpp
     #include <iostream>
     #include <new> // std::nothrow için gerekli

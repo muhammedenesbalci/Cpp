@@ -93,8 +93,8 @@ void class_dynmaic_memory_allocaiton_example() {
     cout << "last line ----------------------------\n";
 
     cout << "\nconstrucor difference -----------------------------------------\n";
-    Base* obj_1 = new Base;
-    Base* obj_2 = new Base("obj 2");
+    Base* obj_1 = new Base; //veya new Base() de olabilir ve bu önerilir
+     Base* obj_2 = new Base("obj 2");
     Base* obj_3 = new Base(1, "obj 3");
     Base* obj_4 = new Base(1, 2, "obj 4");
     

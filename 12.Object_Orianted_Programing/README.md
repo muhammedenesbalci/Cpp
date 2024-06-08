@@ -53,7 +53,7 @@
 - Header dosyalarında Abstraction: C++'da başka bir abstraction türü de header dosyalarıdır. Örneğin, math.h header dosyasında bulunan pow() metodunu düşünün. Bir sayının kuvvetini hesaplamamız gerektiğinde, math.h header dosyasında bulunan pow() fonksiyonunu çağırır ve argüman olarak sayıları geçiririz, ancak fonksiyonun sayıların kuvvetini hesaplamak için kullandığı algoritmayı bilmemize gerek yoktu
 
 ## Polymorphism
-- Polymorphism kelimesi "birçok forma sahip olma" anlamına gelir. Basitçe, polymorphism, bir mesajın birden fazla formda görüntülenebilmesi yeteneği olarak tanımlanabilir. Bir kişi aynı anda farklı karakteristiklere sahip olabilir. Bir adam aynı anda hem baba, hem koca, hem de çalışandır. Yani aynı kişi, farklı durumlarda farklı davranışlar sergiler. Buna polymorphism denir. Bir işlem, farklı örneklerde farklı davranışlar sergileyebilir. Bu davranış, işlemde kullanılan veri türlerine bağlıdır. C++, operator overloading ve function overloading'i destekler.
+- Polymorphism kelimesi "birçok forma sahip olma" anlamına gelir. Basitçe, polymorphism, bir mesajın birden fazla formda görüntülenebilmesi yeteneği olarak tanımlanabilir. Bir kişi aynı anda farklı karakteristiklere sahip olabilir. Bir adam aynı anda hem baba, hem koca, hem de çalışandır. Yani aynı kişi, farklı durumlarda farklı davranışlar sergiler. Buna polymorphism denir. Bir işlem, farklı örneklerde farklı davranışlar sergileyebilir. Bu davranış, işlemde kullanılan veri türlerine bağlıdır. C++, operator overloading ve function overloading'i destekler. ve overriding.
 
 - Operator Overloading: Bir operatörün farklı örneklerde farklı davranışlar sergilemesi sürecine operator overloading denir.
 

@@ -154,26 +154,26 @@
 
 - **Diamond Problem'in Çözümü: Virtual Inheritance (Sanal Kalıtım)**
 Sanal kalıtım, diamond problem'i çözmek için kullanılan bir tekniktir. Sanal kalıtım, temel sınıfın yalnızca bir kopyasının türetilmiş sınıflar tarafından miras alınmasını sağlar. Bu, diamond problem'de ortaya çıkan belirsizlikleri ortadan kaldırır.
-```cpp
-class A {
-public:
-    void display() {
-        cout << "Class A" << endl;
-    }
-};
+    ```cpp
+    class A {
+    public:
+        void display() {
+            cout << "Class A" << endl;
+        }
+    };
 
-class B : virtual public A {
-    // Class B inherits from Class A virtually
-};
+    class B : virtual public A {
+        // Class B inherits from Class A virtually
+    };
 
-class C : virtual public A {
-    // Class C inherits from Class A virtually
-};
+    class C : virtual public A {
+        // Class C inherits from Class A virtually
+    };
 
-class D : public B, public C {
-    // Class D inherits from both Class B and Class C
-};
-```
+    class D : public B, public C {
+        // Class D inherits from both Class B and Class C
+    };
+    ```
 
 - Bu örnekte, B ve C sınıfları A sınıfından sanal olarak miras alır. Bu, D sınıfı oluşturulduğunda, yalnızca bir A sınıfı örneği olmasını sağlar. Böylece, diamond problem çözülmüş olur ve D sınıfı A sınıfının üyelerine erişirken belirsizlik yaşamaz.
 - sanal Kalıtımın Etkileri
@@ -207,7 +207,7 @@ class D : public B, public C {
     - constrctor initilization list kullanırken base classın uygun constrcutorunu çağırıyoruz aslında.
     - paremetresiz çağırmak istiyorsan : Base() şeklinde çağır, nomral obje oluşturmayla karıştırma.
 
-### Multileveli Hybrid Inheritance ve Virtual Inheritance
+### Multileveli, Hybrid Inheritance ve Virtual Inheritance
 - Multilevel Inheritance
     - Multilevel inheritance'da, her sınıf bir üst sınıfının constructor'ını çağırır ve base sınıf constructor'ı en derived sınıfa kadar zincirleme olarak çağrılır. En derived sınıfta base sınıf constructor'ını tekrar çağırmaya gerek yoktur çünkü her aşamada constructor'lar birbirini otomatik olarak çağırır.
 - Hybrid Inheritance ve Virtual Inheritance
@@ -334,6 +334,10 @@ class D : public B, public C {
 2. Derived Sınıfta Operator Overloading Override Edilmesi
 - Derived sınıf, base sınıfın operator overload işlevini override edebilir ve kendi işlevselliğini ekleyebilir.
 
+- (Önemli): Overload ederken şunu göz ününde bulundur. lvalue hangi classa ait rvalue hangi classa ait. bunu göz önünde bulunuraraktan. eşitliği yazarken hangisnin hangi tarafata bulunması gerektiini yazabilirsin. ya da hangi classa gidip overload etmen gerektiini de yazabilirsin.(kodda örnepi incele ne demek istediğimi anlaycaksın)
+- bide unutma aynı operatorun birden fazla overloading verisoynunuu yazabilirsin subclasslarda.
+- bir tane override base classınki ile aynı, bir tane de derived için yazarsan yeterli olucaktır.
+
 ## Copy and move constrcutor
 - Copy Constructor
     - Copy constructor, bir nesnenin başka bir nesneden kopyalanması sırasında çağrılır. Inheritance ile birlikte kullanıldığında, base sınıfın copy constructor'ı derived sınıfın copy constructor'ından önce çağrılır.
@@ -356,10 +360,11 @@ class D : public B, public C {
 
 - base classda yaptığın dynamic mem oluşturma ve silme işlemlerini derivedde de yapmana gerek yok. mantıken düşün.
 
-- copy ve move constrcutor inherit edilmez. o yüzden kesinlikle yazman lazım. zaten çağırıp orda da base classı çağırmış oluyoruz.
+- base classda copy ve move constrcutor yazdıysan ve derived classda yazmadıysan. Base classın copy ve move u çağrılır ve aynı şekilde çalışır. Ama önerilen seninde derivedde bunu yazman ve ordan base classın copy ve move constrctorunu yazman.(bu inheritence sayılmıyormuş complier in otomatik mekanizmasıymış)
 
 ## Pointers
 - Dynmaic memory allocate ederken, inheritence uygulanmıuş classlar üzerinde çalışırken. oluşturulucak objenin türü ve new de alan ayrılıcak olan objenin türü aynı olduğu sürece bir sıkıntı çıkmıyor aslında ptr kullanımında.
-- constrcutorlar ve destructorlar olması gereken sırayla çağrılıyor.
+    - constrcutorlar ve destructorlar olması gereken sırayla çağrılıyor.
 - eğer sen objenin türünü base class,  new yaparkende derived classı kullanarak alan ayırmaya çalışırsan işte burada sıkıntılar başlıyor. Destrcutor çağrılırken sadece Base classın destructoru çağrılıyor mesela. Constructorlar yine aynı şekilde çağrılıyor.(son örneğe bakabilirsin).
 - bunu önlemek için virtual destructorlar kullanılıyor. Polymorphism bölümünde işleyeceğiz.
+- (önemli !!) Dynmaic olarak allocate etmediğin zaman normal ptr kullanımları referanslar ile birlikte. Beklenen sonuçları veriyor. yani constrcutor ve destrcutoru beklenen sırada çağırıyor dikkat et.

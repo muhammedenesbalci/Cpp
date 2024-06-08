@@ -266,6 +266,8 @@ int main() {
 
 - constrcutorların dönüş değeri olmaz unutma.
 
+- virtual olamaz.
+
 ### Shallow copy and Deep Copy
 - **Shallow copy**: Shallow copy, bir nesnenin veri üyelerinin bit düzeyinde kopyalanmasıdır. Bu, nesnenin tüm veri üyelerinin aynı değerlerle kopyalanması anlamına gelir. Ancak, eğer nesne içinde pointer'lar veya dinamik bellek kullanılıyorsa, shallow copy sadece bu pointer'ların adreslerini kopyalar, belleğin kendisini değil. Bu, iki nesnenin aynı bellek alanını paylaşmasına neden olur ve bellek yönetimi sorunlarına yol açabilir.
 - Copy constructorunun defaultu Shallow copy dir.
@@ -351,6 +353,7 @@ int main() {
 - Move constructor, C++11'de tanıtılan bir özellik olup, bir nesnenin kaynaklarını başka bir nesneye taşımak için kullanılır. Bu, özellikle büyük veri yapıları veya dinamik bellek kullanan nesneler için performansı artırmak amacıyla kullanılır. Move constructor, bir nesnenin kaynaklarını diğerine "taşıyarak" kopyalama maliyetini en aza indirir.
 - burada this bizim lvalue mizi temsil eder. Fonksiyon içine gelen obje ise rvalue yi temsil eder. biz rvalue yi lvalue ye taşıyoryz işlemlerini ona göre yap.
 - constrcutorların dönüş değeri olmaz unutma.
+- virtual olamaz.
 
 - syntax
     ```cpp
@@ -374,6 +377,7 @@ int main() {
     - Move constructor, sağ taraf değer referansı (rvalue reference) alır. yani içine verdiğimiz obje, ifadenin sağ tarafındaki objedir biz onun içini boşaltıyoruz.
     - Move constructor, kaynakların taşındığı nesnenin içeriğini boşaltır, böylece kaynaklar iki nesne arasında paylaşılmaz.
     - içini boşalltığın objenin dynmaic memorysini silme çünkü artık onu diğer nesne kullanıyor.
+    
 - Avantajları:
     - Performans Artışı:
         - Move constructor, kaynakları taşır (move) yerine kopyalar (copy), bu da genellikle çok daha hızlıdır. Kopyalama, kaynakları yeniden tahsis etmek ve veri kopyalamak gibi maliyetli işlemleri içerirken, taşımak bu işlemleri gerektirmez.
