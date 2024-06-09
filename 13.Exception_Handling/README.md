@@ -8,6 +8,7 @@
 - [Custom Exception Class](#custom-exception-class)
 - [Stack Unwinding](#stack-unwinding)
 - [RAII Resource Acquisition Is Initialization](#raii-resource-acquisition-is-initialization)
+- [noexcept](#noexcept)
 
 ## Temel Kavramlar
 1. try: Hata olasılığı bulunan kod bloğu try anahtar kelimesi ile tanımlanır. Bu blokta bir hata meydana geldiğinde, bu hata bir exception olarak "fırlatılır".
@@ -17,7 +18,7 @@
         // Hata olasılığı bulunan kod buraya gelir
     }
     ```
-2. throw: Bir hata meydana geldiğinde throw anahtar kelimesi kullanılarak bir exception fırlatılır. throw ifadesi ile birlikte, fırlatılan exception'ın türü veya hata mesajı belirtilir. herhangi primitive tür de atabilirsin int gibi. if koşulu kullanarak.
+2. throw: Bir hata meydana geldiğinde throw anahtar kelimesi kullanılarak bir exception fırlatılır. throw ifadesi ile birlikte, fırlatılan exception'ın türü veya hata mesajı belirtilir. herhangi primitive tür de atabilirsin int gibi. if koşulu kullanarak. try ın içinde throw atmazsan catch ın içine girmez.
 - syntax: 
     ```cpp
     if (some_error_condition) {
@@ -256,3 +257,60 @@
     - Grafik kaynakları (OpenGL, DirectX gibi grafik API'lerinde kullanılan kaynak yönetimi sınıfları)
     - temel veri türleri
     - dynamic olmayan strcut class objelerimiz.
+
+## noexcept
+- noexcept anahtar kelimesi, bir fonksiyonun veya lambda ifadesinin istisna atmayacağını belirlemek için kullanılır. Bu, belirli durumlarda derleyicinin daha iyi optimizasyon yapmasını sağlar ve istisna güvenliği konusunda programcılara garanti verir.
+
+- noexcept anahtar kelimesi iki farklı şekilde kullanılabilir: noexcept belirtimi ve noexcept operatörü.
+
+- **noexcept Belirtimi**
+    - noexcept belirtimi, bir fonksiyonun istisna atmayacağını ifade eder. Eğer bir fonksiyon istisna atarsa ve bu fonksiyon noexcept olarak işaretlenmişse, program std::terminate çağırarak sonlanır.
+        ```cpp
+        void myFunction() noexcept {
+        // This function is guaranteed not to throw an exception
+        }
+
+        void anotherFunction() noexcept(false) {
+            // This function might throw an exception
+        }
+        ```
+- **noexcept Operatörü**
+    - noexcept operatörü, derleme zamanında bir ifadenin istisna atıp atmayacağını kontrol eder ve boolean bir değer döner. Bu operatör, genellikle fonksiyonların noexcept belirtimini belirlemek için kullanılır.
+    ```cpp
+    void canThrow() {
+        throw std::runtime_error("This function throws an exception");
+    }
+
+    void cannotThrow() noexcept {
+        // This function does not throw an exception
+    }
+
+    int main() {
+        std::cout << std::boolalpha;
+        std::cout << "canThrow() noexcept? " << noexcept(canThrow()) << std::endl; // Outputs: false
+        std::cout << "cannotThrow() noexcept? " << noexcept(cannotThrow()) << std::endl; // Outputs: true
+        return 0;
+    }
+    ```
+
+- **istisna Atan noexcept Fonksiyonlar**
+    - Bir noexcept fonksiyon içinde istisna atılması durumunda program std::terminate ile sonlandırılır. Bu yüzden, noexcept fonksiyonlarda kesinlikle istisna atmamak önemlidir.
+        ```cpp
+        void willTerminate() noexcept {
+            throw std::runtime_error("This will cause std::terminate");
+        }
+
+        int main() {
+            try {
+                willTerminate();
+            } catch (...) {
+                // This block will not be executed
+            }
+            return 0;
+        }
+        ```
+
+- Kullanım Avantajları
+    - Performans Optimizasyonu: noexcept ile işaretlenmiş fonksiyonlar, derleyici tarafından daha agresif bir şekilde optimize edilebilir çünkü bu fonksiyonların istisna atmayacağı garanti edilir.
+    - Kodun Anlaşılabilirliği: noexcept, fonksiyonun istisna atmayacağını açıkça belirtir, bu da kodun anlaşılabilirliğini artırır.
+    - İstisna Güvenliği: noexcept, belirli kısıtlamalara uyduğunda daha güvenli kod yazılmasına yardımcı olabilir, çünkü istisna atmayan fonksiyonlar daha güvenilirdir.
