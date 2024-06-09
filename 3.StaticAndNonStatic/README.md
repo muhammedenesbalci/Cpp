@@ -19,6 +19,8 @@ The static keyword has different meanings when used with different types. We can
 - return static
     - fonksiyonun içinde çağrılan static değişkeni de aslında bir şekilde dışa aktarabiliriz. Bunu fonksiyonların içinde kullanılan local değişkenleri dışarı aktarmak istediğinde kullanabilirsin. arraylar vs. ama tabi bu değeri değiştiriken sıkıntılar yaşlyabilirsin. Çünkü hem dışarıdan hemde içeriden değiştiriliebilir olabilir. adresini veya referansını dışarıya veriyoruz çünkü ve onun üzerinde ulaşıyoruz. aynısını referanslar ile de yapabiliriz.
 
+- fonksiyonun içindeki static değişkene, fonksiyona paremetre  olarak aldığımız değişkeni atayamayız. başlangıç değeri olarak.
+
 ## Static variables in a class
 - As the variables declared as static are initialized only once as they are allocated space in separate static storage so, the static variables in a class are shared by the objects. There can not be multiple copies of the same static variables for different objects. Also because of this reason static variables can not be initialized using constructors. 
 - ex1 exp: You can see in the above program that we have tried to create multiple copies of the static variable i for multiple objects. But this didn’t happen. So, a static variable inside a class should be initialized explicitly by the user using the class name and scope resolution operator outside the class as shown below: 
