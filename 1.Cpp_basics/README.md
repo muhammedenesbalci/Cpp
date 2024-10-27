@@ -1,7 +1,6 @@
 # C++ Basics
 
 ## Content
-
 - Basic print.
 - 'endl'.
 - Variables.
@@ -30,10 +29,12 @@
 - ***#include*** directive is used to include external files or libraries in your program. It is a preprocessor directive that tells the compiler to insert the contents of another file into the current file at the point where the *#include* directive is used. This allows you to access definitions, declarations, and functionalities from the included files.
 	- #include <iostream> cpp ın kendi kütüphanelerini dahil eder.
 	- #include "my_class.h" bizim oluşturduğumuz kütüphaneleri dahil eder.
-		- <> ve "" ikisi farklı çalışıyor <> bu cpp nin kendi kütüphanelerine bakar "" bu derlediğimiz dosyanın olduğu yerdeki dosyalara bakar.
+		- <> ve "" ikisi farklı çalışıyor <> bu cpp nin kendi kütüphanelerine bakar "" bu derlediğimiz dosyanın olduğu yerdeki(dizindeki)dosyalara bakar.
+
 - ***iostream*** header is part of the C++ Standard Library and provides input and output functionality. It defines several stream objects, such as cin (for input from the standard input) and cout (for output to the standard output). The iostream header is commonly used for console input and output operations.
 	- This is a preprocessor directive. The #include directive tells the compiler to include the content of a file in the source code.
 	- For example, #include<iostream> tells the compiler to include the standard iostream file which contains declarations of all the standard input/output library functions. (https://www.geeksforgeeks.org/cc-preprocessors/)
+	
 - ***namespace*** is a feature that allows you to group related declarations together and prevent naming conflicts. It provides a way to organize code and avoid naming collisions between different components of a program. To define a namespace in C++, you use the ***namespace*** keyword followed by the desired namespace name. Here's an example:
 	```cpp
 		// Declaration of a namespace called "myNamespace" namespace  
@@ -131,7 +132,7 @@ See the following C++ program for better clarification:
 	- The sign takes 1 bit extra. So, if the unsigned value is being used then one-bit extra space is used to save the value of a variable.
 	- The range of values for unsigned types starts from 0. For example, for unsigned int, the value range is from 0 to 4,294,967,295. However, for signed int, the value range is from -2,147,483,648 to 2,147,483,647.
 	- Note: signed and unsigned modifiers can only be used with int and char datatypes.
-
+	- unsigned veya signed olması size değiştirmez. dikkat ettiysen değişkenin alabileceği değer aralığını değiştiriyor. unsigned olursa pozitif olarak alabileceği değer sayısı artıyor. bunu efektif kullanabilirsin.
 - short Modifier
 	- The short keyword modifies the minimum values that a data type can hold. It is used for small integers that lie in the range of −32,767 to +32,767
 		```cpp
@@ -150,7 +151,7 @@ See the following C++ program for better clarification:
 - The modifiers for a data type can be combined.
 	- For example, signed/unsigned can be used with long/short modifiers. Below is the C++ program to demonstrate the above concept.
 		```cpp
-		/ C++ program to demonstrate 
+		// C++ program to demonstrate 
 		// that modifiers can be combined
 		// together
 		#include <iostream>
@@ -240,14 +241,15 @@ See the following C++ program for better clarification:
 
 				- volatile Kullanmazsak Ne Olur?
 					- Optimizasyon Sorunları
-						-  Önbelleğe Alma:
+						-  Önbelleğe Alma(önemli):
 							- Derleyici, değişkenin değerini bir kez okur ve aynı değeri tekrar tekrar kullanır, çünkü değişkenin değeri değişmediği varsayılır.
 							- Değerin gerçekten donanım veya başka bir iş parçacığı tarafından değiştirildiği durumlarda, program hatalı çalışır çünkü güncellenmiş değeri göremez.
 					- Döngü Optimizasyonu:
 						- Derleyici, döngünün koşulunu sabit olarak değerlendirebilir ve döngüyü optimize edebilir. Örneğin, yukarıdaki döngüyü sonsuz döngü olarak görebilir.
-			- Özet
+			- Özet(Önemli)
 				- volatile kullanıldığında: Değişkenin değeri her erişimde bellekten okunur ve derleyici bu değişkeni optimize etmez. Bu, donanım veya başka bir iş parçacığı tarafından değiştirilebilen değişkenler için gereklidir.
 				- volatile kullanılmadığında: Derleyici, değişkenin değerini optimize edebilir ve önbelleğe alabilir. Bu, değişkenin gerçekten değiştiği durumlarda hatalara yol açabilir.
+				- yani sonuç olarak derleyicinin o değişkeni optimize edip etmemesiyle alakalı
 
 
 		3. **restrict**: A pointer qualified by restricting is initially the only means by which the object it points to can be accessed. The object restricts links that can only initially be accessed via a pointer qualified by it. Restrict is a new type of qualifier that is only added in C99.
@@ -356,7 +358,7 @@ See the following C++ program for better clarification:
 			```
 	2. Explicit Type Conversion: This process is also called type casting and it is user-defined. Here the user can typecast the result to make it of a particular data type.
 	In C++, it can be done by two ways:
-		- Converting by assignment: 
+		- Converting by assignment(C sytle): 
 			- This is done by explicitly defining the required type in front of the expression in parenthesis. This can be also considered as forceful casting.
 
 				```cpp
@@ -386,7 +388,7 @@ See the following C++ program for better clarification:
 				Sum = 2
 				```
 		- Conversion using Cast operator: A Cast operator is an unary operator which forces one data type to be converted into another data type.
-			- Static Cast
+			- Static Cast(Cpp style)
 				```cpp
 				#include <iostream> 
 				using namespace std; 
@@ -405,15 +407,16 @@ See the following C++ program for better clarification:
 				```
 			- Dynamic Cast
 				- dynamic_cast operatörü, genellikle runtime'da (çalışma zamanında) tür güvenliği sağlamak için kullanılır. Bu operatör, genellikle bir nesnenin dinamik türünü (runtime'daki gerçek türünü) kontrol etmek ve uygun bir alt türe dönüşüm yapmak için kullanılır.
+				- polymorphism aklına gelsin çünkü onun olduğu yerdeki tür dönüşümünden bahsediyor. Mesela derived de base e çevirme.
 					```cpp
 					class Base {
 					public:
-						virtual ~Base() {}
+						virtual void method() {}
 					};
 
 					class Derived : public Base {
 					public:
-						void derivedMethod() {}
+						void method() override {}
 					};
 
 					int main() {

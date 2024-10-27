@@ -231,10 +231,12 @@ int main() {
         MyClass obj2;
         obj2 = obj1;  // Bu durumda copy assignment operatörü çağrılır, copy constructor değil.
         ```
-    - Geçici Nesneler (Temporary Objects) ile Çağırma: Bir nesne geçici (temporary) bir nesne olarak kullanıldığında copy constructor çağrılabilir. Bir fonksiyondan dönen objeler geçici nesnelerdir. move yazılmasıyda sadece copy varsa copy constructoru kullanır.
+    - Geçici Nesneler (Temporary Objects) ile Çağırma: Bir nesne geçici (temporary) bir nesne olarak kullanıldığında copy constructor çağrılabilir. Bir fonksiyondan dönen objeler geçici nesnelerdir. move yazılmasıyda sadece copy varsa copy constructoru kullanır. move önceliklidir ama.
 
+    - Başka bir kopyalama tarzı.
         ```cpp
-        MyClass temp = MyClass(obj1);  // Copy constructor çağrılır
+        MyClass temp1;  
+        MyClass temp2(temp1);
         ```
 
 - Eğer biz kendimiz bir copy constructor tanımlamazsak, C++ derleyicisi otomatik olarak bir varsayılan (default) copy constructor sağlar. Bu varsayılan copy constructor, yüzeysel kopyalama (shallow copy) yapar. Yüzeysel kopyalama, nesnenin tüm veri üyelerinin bit düzeyinde kopyalanması anlamına gelir. Bu, basit veri türleri (int, float, vb.) ve pointer'lar için geçerlidir, ancak dinamik bellek yönetimi ve diğer karmaşık yapılar için sorunlara yol açabilir.Shallow copy yapar çünkü.
@@ -401,12 +403,21 @@ int main() {
         }
         ```
     - Geçici Nesneler:
-        - Geçici nesneler, move constructor kullanılarak verimli bir şekilde taşınabilir. Bu, geçici nesnelerin ömrünü yönetmek için önemlidir. Fonksiyondan dönen nesneler geçici nesnelerdir.
+        - Geçici nesneler, move constructor kullanılarak verimli bir şekilde taşınabilir. Bu, geçici nesnelerin ömrünü yönetmek için önemlidir. Fonksiyondan dönen nesneler geçici nesnelerdir. geçici nesneler için öncelik move dur. ama std::move diye belritmek her zaman en iyi yöntem.
+            ```cpp
+            MyClass obj = MyClass(20);
+            ```
+
     - Büyük Veri Yapıları:
         - Büyük veri yapıları ve kaynak yoğun nesneler için move constructor, bellek yönetimi ve performans açısından kritik önem taşır.
     - manuel olarak move constrcutoru çağırma. copy yerine move u kullanmak istediğimizde.
         ```cpp
         MyClass obj2 = std::move(obj1); // Move constructor çağrılır obj1 i boşaltır
+        ```
+    - Başka bir move tarzı.
+        ```cpp
+        MyClass temp1;  
+        MyClass temp2(std::move(temp1));
         ```
 
 ## Difference move and copy constructor

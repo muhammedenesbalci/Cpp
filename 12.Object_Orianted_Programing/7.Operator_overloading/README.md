@@ -14,7 +14,10 @@
 - [Overloadable Operators](#overloadable-operators)
 - [Not overloadable operators](#not-overloadable-operators)
 - [Most used overloadable operators](#most-used-overloadable-operators)
+- [functor function objects](#functor-function-objects)
+
 ## Class member operator overloading
+- ocopy ve move de objeler yeni oluşturuluyor. operator overloading de objeler zaten oluşmuş oluyor. Her ikiside aynı anda da kullanılabilir.(Base obj = obj1 + obj2)
 - Sınıf içi operatör overloading, operatör fonksiyonlarının sınıfın üye fonksiyonları olarak tanımlanmasıdır. Bu yöntemle operatör, sınıfın bir üyesi olan nesne üzerinde çalışır.
 - rvalue genellikle bizim asıl objemiz oluyor lvalue ise fonksiyonun içine aldığımız obje oluyor.
 - Avantajlar:
@@ -155,7 +158,7 @@ Bazı operatörler C++ dilinde overload edilemez. Bu operatörler şunlardır:
 - `typeid` (Type information)
 - `alignof` (Alignment requirement)
 
-### Most used overloadable operators
+## Most used overloadable operators
 - Assignment Operator (=):
     - Sebep: Bir nesnenin başka bir nesneye atanmasını sağlar. Özellikle derin kopyalama(deep copy) gereken durumlarda kullanılır.
     - fonksiyona obje olarak verdiğimiz şey rvalue yani sağ ifadenin sağ tarafındaki değerdir.
@@ -199,9 +202,9 @@ Bazı operatörler C++ dilinde overload edilemez. Bu operatörler şunlardır:
 - Comparison Operators (<, <=, >, >=):
     - Sebep: Nesneleri büyüklük veya küçüklük açısından karşılaştırmak için kullanılır. Özellikle sıralama algoritmalarında ve veri yapılarında önemlidir
 
-## Önemli()
+## Önemli
 - aynı operatorun sınıf içinde farklı farklı overlaod edebilirsin unutma.
-- lvalue bizim asıl classı temsil eder rvalue ise fonksiyonun içine alınan objedir.
+- lvalue bizim saol değer rvalue bizim sağ değerimiz unutma. operatorun sağından itibaren bak. zaten genellikle bir şeyler return ediyoruz. 
     ```cpp
     #include <iostream>
 
@@ -232,3 +235,168 @@ Bazı operatörler C++ dilinde overload edilemez. Bu operatörler şunlardır:
         std::cout << "result1: " << result1.value << std::endl;  // Output: 30
     }
     ```
+
+## functor function objects
+- Fonktör (functor), C++ programlama dilinde, bir fonksiyon gibi davranan nesnedir. Fonktörler, operator() fonksiyonunu overload tanımlanır ve bu sayede nesneler, fonksiyon gibi çağrılabilir hale gelir. Fonktörler, fonksiyon işaretçilerine göre daha esnek olup iç durum (state) tutabilirler.
+- syntax:
+    ```cpp
+    #include <iostream>
+
+    class Add {
+    public:
+        Add(int value) : value_(value) {}
+
+        // operator() aşırı yüklenmesi
+        int operator()(int x) const {
+            return x + value_;
+        }
+
+    private:
+        int value_;
+    };
+
+    int main() {
+        Add addFive(5); // Fonktör nesnesi oluşturulması
+        std::cout << "Result: " << addFive(10) << std::endl; // Fonktörün fonksiyon gibi çağrılması
+        return 0;
+    }
+    ```
+- constrcutor ve functor
+    - Fonktörler (functors) bir sınıfın örneği olarak tanımlanır ve genellikle sınıfın içinde bir operator() fonksiyonu içerirler. Bu sınıflar, normal sınıflar gibi kurucular (constructors) ve diğer üye fonksiyonları da içerebilir. Kurucu (constructor), sınıfın bir örneği oluşturulduğunda çağrılırken, operator() fonksiyonu ise fonktör nesnesi fonksiyon gibi çağrıldığında çalışır.
+    - nasıl ayırt edilir ?
+        - Nesne oluşturma: Add addFive(5); — Bu, Add sınıfının kurucusunu çağırır ve addFive isimli bir fonktör nesnesi oluşturur.
+        - Fonksiyon çağrısı: addFive(10); — Bu, Add nesnesinin operator() fonksiyonunu çağırır.
+
+        ```cpp
+        #include <iostream>
+
+        class Add {
+        public:
+            // Kurucu (Constructor)
+            Add(int value) : value_(value) {
+                std::cout << "Constructor called with value: " << value << std::endl;
+            }
+
+            // operator() aşırı yüklenmesi (Fonktör)
+            int operator()(int x) const {
+                return x + value_;
+            }
+
+        private:
+            int value_;
+        };
+
+        int main() {
+            // Fonktör nesnesi oluşturulması (Constructor çağrısı)
+            Add addFive(5); 
+
+            // Fonktör nesnesi fonksiyon gibi çağrılması (operator() çağrısı)
+            int result = addFive(10); 
+
+            std::cout << "Result: " << result << std::endl; // Sonuç: 15
+
+            return 0;
+        }
+        ```
+
+    - geçici nesnele ile birlikte çağrılma
+        - parametresiz
+            ```cpp
+            #include <iostream>
+
+            class PrintHello {
+            public:
+                // Varsayılan kurucu (constructor) otomatik olarak oluşturulur
+
+                void operator()() const {
+                    std::cout << "Hello, World!" << std::endl;
+                }
+            };
+
+            int main() {
+                PrintHello printHello; // Fonktör nesnesi oluşturulması
+                printHello();          // Fonktörün fonksiyon gibi çağrılması
+
+                // Geçici nesne ile çağırma
+                PrintHello()();
+
+                return 0;
+            }
+            ```
+        - parametreli çağırma
+            ```cpp
+            #include <iostream>
+
+            class Multiply {
+            public:
+                Multiply(int factor) : factor_(factor) {
+                    std::cout << "Constructor called with factor: " << factor << std::endl;
+                }
+
+                int operator()(int x) const {
+                    std::cout << "operator() called with x: " << x << std::endl;
+                    return x * factor_;
+                }
+
+            private:
+                int factor_;
+            };
+
+            int main() {
+                int result = Multiply(3)(10); // Geçici nesne oluşturma ve fonksiyon gibi çağırma
+                std::cout << "Result: " << result << std::endl; // Sonuç: 30
+
+                return 0;
+            }
+            ```
+        - constrctor yoksa
+            ```cpp
+            #include <iostream>
+
+            class AddOne {
+            public:
+                // Varsayılan kurucu otomatik olarak sağlanır
+
+                int operator()(int x) const {
+                    return x + 1;
+                }
+            };
+
+            int main() {
+                AddOne addOne;    // Varsayılan kurucu çağrılır
+                int result = addOne(5); // operator() fonksiyonu çağrılır
+
+                std::cout << "Result: " << result << std::endl; // Sonuç: 6
+
+                // Geçici nesne ile çağırma
+                int tempResult = AddOne()(10);
+
+                std::cout << "Temporary result: " << tempResult << std::endl; // Sonuç: 11
+
+                return 0;
+            }
+            ```
+### **STL**
+- STL, birçok hazır fonktör sağlar. Bunlar arasında aritmetik, karşılaştırma ve mantıksal işlemler için fonktörler bulunur. bunlala iligili örnekler STL bölümünde
+- ama algortimaların içine verirken geçici nesne olarak veriyoruz direkt functoru çağırmıyoruz. Compare() gibi.
+- yani biz objeyi içine veriyoruz. bu obje () operatörünü overload etmiş olması gerekiyor kullanabilmesi için.
+
+- Aritmetik Fonktörler
+    - std::plus
+    - std::minus
+    - std::multiplies
+    - std::divides
+    - std::modulus
+    - std::negate
+
+- Karşılaştırma Fonktörleri
+    - std::equal_to
+    - std::not_equal_to
+    - std::greater
+    - std::less
+    - std::greater_equal
+    - std::less_equal
+- Mantıksal Fonktörler
+    - std::logical_and
+    - std::logical_or
+    - std::logical_not

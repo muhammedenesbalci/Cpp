@@ -1,5 +1,4 @@
-
-,# Pointers and References
+# Pointers and References
 - In C++ pointers and references both are mechanisms used to deal with memory, memory address, and data in a program. Pointers are used to store the memory address of another variable whereas references are used to create an alias for an already existing variable.
 - Pointers in C++ are a symbolic representation of addresses. They enable programs to simulate call-by-reference, call by pointer and create and manipulate dynamic data structures. Pointers store the address of variables or a memory location. 
 
@@ -423,6 +422,60 @@
         ```cpp
         int *ptr = nullptr; // İşaretçi başlangıçta hiçbir nesneyi göstermiyor
         ```
+- C++11 ile birlikte tanıtılan nullptr, tam olarak bu tür karışıklıkları önlemek için getirildi. Eski C++ kodlarında NULL ve 0 bazen karışıklığa yol açabiliyordu çünkü 0 hem bir tamsayı değeri hem de bir pointer'ın null hali olarak kullanılabiliyordu. Bu, özellikle pointer'lar ve tamsayılar arasındaki farkı belirginleştirmek isteyenler için kafa karıştırıcıydı.
+
+- nullptr bu sorunu çözmek için tanıtıldı, çünkü nullptr sadece pointer türlerine atanabilir veya karşılaştırılabilir. Yani nullptr ile bir pointer'ı güvenle null yapabilirsin ama tamsayılarla nullptr'i karıştırmazsın.
+
+- Peki, neden nullptr hala 0 ile karşılaştırıldığında true dönüyor?
+
+- Bu, eski kodların çalışmaya devam etmesi için C++'ın geriye dönük uyumluluğu koruma isteğinden kaynaklanıyor. Yani, nullptr == 0 durumunda dil, eski pointer tabanlı kodları bozmamak için true döndürüyor. Ancak modern C++'ta doğru kullanım:
+
+    - Pointer'lar için her zaman nullptr kullanmalısın.
+    - 0 tamsayılar için kullanılmalı, pointer'larla ilgili durumlardan kaçınılmalı.
+- Bu şekilde, nullptr ile tamsayılar arasında doğrudan bir ilişki kurulmaz ve nullptr pointer işlemlerinde açıkça "bu bir pointer" anlamına gelir.
+
+- Özetle, nullptr'in değeri şurada
+- Fakat nullptr == 0 gibi karşılaştırmaları modern C++ kodlarında kullanmaktan kaçınmak en iyisi.
+
+- nullptr'in Asıl Avantajları
+- Tür Güvenliği Sağlar: nullptr, tamsayı 0'dan farklıdır çünkü yalnızca pointer'lar ile çalışır. Yani, pointer olmayan bir tür ile nullptr kullanmak derleme hatasına neden olur. Örneğin:
+
+    ```cpp
+    int a = nullptr;  // Derleme hatası!
+    int a = NULL; // bazı sistemlerde çalışabilir. çünkü NULL bi mkaordur ve 0 anlamına gelir.
+    ```
+- Bu, kodunda nullptr'i yalnızca pointer'lara kullanmanı zorlayarak tamsayılarla ilgili karışıklıkları önler. Tamsayı 0'ı yanlışlıkla bir pointer'a veya NULL'u tamsayıya atama riskini ortadan kaldırır. Bu sayede tür güvenliği artar.
+
+- Fonksiyon Aşırı Yüklemesi (Overloading) Sorunlarını Çözer: C++'da NULL ya da 0 kullandığında hangi aşırı yüklenmiş fonksiyonun çağrılacağına karar vermek zorlaşabilir. Örneğin, şu iki fonksiyon düşün:
+    ```cpp
+    void foo(int);
+    void foo(char*);
+
+    foo(NULL);
+    foo(nullptr);
+    ```
+- Derleyici foo(int) fonksiyonunu çağırır, çünkü NULL bir tamsayı gibi davranır. Ancak, aslında int* türünde bir null pointer göndermeye çalışıyor olabilirsin. Bu gibi durumlar karmaşıklığa yol açabilir. nullptr kullanıldığında:
+
+- nullptr kullanıldığında, yani foo(int*)'yi çağırır. Bu, pointer'lar ve tamsayılar arasındaki karışıklığı ortadan kaldırır.
+
+- Daha Anlamlı Kod: nullptr, pointer'lar için özel olarak tasarlanmış bir sembol olduğu için, kodu okuyan herkes bunun bir pointer'ın null durumu olduğunu açıkça anlayabilir. 0 ise hem tamsayı anlamına gelir hem de null pointer olabilir, bu da kodun anlamını belirsiz kılar. nullptr ile daha net ve amacına uygun bir kod yazmış olursun.
+
+    ```cpp
+    if (pointer == nullptr) {
+        // Bu kod, pointer'ın geçersiz olduğunu açıkça ifade eder.
+    }
+
+    if (pointer == 0) {
+        // 0 nedir? Tamsayı mı yoksa null pointer mı? Belirsizlik vardır.
+    }
+    ```
+
+- Yalnızca Modern C++ Kodlarında: nullptr modern C++'ın bir özelliği olduğu için, modern C++ derleyicileri ve araçları ile daha iyi çalışır. Özellikle C++11 ve sonrasında yazılan kodlarda nullptr'in kullanımını teşvik etmek, kodun modern standartlarla uyumlu olmasını sağlar.
+
+- !!Evet, nullptr ile 0 karşılaştırılabilir ve eşit çıkar, çünkü geriye dönük uyumluluk sağlanmak isteniyor. Ancak nullptr'in esas amacı, tür güvenliği, anlamlı fonksiyon aşırı yüklemesi ve daha açık bir kod yazımı sağlamaktır. Özellikle karmaşık projelerde veya büyük sistemlerde bu özellikler, hata ayıklama ve bakım açısından büyük avantajlar sunar.
+
+- Birde bazen 0 da yazılabiliyormuş bunu yazmayın nullptr yazın diyor artık. Modern yazım
+
 ### extra about NULL
 - C++ dilinde, null değeri yalnızca işaretçiler (pointers) için anlamlıdır ve kullanılabilir. Null değeri, işaretçilerin belirli bir nesneye (hedefe) işaret etmediği veya geçersiz olduğu durumları ifade etmek için kullanılır. Diğer veri tipleri veya nesneler için "null" bir kavramları yoktur.
 - Diğer veri tipleri (int, float, char, bool, vs.) için "null" bir değer tanımı yoktur.

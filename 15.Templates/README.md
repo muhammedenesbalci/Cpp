@@ -19,6 +19,7 @@
 - [Templates and SFINAE Substitution Failure Is Not An Error](#templates-and-sfinae-substitution-failure-is-not-an-error)
 - [Templates and Inheritence](#templates-and-inheritence)
 - [Struct](#struct)
+- [constexpr](#constexpr)
 
 ## Parameters
 - şablonlarda hem tek tür parametre hem de farklı tür parametreler kullanarak nasıl veri yapıları oluşturabileceğinizi göstereyim.
@@ -286,7 +287,7 @@
     - display() fonksiyonu her iki nesne için de çağrılır ve uygun değerler görüntülenir.
 
 ## Struct
-- struct lar ile de kullanılabilir.
+- struct lar ile de kullanılabilir. mesela hep aynı tür structu tutarsın ama template yardımıyla içinde farklı data type lar saklarım.
     ```cpp
     #include <iostream>
     #include <string>
@@ -312,6 +313,163 @@
         // Verileri görüntüle
         p1.display(); // Output: First: 1, Second: one
         p2.display(); // Output: First: 2.5, Second: A
+
+        return 0;
+    }
+    ```
+
+## constexpr
+- constexpr, C++11 ile tanıtılan bir anahtar kelimedir ve derleme zamanı (compile-time) sabit ifadeler oluşturmak için kullanılır. constexpr fonksiyonları ve değişkenleri, derleyicinin hesaplamaları derleme zamanında yapmasına olanak tanır, bu da performansı artırabilir ve kodun doğruluğunu kontrol edebilir.
+- constexpr Anahtar Kelimesi Kullanım Alanları
+    - Değişken Tanımlama:
+        - constexpr anahtar kelimesi ile tanımlanan değişkenler derleme zamanında sabit olmalıdır.
+        - Bu değişkenler, sabit ifadelere atanan değerler olmalıdır.
+
+    - Fonksiyon Tanımlama:
+        - constexpr fonksiyonlar, derleme zamanında değerlendirilebilen fonksiyonlardır.
+        - Bu fonksiyonlar, derleme zamanı sabit ifadeler döndürmelidir.
+        - Bu fonksiyonlar, sadece sabit ifadeler içermelidir ve sınırlı bir yapılandırmaya sahip olmalıdır (örneğin, döngüler ve koşullar sınırlıdır).
+
+- constexpr Değişken Örneği
+    ```cpp
+    #include <iostream>
+
+    int main() {
+        constexpr int size = 10; // Derleme zamanında sabit bir ifade
+        int array[size];         // 'size' değeri sabit olduğundan dizi boyutu olarak kullanılabilir
+
+        std::cout << "Array size: " << size << std::endl;
+
+        return 0;
+    }
+    ```
+
+- constexpr Fonksiyon Örneği
+    ```cpp
+    #include <iostream>
+
+    // constexpr fonksiyon tanımı
+    constexpr int factorial(int n) {
+        return (n <= 1) ? 1 : (n * factorial(n - 1));
+    }
+
+    int main() {
+        constexpr int result = factorial(5); // Derleme zamanında hesaplanır
+
+        std::cout << "Factorial of 5 is: " << result << std::endl;
+
+        return 0;
+    }
+    ```
+
+- **constexpr ve const Farkı**
+- const: Derleme zamanında veya çalışma zamanında sabit olabilir. Derleme zamanı sabit olma zorunluluğu yoktur.
+- constexpr: Derleme zamanında sabit olmalıdır. Derleyici tarafından sabit ifade olarak değerlendirilir. kesinlikle sabit olduğu anlamına geliyor.
+    ```cpp
+    #include <iostream>
+
+    int main() {
+        const int a = 10; // a is a constant, but not necessarily a compile-time constant
+        constexpr int b = 20; // b is a compile-time constant
+
+        int array1[a]; // This may not be allowed in some compilers because 'a' is not guaranteed to be a compile-time constant
+        int array2[b]; // This is allowed because 'b' is guaranteed to be a compile-time constant
+
+        std::cout << "a: " << a << ", b: " << b << std::endl;
+
+        return 0;
+    }
+    ```
+
+- C++14 ile birlikte, constexpr fonksiyonlar daha karmaşık yapılandırmalara izin verir. Örneğin, döngüler ve dallanma ifadeleri içerebilirler. bu fonkisyon runtime da değil compile time da sonucu hesaplanır. ve sabit gibi davranır sonucu. fakat böyle olması için fonkisyonun sonucunuda constexpr bir değişkene atmalıyız.
+    ```cpp
+    #include <iostream>
+
+    // C++14 ile birlikte, daha karmaşık constexpr fonksiyonlar tanımlanabilir
+    constexpr int fibonacci(int n) {
+        int a = 0, b = 1, c;
+        for (int i = 2; i <= n; ++i) {
+            c = a + b;
+            a = b;
+            b = c;
+        }
+        return n == 0 ? a : b;
+    }
+
+    int main() {
+        constexpr int result = fibonacci(10); // Derleme zamanında hesaplanır
+
+        std::cout << "Fibonacci of 10 is: " << result << std::endl;
+
+        return 0;
+    }
+    ```
+- constexpr Kullanımının Faydaları
+    - Performans Artışı: Derleme zamanında yapılan hesaplamalar, çalışma zamanındaki performansı artırabilir.
+    - Sabit İfadelerin Doğruluğu: Derleme zamanında sabit ifadeler oluşturmak, kodun doğruluğunu ve güvenilirliğini artırır.
+    - Sabit Veri Yapıları: constexpr kullanarak sabit boyutlu diziler ve diğer veri yapılarını tanımlayabilirsiniz.
+- Özet
+    - constexpr, derleme zamanında sabit ifadeler oluşturmak için kullanılır.
+    - constexpr değişkenler ve fonksiyonlar, derleme zamanında değerlendirilebilir olmalıdır.
+    - constexpr, performansı artırabilir ve kodun doğruluğunu kontrol edebilir.
+    - C++14 ile birlikte, constexpr fonksiyonlar daha karmaşık yapılandırmalara izin verir.
+
+- **templateleri ile kullanılıyor**
+    ```cpp
+    #include <iostream>
+
+    // constexpr şablon fonksiyon tanımı
+    template <typename T>
+    constexpr T factorial(T n) {
+        return (n <= 1) ? 1 : (n * factorial(n - 1));
+    }
+
+    int main() {
+        // Derleme zamanında hesaplanır
+        constexpr int result = factorial(5);
+
+        std::cout << "Factorial of 5 is: " << result << std::endl;
+
+        // Çalışma zamanında hesaplanır
+        int num;
+        std::cout << "Enter a number: ";
+        std::cin >> num;
+        int runtimeResult = factorial(num);
+
+        std::cout << "Factorial of " << num << " is: " << runtimeResult << std::endl;
+
+        return 0;
+    }
+    ```
+
+- ++14 ve sonrasında, constexpr fonksiyonlar daha karmaşık yapılara ve daha uzun kodlara izin verir. C++11'de, constexpr fonksiyonlar yalnızca tek bir return ifadesine sahip olmalıydı ve basit olmalıydı. Ancak C++14 ile birlikte, constexpr fonksiyonlarda döngüler, koşullu ifadeler ve hatta lokal değişkenler kullanılabilir.
+- her zaman compile time da değil burada biz 5 i kodu derlemeden önce veriyoruz bu hesaplanabilir ama mesela içine verdiğimiz değişkeni runtime da vericek isek normal const gibi davranır.
+    ```cpp
+    #include <iostream>
+
+    // C++14 ve sonrasında daha karmaşık constexpr fonksiyonlar tanımlanabilir
+    template <typename T>
+    constexpr T factorial(T n) {
+        T result = 1;
+        for (T i = 2; i <= n; ++i) {
+            result *= i;
+        }
+        return result;
+    }
+
+    int main() {
+        // Derleme zamanında hesaplanan faktöriyel
+        constexpr int compileTimeFactorial = factorial(5); // Derleme zamanında hesaplanır
+
+        std::cout << "Factorial of 5 (compile-time): " << compileTimeFactorial << std::endl;
+
+        // Çalışma zamanında hesaplanan faktöriyel
+        int runtimeInput;
+        std::cout << "Enter a number: ";
+        std::cin >> runtimeInput;
+        int runtimeFactorial = factorial(runtimeInput); // Çalışma zamanında hesaplanır
+
+        std::cout << "Factorial of " << runtimeInput << " (runtime): " << runtimeFactorial << std::endl;
 
         return 0;
     }
