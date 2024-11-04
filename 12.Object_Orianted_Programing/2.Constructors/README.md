@@ -14,6 +14,7 @@
 - [Constrcutor Initilizaiton List](#constrcutor-initilizaiton-list)
 - [Delegating Construcors](#delegating-construcors)
 - [Member Data and their initilizations with classes](#member-data-and-their-initilizations-with-classes)
+- [Initialization Types](#initialization-types)
 
 ## Constructor
 - C++'ta constructor (yapıcı), nesne oluşturulurken otomatik olarak çağrılan özel bir yöntemdir. Genellikle, yeni nesnelerin veri üyelerini başlatmak için kullanılır. C++'ta constructor, sınıfın veya yapının adıyla aynı isme sahiptir. Constructor, nesne için veri sağlar, yani nesnenin değerlerini oluşturur, bu yüzden constructor olarak bilinir.
@@ -252,6 +253,8 @@ int main() {
         ClassName(const ClassName &obj);
     };
     ```
+    - parametre const olmalı. Olmasa da çalışır ama.
+
 - Fonksiyona parametre alırken referanslar veya pointer ile alırsan mantıken kopyalama yapmaz.
 
 - Fonksiyona argüman olarak verdiğimizde. Fonksiyondan çıkarken destructor çağırılıyor. kopya obje oluşturuluyor ya o yok ediliyor.
@@ -351,12 +354,133 @@ int main() {
     - Bitwise (bit düzeyinde) bir operatördür.
     - Assignment operator overload edilmezse, bitwise copy oluşturulur.
 
+
+# Move semantic (örnek yazılmadı sonradan eklendi)
+- Move semantiği, C++11 ile tanıtılan ve özellikle kaynakları (bellek, dosya tanıtıcıları, vs.) taşıma işlemlerini optimize etmeye yönelik bir özelliktir. Geleneksel kopyalama işlemi yerine, kaynakların yeni bir nesneye taşınmasına (move) olanak tanır, bu sayede gereksiz kopyalamalar azaltılır ve performans artışı sağlanır
+- Move Semantiğinin Temel Amacı
+    - Move semantiği, bir nesnenin kaynaklarını kopyalamak yerine taşımayı hedefler. Kopyalama işlemi, her iki nesnede de aynı kaynağın bir kopyasını oluşturur. Ancak, eğer kaynak sadece bir nesnede kullanılacaksa, kopyalama yerine kaynakları "taşıyarak" daha verimli bir kullanım elde edilebilir.
+- Move Semantiğinin Kullanımı
+    - Move semantiği, move constructor ve move assignment operator ile gerçekleştirilir:
+
+    - Move Constructor: Yeni bir nesne yaratılırken mevcut nesnenin kaynaklarını taşır.
+    - Move Assignment Operator: Var olan bir nesneye başka bir nesnenin kaynaklarını taşır.
+
+- Bu işlemler genellikle std::move işleviyle birlikte kullanılır. std::move, bir nesneyi "rvalue"ya (sağ-değer) dönüştürür, bu da nesnenin move işlemi için uygun olduğunu belirtir.
+
+- Move Constructor ve Move Assignment Operator Nasıl Yazılır?
+    - Kendi sınıfınızda move constructor ve move assignment operator tanımlayarak bu optimizasyonu gerçekleştirebilirsiniz:
+    ```cpp
+   #include <iostream>
+
+    class MyClass {
+    private:
+        int* data;
+        size_t size;
+
+    public:
+        // Constructor
+        MyClass(size_t s) : size(s), data(new int[s]) {
+            for (size_t i = 0; i < size; ++i) {
+                data[i] = i;
+            }
+            std::cout << "MyClass(size_t) - Constructor called.\n";
+        }
+
+        // Move Constructor
+        MyClass(MyClass&& other) noexcept : data(other.data), size(other.size) {
+            other.data = nullptr; // Diğer nesnenin kaynaklarını sıfırla
+            other.size = 0; // BUNU YAPMAYA GEREK YOK
+            std::cout << "MyClass(MyClass&&) - Move constructor called.\n";
+        }
+
+        // Move Assignment Operator
+        MyClass& operator=(MyClass&& other) noexcept {
+            if (this != &other) {
+                delete[] data; // Eski kaynakları serbest bırak
+
+                data = other.data;
+                size = other.size;
+
+                other.data = nullptr; // Diğer nesnenin kaynaklarını sıfırla
+                other.size = 0; // BUNU YAPMAYA GEREK YOK
+            }
+            std::cout << "operator=(MyClass&&) - Move assignment operator called.\n";
+            return *this;
+        }
+
+        // Destructor
+        ~MyClass() {
+            delete[] data;
+            std::cout << "~MyClass() - Destructor called.\n";
+        }
+
+        void printData() const {
+            for (size_t i = 0; i < size; ++i) {
+                std::cout << data[i] << " ";
+            }
+            std::cout << "\n";
+        }
+    };
+
+    int main() {
+        // Normal constructor ile bir nesne oluştur
+        MyClass obj1(5);
+        std::cout << "obj1 data: ";
+        obj1.printData();
+
+        // Move constructor çağırma
+        MyClass obj2 = std::move(obj1);
+        std::cout << "After moving obj1 to obj2:\n";
+        std::cout << "obj1 data: ";
+        obj1.printData(); // obj1 artık boş durumda
+        std::cout << "obj2 data: ";
+        obj2.printData();
+
+        
+        MyClass obj3(10);
+        std::cout << "obj3 data (before move assignment): ";
+        obj3.printData();
+
+        // Move assignment operator çağırma
+        obj3 = std::move(obj2); // obj2'yi obj3'e taşı
+        std::cout << "After moving obj2 to obj3:\n";
+        std::cout << "obj2 data: ";
+        obj2.printData(); // obj2 artık boş durumda
+        std::cout << "obj3 data: ";
+        obj3.printData();
+
+        return 0;
+    }
+    /*
+    MyClass(size_t) - Constructor called.
+    obj1 data: 0 1 2 3 4 
+    MyClass(MyClass&&) - Move constructor called.
+    After moving obj1 to obj2:
+    obj1 data: 
+    obj2 data: 0 1 2 3 4 
+    MyClass(size_t) - Constructor called.
+    obj3 data (before move assignment): 0 1 2 3 4 5 6 7 8 9 
+    operator=(MyClass&&) - Move assignment operator called.
+    After moving obj2 to obj3:
+    obj2 data: 
+    obj3 data: 0 1 2 3 4 
+    ~MyClass() - Destructor called.
+    ~MyClass() - Destructor called.
+    ~MyClass() - Destructor called.
+    */
+    ```
+- Move Semantiğinin Avantajları
+    - Verimlilik Artışı: Kopyalama yerine kaynak taşıma, performansı artırır.
+    - Kaynak Yönetimi: Bellek, dosya gibi kaynakların verimli bir şekilde yönetilmesini sağlar.
+    - Move semantiği, özellikle büyük veri yapıları veya dinamik bellek kullanan sınıflarda performans optimizasyonu sağlar ve modern C++’ta 
+    kaynakların etkili yönetimi için vazgeçilmez bir özelliktir.
 ## Move Constrcutor
 - Move constructor, C++11'de tanıtılan bir özellik olup, bir nesnenin kaynaklarını başka bir nesneye taşımak için kullanılır. Bu, özellikle büyük veri yapıları veya dinamik bellek kullanan nesneler için performansı artırmak amacıyla kullanılır. Move constructor, bir nesnenin kaynaklarını diğerine "taşıyarak" kopyalama maliyetini en aza indirir.
 - burada this bizim lvalue mizi temsil eder. Fonksiyon içine gelen obje ise rvalue yi temsil eder. biz rvalue yi lvalue ye taşıyoryz işlemlerini ona göre yap.
 - constrcutorların dönüş değeri olmaz unutma.
 - virtual olamaz.
-
+- taşıyacağın obje dynamic bir alan vs tarzı bir şey içermiyorsa kullanmanın hiç bir manası yok unutma.
+- eski objenin değerleirni 0 a eşitlemeye gerek yok.
 - syntax
     ```cpp
     className(className&& other) noexcept {
@@ -366,7 +490,7 @@ int main() {
     className obj1;
     className obj2 = std::move(obj1);
     ```
-
+    - paramtere const olmamamlı.
     - noexcept anahtar kelimesi, bir fonksiyonun (veya constructor'ın) herhangi bir istisna atmayacağını belirtmek için kullanılır. Bu, özellikle move constructor'lar ve move assignment operatörleri gibi kaynak transferi işlemlerinde performans optimizasyonları ve güvenlik açısından önemlidir.
         - noexcept Anlamı:
             - noexcept ile belirtilen bir fonksiyon, istisna fırlatmaz. Bu, derleyicinin ve standard library'nin daha agresif optimizasyonlar yapmasına olanak tanır.
@@ -1051,3 +1175,195 @@ int main() {
     - Sabit Uzunluklu Diziler: Yapıcı başlatma listesi ile başlatılmalıdır.
     - Dinamik Bellek Yönetimi: new ile tahsis edilmeli ve destructor'da delete ile serbest bırakılmalıdır.
     - Yapıcı Başlatma Listesi: const, referans veri üyeleri için kullanılır ve doğrudan atama yapılmamalıdır.
+
+## Initialization Types
+1. Direct Initialization (Doğrudan Başlatma)
+    - Nesne () parantezleri kullanılarak bir veya birden fazla argüman ile başlatılır. 
+    - En az bir argüman verilmelidir unutma.
+        - Object object(); tanımlaması bir fonksiyon prototype ına işaret eder.
+    - Kurucu fonksiyon varsa, doğrudan çağrılır.
+    - explicit veya non-explicit olarak tanımlanmış kurucu fonksiyonları çağırabilir.
+    - temel olarak, bir nesneyi parametrelerle başlatmanın en açık yollarından biridir.
+    - narrowing ler'e izin verilir.
+        ```cpp
+        class MyClass {
+        public:
+            int x;
+            MyClass(int val) : x(val) {}
+        };
+
+        int main() {
+            MyClass obj(10); // x = 10 olarak başlatılır.
+            return 0;
+        }
+        ```
+
+2.  List Initialization (Liste Başlatma)
+    - C++11 ile {} küme parantezleri kullanılarak başlatma yapılır.
+    - initializer_list veya sınıfın diğer kurucu fonksiyonları ile uyumlu olan bir küme parantezli liste sağlar.
+    - initializer_list kabul eden kurucular, liste başlatma sırasında tercih edilir.
+    - Daraltma (narrowing) dönüşümlerine izin vermez, yani bir double değişkeni int bir değere doğrudan dönüştürülemez.
+    - yani paremtre olarak double verirsen hata verir. direct init de hata vermez.
+        ```
+        bool 
+            ↓
+        char → signed char → unsigned char 
+            ↓
+        short → unsigned short 
+            ↓
+        int → unsigned int 
+            ↓
+        long → unsigned long 
+            ↓
+        long long → unsigned long long
+            ↓
+        float 
+            ↓
+        double 
+            ↓
+        long double
+        ```
+    - Hem explicit hem de non-explicit kurucularla çalışabilir.
+        ```cpp
+        class MyClass {
+        public:
+            int x;
+            int y;
+            MyClass(int a, int b) : x(a), y(b) {}
+        };
+
+        int main() {
+            MyClass obj{10, 20}; // x = 10, y = 20 olarak başlatılır.
+            return 0;
+        }
+        ```
+3. Aggregate Initialization (Toplu Başlatma)
+    - class doğrudan {} ile başlatılabilir.
+    - aggregate türler için initializer_list kullanılmaz; her bir veri üyesi için sırasıyla başlatma yapılır.
+    - Genellikle kurucu fonksiyonu olmayan basit veri yapılarını başlatmak için kullanılır.
+    - (önemli!!) sonradan da eğer atamak için kullanılabilir.
+    - explict constrcutorlar ile çalışmaz.
+    - kodda örneği var eğer constrcutroları explict tanımlarsan. bu tarz bir başlatma işlemi uygulayamayız. çünkü dönüşümü engelliyior. Yani otomatik dönüşümü engelliyor. stati_Cast kullanarak yine dönşüm yapabilirsin.
+    - sonradan değer atamak içinde kullanılabilir.
+        ```cpp
+        class MyClass {
+        public:
+            int x;
+            int y;
+        };
+
+        int main() {
+            MyClass obj = {10, 20}; // x = 10, y = 20 olarak başlatılır.
+            return 0;
+        }
+        ```
+4. Object object = 3; gibi bir başlatma tarzı da var. bunu da constructoru explict tanımlarsan önüne geçmiş olursun.
+
+5. (Önemli) ilk boş objeyi oluşturduktan sonra değer atarken. Önce normal constrctoru çağırır, sonra copy assginemnt ı çağırıyor. normal constrctoru, çağırmasının sebebi önce sağ tarafta normal obje oluşturmasından dolayı. Normalde sağ tarafta da normal obje olurdu o yüzden önce constrctor çağrılıyor.
+    ```cpp
+    Object object;
+    object = 5;
+    ```
+## explicit keyword
+- C++’da explicit anahtar kelimesi, bir sınıfın yapıcılarının (constructor) veya dönüşüm operatörlerinin (conversion operator)(normal constrcutor aslında burada böyle bashediyor) implicit (örtük) dönüşümlerle kullanılmasını engellemek için kullanılır. Bu, programcıya daha fazla kontrol sağlamak ve yanlışlıkla yapılabilecek hatalı dönüşümlerin önüne geçmek için yararlıdır.
+- Kullanım Amacı
+    - Implicit Dönüşümleri Engelleme: explicit, bir yapıcı veya dönüşüm operatörünün sadece açık (explicit) dönüşümlerle çağrılmasına izin verir. Yani, bu tür yapıcılar veya operatörler, bir nesne oluştururken veya bir türü başka bir türe dönüştürürken açıkça belirtilmelidir.
+
+    - Hata Önleme: explicit kullanımı, istemeden yapılan tür dönüşümlerini engelleyerek, kodun daha güvenli ve anlaşılır olmasına yardımcı olur. Örneğin, yanlışlıkla bir tam sayıyı bir nesneye dönüştürmek yerine, programcı bu dönüşümün açık bir şekilde belirtilmesini sağlamalıdır.
+        ```cpp
+        #include <iostream>
+
+        class MyClass {
+        public:
+            explicit MyClass(int value) {  // Explicit constructor
+                std::cout << "Value: " << value << std::endl;
+            }
+        };
+
+        int main() {
+            MyClass obj1(10);    // Geçerli: Açık çağrı
+            // MyClass obj2 = 20; // Hata: Implicit dönüşüm, bu hatayı önler
+            MyClass obj3 = MyClass(30);  // Geçerli: Açıkça belirtilmiş
+            return 0;
+        }
+        ```
+    - MyClass sınıfının yapıcısı explicit olarak tanımlandığı için, MyClass obj2 = 20; satırı derleme hatası verir. Bu, 20 değerinin MyClass nesnesine implicit bir dönüşümle atanamayacağı anlamına gelir.
+    - yapıcıyı açıkça çağırmak gerektiği için, MyClass obj3 = MyClass(30); ifadesi geçerlidir.
+    - explicit anahtar kelimesi, dönüşüm operatörleri için de benzer şekilde kullanılabilir:
+        ```cpp
+        class MyClass {
+        public:
+            explicit operator int() const {
+                return 42;
+            }
+        };
+
+        int main() {
+            MyClass obj;
+            // int value = obj; // Hata: Implicit dönüşüm
+            int value = static_cast<int>(obj); // Geçerli: Açıkça belirtilmiş
+            return 0;
+        }
+        ```
+    - explicit anahtar kelimesi, C++’da daha güvenli ve anlaşılır kod yazmaya yardımcı olur, yanlışlıkla yapılan dönüşümlerin önüne geçerek programcıya daha fazla kontrol sağlar. Bu, özellikle karmaşık sistemlerde ve kütüphanelerde, hata olasılığını azaltmak için oldukça önemlidir.
+
+    - En çok karşımıza çıkan yerler:
+        1. Nesne Oluşturma
+            - En yaygın durum, bir nesne oluştururken explicit yapıcıların kullanılması
+                ```cpp
+                class MyClass {
+                public:
+                    explicit MyClass(int value);
+                };
+
+                MyClass obj1(10);         // Geçerli: Açıkça belirtilmiş
+                // MyClass obj2 = 20;     // Hata: Implicit dönüşüm
+                ```
+        2. Dönüşüm Operatörleri
+            - explicit, dönüşüm operatörleri için de kullanılabilir. Bu, belirli bir türden diğerine dönüşüm yapılırken dikkatli olunmasını sağlar.
+                ```cpp
+                class MyClass {
+                public:
+                    explicit operator int() const; // Implicit dönüşümü engeller
+                };
+
+                MyClass obj;
+                int value = static_cast<int>(obj); // Geçerli: Açıkça belirtilmiş
+                // int value = obj;                 // Hata: Implicit dönüşüm
+                ```
+        3. Fonksiyon Parametreleri
+            - Bir fonksiyonda explicit kullanmak, belirli bir türdeki parametrelerin yalnızca açıkça belirtilerek geçilebilmesini sağlar. Bu, özellikle fonksiyon şablonları veya aşırı yüklenmiş (overloaded) fonksiyonlar ile birlikte kullanışlıdır.
+                ```cpp
+                void func(MyClass obj) {
+                    // ...
+                }
+
+                func(10); // Hata: Implicit dönüşüm
+                func(MyClass(10)); // Geçerli: Açıkça belirtilmiş
+                ```
+        4. Dönüşüm Fonksiyonları
+            - Bir sınıfın dönüşüm fonksiyonları, başka bir türdeki nesneye dönüşüm yaparken explicit olarak işaretlenebilir. Bu, dönüşümün açıkça belirtilmesini gerektirir.
+            ```cpp
+            class MyClass {
+            public:
+                explicit operator double() const { return 42.0; }
+            };
+
+            MyClass obj;
+            double d = static_cast<double>(obj); // Geçerli: Açıkça belirtilmiş
+            // double d = obj;                    // Hata: Implicit dönüşüm
+            ```
+        5. Şablonlar (Templates)
+            - Şablonlarda, explicit ile birlikte, dönüşümlerin açıkça belirtilmesini sağlamak için kullanılabilir. Bu, şablonların beklenmedik dönüşümlere neden olmasını önler.
+                ```cpp
+                template <typename T>
+                void process(T obj) {
+                    // ...
+                }
+
+                process(MyClass(10)); // Geçerli
+                // process(20);        // Hata: Implicit dönüşüm
+                ```
+    - Sonuç: explicit anahtar kelimesi, yalnızca nesne oluşturma sırasında değil, dönüşüm operatörleri, fonksiyon parametreleri ve şablonlarda da kullanılabilir. Bu, programcıların dönüşüm süreçlerini kontrol etmelerine ve yanlışlıkla yapılabilecek hatalı dönüşümlerin önüne geçmelerine yardımcı olur. Bu durum, özellikle karmaşık sistemlerde ve kütüphanelerde hata olasılığını azaltmak için önemlidir.
+
+    - (önemli!!): bir nesne bir int veya benzeri değere imlict olarak dönüşmesini istiyorsan. dönüşüm operatörlerini overlad ettmelisin. aksi halde dönüşemez.

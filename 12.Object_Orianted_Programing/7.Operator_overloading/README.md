@@ -165,6 +165,7 @@ Bazı operatörler C++ dilinde overload edilemez. Bu operatörler şunlardır:
     - yaptığımız örnekten copy assignmentin copy constructor gibi davranmasını sağladık.
     - move assignment operator da yazdık. Move olarak davranabilmesi için özellikle move diye belirtmen lazım. ifadeyi yazarken.
     - bunu overload edilmesi çok öenmli özellikle dynmaic memory kullanıyorsak.
+    - syntaxına çok dikkat et const paramtre alman lazım.
 
 - Addition Operator (+):
     - Sebep: İki nesneyi toplamak veya bir nesneye bir değeri eklemek için kullanılır. Matematiksel işlemler veya string birleştirme işlemleri için yaygındır.

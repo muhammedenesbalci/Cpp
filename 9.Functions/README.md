@@ -983,6 +983,10 @@ int sum(int x = 0, int y = 0) { // Function declaration
             - Belirli değişkenlere referans veya kopyalama aracılığıyla erişim sağlar. Örnek olarak [x, &y] ifadesi, x değişkenine kopyalama yoluyla ve y değişkenine referans yoluyla erişim sağlar.
         5. this Yakalama ([this]):
             - Sınıf üyesi bir lambda fonksiyonunda sınıfın diğer veri elemanlarına erişim sağlamak için kullanılır.
+    - İlla bir değişkene atmak zorunda değiliz. direkt de yazabiliriz olduğu yerde çağırmak için. bu şekilde çağırıyor ve 3  ve 4 değişkenini veriyor içine.
+    ```cpp
+    [](int a, int b) {return a + b;}(3, 4)
+    ```
 
 ## Function Declaration and Definition
 - **Function Declaration**:  Fonksiyon bildirimi veya fonksiyon prototype ı, bir fonksiyonun adını, dönüş türünü ve parametre türlerini belirterek derleyiciye fonksiyonun var olduğunu bildirmek için kullanılır. Fonksiyon bildirimi, genellikle bir başlık dosyasında (header file) veya bir programın başında yer alır. Bu, derleyicinin fonksiyonun varlığından haberdar olmasını sağlar, ancak fonksiyonun gövdesini içermez.

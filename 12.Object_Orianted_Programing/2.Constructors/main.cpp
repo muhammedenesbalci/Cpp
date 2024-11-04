@@ -342,10 +342,11 @@ Base_7::Base_7(Base_7 &&obj){
 
     destrctor_for = "Move Constrctor";
 
-    obj.a = 0;
-    obj.b = 0;
-    obj.c = 0;
-    obj.name = "deleted";
+    // Altakileri yapmaya gerek yok çünkü ekstra yük bindiriyor
+    //obj.a = 0;
+    //obj.b = 0;
+    //obj.c = 0;
+    //obj.name = "deleted";
 
     data = obj.data;
     obj.data = nullptr;
@@ -503,6 +504,173 @@ void delegating_constructors_example() {
     MyClass_3 obj2(10, 20);
     cout << "x: " << obj2.x << " y: " << obj2.y << endl;
 }
+// Initialization types examples -------------------------------------------------------------------
+class Initialization_class {
+public:    
+    
+    Initialization_class() {
+        cout << "Constructor called: empty\n";
+    }
+
+    Initialization_class(int a_var) : a(a_var) {
+        cout << "Constructor called: one\n";
+    }
+
+    Initialization_class(int a_var, int b_var) : b(b_var) {
+        cout << "Constructor called: two\n";
+    }
+
+    Initialization_class(const Initialization_class& obj) {
+        cout << "Copy Constructor called\n";
+    }
+
+    Initialization_class(Initialization_class&& obj) {
+        cout << "Move Constructor called\n";
+    }
+
+    Initialization_class& operator=(const Initialization_class& obj) {
+        cout << "copy assignment called\n";
+        return *this;
+    }
+
+private:
+    int a;
+    int b;
+};
+
+void initialization_types_example() {
+    cout << "Direct initializtion-----------\n";
+    Initialization_class direct_init;
+    Initialization_class direct_init_1(1);
+    Initialization_class direct_init_2(1, 2);
+
+    cout << "Direct initializtion 2-----------\n";
+    Initialization_class direct_init_3 = 10;
+
+    cout << "List initializtion-----------\n";
+    Initialization_class list_init{};
+    Initialization_class list_init_1{1};
+    Initialization_class list_init_2{1, 2};
+
+    cout << "Aggregate initializtion-----------\n";
+    Initialization_class aggregate_init = {};
+    Initialization_class aggregate_init_1 = {1};
+    Initialization_class aggregate_init_2 = {1, 2};
+}
+
+// Initialization types examples 2-------------------------------------------------------------------
+class Initialization_class_2 {
+public:    
+    
+    explicit Initialization_class_2() {
+        cout << "Constructor called: empty\n";
+    }
+
+    explicit Initialization_class_2(int a_var) : a(a_var) {
+        cout << "Constructor called: one\n";
+    }
+
+    explicit Initialization_class_2(int a_var, int b_var) : b(b_var) {
+        cout << "Constructor called: two\n";
+    }
+
+    explicit Initialization_class_2(const Initialization_class_2& obj) {
+        cout << "Copy Constructor called\n";
+    }
+
+    explicit Initialization_class_2(Initialization_class_2&& obj) {
+        cout << "Move Constructor called\n";
+    }
+
+    Initialization_class_2& operator=(const Initialization_class_2& obj) {
+        cout << "copy assignment called\n";
+        return *this;
+    }
+
+private:
+    int a;
+    int b;
+};
+
+void initialization_types_example_2() {
+    cout << "Direct initializtion-----------\n";
+    Initialization_class_2 direct_init;
+    Initialization_class_2 direct_init_1(1);
+    Initialization_class_2 direct_init_2(1, 2);
+
+    // hata verir
+    /*
+    cout << "Direct initializtion 2-----------\n";
+    Initialization_class_2 direct_init_3 = 10;
+    */
+
+    cout << "List initializtion-----------\n";
+    Initialization_class_2 list_init{};
+    Initialization_class_2 list_init_1{1};
+    Initialization_class_2 list_init_2{1, 2};
+
+    // hata verir conversion yapılamaz
+    /*
+    cout << "Aggregate initializtion-----------\n";
+    Initialization_class_2 aggregate_init = {};
+    Initialization_class_2 aggregate_init_1 = {1};
+    Initialization_class_2 aggregate_init_2 = {1, 2};
+    */
+}
+
+void copy_assignment_init_types_ex() {
+    Initialization_class direct_init;
+    direct_init = 5;
+
+    // hata verir
+    /*
+    Initialization_class_2 direct_init_2;
+    direct_init_2 = 5;
+    */
+
+    Initialization_class aggregate_init;
+    aggregate_init = {5, 2};
+
+    // hata verir
+    /*
+    Initialization_class_2 aggregate_init_2;
+    aggregate_init_2 = {5, 2};
+    */
+}
+
+void narrowing_example() {
+    cout << "Direct initializtion-----------\n";
+    //explict olmasıyla ilgisi yok
+    Initialization_class_2 direct_init;
+    Initialization_class_2 direct_init_1(1.2);
+    Initialization_class_2 direct_init_2(1, 2.2);
+
+    // hata verir
+    /*
+    cout << "List initializtion-----------\n";
+    Initialization_class_2 list_init{};
+    Initialization_class_2 list_init_1{1.2};
+    Initialization_class_2 list_init_2{1, 2.5};
+    */
+}
+
+// explicit keyword ---------------------------------------------------------------------
+void explicit_keyword_example() {
+    cout << "Copy assignment --------------------------------------------\n";
+    Initialization_class_2 direct_init_1;
+    direct_init_1 = static_cast<Initialization_class_2>(5);
+
+    // {} aggregate
+    Initialization_class_2 aggregate_init_1;
+    aggregate_init_1 = static_cast<Initialization_class_2>(5, 2);
+
+    cout << "init  ----------------------------------------------------\n";
+    Initialization_class_2 direct_init_2 = static_cast<Initialization_class_2>(5);
+
+    // {} aggregate
+    Initialization_class_2 aggregate_init_2 = static_cast<Initialization_class_2>(5, 2);
+}
+
 int main() {
     cout << "\nInside Constructor -----------------------------------------------\n";
     constructor_inside_example();
@@ -540,6 +708,21 @@ int main() {
 
     cout << "\nDelegating constructors-----------------------------------------------\n";
     delegating_constructors_example();
+
+    cout << "\nInitialization_types-----------------------------------------------\n";
+    initialization_types_example();
+
+    cout << "\nInitialization_types-2-----------------------------------------------\n";
+    initialization_types_example_2();
+
+    cout << "\ncopy_assignment_init_types-----------------------------------------------\n";
+    copy_assignment_init_types_ex();
+
+    cout << "\nnarrowing_example-----------------------------------------------\n";
+    narrowing_example();
+
+    cout << "\nexplicit_keyword_example-----------------------------------------------\n";
+    explicit_keyword_example();
 
     return 0;
 }
