@@ -655,20 +655,32 @@ void narrowing_example() {
 }
 
 // explicit keyword ---------------------------------------------------------------------
-void explicit_keyword_example() {
-    cout << "Copy assignment --------------------------------------------\n";
+void explicit_constrcutor_example() {
+    cout << "constructor and copy assignment --------------------------------------------\n";
     Initialization_class_2 direct_init_1;
     direct_init_1 = static_cast<Initialization_class_2>(5);
+
+    // Hata verir
+    //direct_init_1 = 5;
 
     // {} aggregate
     Initialization_class_2 aggregate_init_1;
     aggregate_init_1 = static_cast<Initialization_class_2>(5, 2);
 
-    cout << "init  ----------------------------------------------------\n";
+    // Hata verir
+    //aggregate_init_1 = {5, 2};
+
+    cout << "constrcutor ----------------------------------------------------\n";
     Initialization_class_2 direct_init_2 = static_cast<Initialization_class_2>(5);
+
+    // Hata verir
+    //Initialization_class_2 direct_init_2 = 5;
 
     // {} aggregate
     Initialization_class_2 aggregate_init_2 = static_cast<Initialization_class_2>(5, 2);
+
+    // Hata verir
+    //Initialization_class_2 direct_init_2 = {5, 2}
 }
 
 int main() {
@@ -721,8 +733,8 @@ int main() {
     cout << "\nnarrowing_example-----------------------------------------------\n";
     narrowing_example();
 
-    cout << "\nexplicit_keyword_example-----------------------------------------------\n";
-    explicit_keyword_example();
+    cout << "\nexplicit_constrcutor_example-----------------------------------------------\n";
+    explicit_constrcutor_example();
 
     return 0;
 }
